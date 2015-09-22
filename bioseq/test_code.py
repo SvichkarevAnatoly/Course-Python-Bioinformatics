@@ -33,6 +33,28 @@ class Test(unittest.TestCase):
         expected_rna_mass = 18411.90
         self.assertAlmostEqual(expected_rna_mass, rna_mass, 2)
 
+    def test_simple_find_subseq(self):
+        seq = 'AGCTCGCTCGCTGCGTATAAAATCGCATCGCGCGCAGC'
+        position1 = seq.find('TATAAA')
+        self.assertEqual(15, position1)
+
+        position2 = seq.find('GAGGAG')
+        self.assertEqual(-1, position2)
+
+    def test_match_dna_profile(self):
+        profile = {
+            'A': [61, 16, 352, 3, 354, 268, 360, 222, 155, 56, 83, 82, 82, 68, 77],
+            'C': [145, 46, 0, 10, 0, 0, 3, 2, 44, 135, 147, 127, 118, 107, 101],
+            'G': [152, 18, 2, 2, 5, 0, 10, 44, 157, 150, 128, 128, 128, 139, 140],
+            'T': [31, 309, 35, 374, 30, 121, 6, 121, 33, 48, 31, 52, 61, 75, 71]
+        }
+        score, position = c.match_dna_profile(c.dna_seq, profile)
+        self.assertEqual(1952, score)
+        self.assertEqual(20, position)
+
+        best_match_subseq = c.dna_seq[position:position + 15]
+        self.assertEqual(best_match_subseq, "GGAGAAGTCTGCCGT")
+
 
 if __name__ == "__main__":
     unittest.main()

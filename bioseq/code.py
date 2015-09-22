@@ -71,3 +71,24 @@ def estimate_mol_mass(seq, mol_type='protein'):
     for letter in seq:
         mol_mass += mass_dict[letter]
     return mol_mass
+
+
+def match_dna_profile(seq, profile):
+    """ Find the best matching position and score when comparing a DNA
+    sequence with a DNA sequence profile"""
+    best_score = 0
+    # Just to start with
+    best_position = None
+    width = len(profile['A'])
+
+    for i in range(len(seq)-width):
+        score = 0
+        for j in range(width):
+            letter = seq[i+j]
+            score += profile[letter][j]
+
+        if score > best_score:
+            best_score = score
+            best_position = i
+
+    return best_score, best_position
