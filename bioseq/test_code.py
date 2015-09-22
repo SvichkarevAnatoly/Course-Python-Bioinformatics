@@ -55,6 +55,24 @@ class Test(unittest.TestCase):
         best_match_subseq = c.dna_seq[position:position + 15]
         self.assertEqual(best_match_subseq, "GGAGAAGTCTGCCGT")
 
+    def test_calc_gc_content(self):
+        dna_seq = 'ATGGTGCATCTGACTCCTGAGGAGAAGTCTGCCGTTACTGCCCTGTGGGGCAAGGTG'
+        gc_results = c.calc_gc_content(dna_seq)
+        print gc_results
+        expected_gc_results = \
+            [0.5, 0.5, 0.6, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5,
+             0.6, 0.5, 0.6, 0.6, 0.6, 0.6, 0.6, 0.5, 0.5,
+             0.5, 0.5, 0.5, 0.5, 0.5, 0.6, 0.6, 0.6, 0.6,
+             0.5, 0.6, 0.5, 0.6, 0.6, 0.6, 0.6, 0.5, 0.6,
+             0.6, 0.7, 0.7, 0.8, 0.8, 0.8, 0.7, 0.6, 0.7,
+             0.7, 0.7]
+        self.assertEqual(expected_gc_results, gc_results)
+
+        # for visualization
+        # from matplotlib import pyplot
+        # pyplot.plot(gc_results)
+        # pyplot.show()
+
 
 if __name__ == "__main__":
     unittest.main()

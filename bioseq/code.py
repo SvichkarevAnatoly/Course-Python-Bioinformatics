@@ -81,10 +81,10 @@ def match_dna_profile(seq, profile):
     best_position = None
     width = len(profile['A'])
 
-    for i in range(len(seq)-width):
+    for i in range(len(seq) - width):
         score = 0
         for j in range(width):
-            letter = seq[i+j]
+            letter = seq[i + j]
             score += profile[letter][j]
 
         if score > best_score:
@@ -92,3 +92,13 @@ def match_dna_profile(seq, profile):
             best_position = i
 
     return best_score, best_position
+
+
+def calc_gc_content(seq, window_size=10):
+    gc_values = []
+    for i in range(len(seq) - window_size):
+        subseq = seq[i:i + window_size]
+        num_gc = subseq.count('G') + subseq.count('C')
+        value = num_gc / float(window_size)
+        gc_values.append(value)
+    return gc_values
