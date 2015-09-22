@@ -102,3 +102,47 @@ def calc_gc_content(seq, window_size=10):
         value = num_gc / float(window_size)
         gc_values.append(value)
     return gc_values
+
+
+def calc_relative_entropy(seq, res_codes):
+    """Calculate a relative entropy value for the residues in a
+    sequence compared to a null hypothesis where each residue
+    appears in a randomly and unbiased.
+    """
+    from math import log
+    n = float(len(seq))
+    base = 1.0 / len(res_codes)
+    prop = {}
+    for r in res_codes:
+        prop[r] = 0
+    for r in seq:
+        prop[r] += 1
+    for r in res_codes:
+        prop[r] /= n
+
+    dkl = 0
+    for r in res_codes:
+        if prop[r] != 0.0:
+            d = prop[r] * log(prop[r] / base, 2.0)
+            dkl += d
+    return dkl
+
+
+def relative_entropy_search(seq, window_size, is_protein=False):
+    """Scan a sequence for repetitiveness by calculating relative
+    information entropy.
+    """
+    len_seq = len(seq)
+    scores = [0.0] * len_seq
+    extra_seq = seq[:window_size]
+    seq += extra_seq
+
+    if is_protein:
+        res_codes = 'ACDEFGHIKLMNPQRSTVWY'
+    else:
+        res_codes = 'GCAT'
+
+    for i in range(len_seq):
+        sub_seq = seq[i:i + window_size]
+        scores[i] = calc_relative_entropy(sub_seq, res_codes)
+    return scores

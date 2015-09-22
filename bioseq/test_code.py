@@ -69,8 +69,16 @@ class Test(unittest.TestCase):
         self.assertEqual(expected_gc_results, gc_results)
 
         # for visualization
-        # from matplotlib import pyplot
-        # pyplot.plot(gc_results)
+        from matplotlib import pyplot
+        pyplot.plot(gc_results)
+        # pyplot.show()
+
+    def test_relative_entropy_search(self):
+        from matplotlib import pyplot
+        dna_scores = c.relative_entropy_search(c.dna_seq, 6)
+        protein_scores = c.relative_entropy_search(c.protein_seq, 10, is_protein=True)
+        pyplot.plot(dna_scores)
+        pyplot.plot(protein_scores)
         # pyplot.show()
 
 
