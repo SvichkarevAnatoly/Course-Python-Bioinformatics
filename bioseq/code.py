@@ -19,3 +19,7 @@ STANDARD_GENETIC_CODE = {
 }
 
 dnaSeq = 'ATGGTGCATCTGACTCCTGAGGAGAAGTCTGCCGTTACTGCCCTGTGGGGCAAGGTG'
+
+
+def dna_to_rna(dna):
+    return dna.replace('T', 'U')

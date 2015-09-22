@@ -5,7 +5,7 @@ import code as c
 
 class Test(unittest.TestCase):
     def test_dna_to_rna(self):
-        rnaSeq = c.dnaSeq.replace('T', 'U')
+        rnaSeq = c.dna_to_rna(c.dnaSeq)
         expected_rnaSeq = 'AUGGUGCAUCUGACUCCUGAGGAGAAGUCUGCCGUUACUGCCCUGUGGGGCAAGGUG'
         self.assertEqual(expected_rnaSeq, rnaSeq)
 
