@@ -23,3 +23,24 @@ dnaSeq = 'ATGGTGCATCTGACTCCTGAGGAGAAGTCTGCCGTTACTGCCCTGTGGGGCAAGGTG'
 
 def dna_to_rna(dna):
     return dna.replace('T', 'U')
+
+
+def protein_translation(dna_seq):
+    """ This function translates a nucleic acid sequence into a
+    protein sequence, until the end or until it comes across
+    a stop codon """
+    # Make sure we have RNA sequence
+    dna_seq = dna_to_rna(dna_seq)
+
+    protein_seq = []
+    i = 0
+    while i + 2 < len(dna_seq):
+        codon = dna_seq[i:i + 3]
+        amino_acid = STANDARD_GENETIC_CODE[codon]
+        # Found stop codon
+        if amino_acid is None:
+            break
+        protein_seq.append(amino_acid)
+        i += 3
+    return protein_seq
+
