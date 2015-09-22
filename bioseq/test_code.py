@@ -58,7 +58,6 @@ class Test(unittest.TestCase):
     def test_calc_gc_content(self):
         dna_seq = 'ATGGTGCATCTGACTCCTGAGGAGAAGTCTGCCGTTACTGCCCTGTGGGGCAAGGTG'
         gc_results = c.calc_gc_content(dna_seq)
-        print gc_results
         expected_gc_results = \
             [0.5, 0.5, 0.6, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5,
              0.6, 0.5, 0.6, 0.6, 0.6, 0.6, 0.6, 0.5, 0.5,
@@ -80,6 +79,30 @@ class Test(unittest.TestCase):
         pyplot.plot(dna_scores)
         pyplot.plot(protein_scores)
         # pyplot.show()
+
+    def test_read_seqs(self):
+        from Bio import SeqIO
+        file_obj = open("demoSequences.fasta", "rU")
+
+        expected_ids =\
+            [
+                "uniprot|P00395|COX1_HUMAN",
+                "uniprot|P53551|H1_YEAST"
+            ]
+        expected_seqs_begin =\
+            [
+                "MFADRW",
+                "MAPKKS"
+            ]
+
+        i = 0
+        for protein in SeqIO.parse(file_obj, 'fasta'):
+            self.assertEqual(expected_ids[i], protein.id)
+            protein_seq_begin = protein.seq[:6]
+            self.assertEqual(expected_seqs_begin[i], protein_seq_begin)
+            i += 1
+
+        file_obj.close()
 
 
 if __name__ == "__main__":
