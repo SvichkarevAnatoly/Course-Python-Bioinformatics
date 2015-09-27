@@ -4,19 +4,36 @@ import code as c
 
 
 class Test(unittest.TestCase):
-    def test_simple_identify(self):
-        seq1 = 'ALIGNMENTS'
-        seq2 = 'ALIGDVENTS'
+    def check_identify(self, expected, real):
+        self.assertEqual(expected[0], real[0])
+        self.assertEqual(expected[1], real[1])
+        self.assertAlmostEqual(expected[2], real[2], 1)
+        self.assertEqual(expected[3], real[3])
 
-        abs_matching, len_alignment, percent, alignment = c.identify(seq1, seq2)
+    def test_identify(self):
+        seqs = [
+            "ALIGNMENTS",
+            "ALIGDVENTS",
+            "ALIGDPVENTS",
+            "ALIGN-MENTS"
+        ]
 
-        self.assertEqual(8, abs_matching)
-        self.assertEqual(len(seq1), len_alignment)
-        self.assertAlmostEqual(80.0, percent, 1)
-        self.assertEqual("****  ****", alignment)
+        expected_identities = [
+            (8, 10, 80.0, "****  ****"),
+            (4, 10, 40.0, "****      "),
+            (5, 10, 50.0, "*****     "),
+            (5, 10, 50.0, "*****     "),
+            (4, 10, 40.0, "****      "),
+            (8, 11, 72.7, "****   ****")
+        ]
 
-    def test_full_identify(self):
-        pass
+        import itertools
+        i = 0
+        for seq_i, seq_j in list(itertools.combinations(seqs, 2)):
+            identity = c.identify(seq_i, seq_j)
+            self.check_identify(expected_identities[i], identity)
+            i += 1
+
 
 if __name__ == "__main__":
     unittest.main()
