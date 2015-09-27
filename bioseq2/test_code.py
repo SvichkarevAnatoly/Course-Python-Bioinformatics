@@ -34,11 +34,29 @@ class Test(unittest.TestCase):
             self.check_identify(expected_identities[i], identity)
             i += 1
 
-    def test_similarity_dna(self):
+    def test_similarity_dna_A(self):
         seq1 = 'AGCATCGCTCT'
         seq2 = 'AGCATCGTTTT'
-        similarity = c.similarity_dna(seq1, seq2)
-        self.assertEqual(3, similarity)
+        score = c.similarity_dna(seq1, seq2)
+        self.assertEqual(3, score)
+
+    def test_similarity_protein_B(self):
+        seq1 = 'ALIGNMENT'
+        seq2 = 'AYIPNVENT'
+        score = c.similarity_protein(seq1, seq2)
+        self.assertEqual(28, score)
+
+    def test_similarity_protein_C(self):
+        seq1 = 'ALIGDPPVENTS'
+        seq2 = 'ALIGN--MENTS'
+        score = c.similarity_protein(seq1, seq2)
+        self.assertEqual(40, score)
+
+    def test_similarity_protein_D(self):
+        seq1 = 'ALIGDPPVENTS'
+        seq2 = '--ALIGNMENTS'
+        score = c.similarity_protein(seq1, seq2)
+        self.assertEqual(9, score)
 
 
 if __name__ == "__main__":
