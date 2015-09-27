@@ -34,6 +34,12 @@ class Test(unittest.TestCase):
             self.check_identify(expected_identities[i], identity)
             i += 1
 
+    def test_similarity_dna(self):
+        seq1 = 'AGCATCGCTCT'
+        seq2 = 'AGCATCGTTTT'
+        similarity = c.similarity_dna(seq1, seq2)
+        self.assertEqual(3, similarity)
+
 
 if __name__ == "__main__":
     unittest.main()
