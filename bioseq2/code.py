@@ -25,6 +25,11 @@ def similarity_dna(s1, s2):
     return sum(DNA_2[s1[i]][s2[i]] for i in range(len(s1)))
 
 
+def similarity_protein(s1, s2):
+    s1 = s1.replace('-', 'X')
+    s2 = s2.replace('-', 'X')
+    return sum(BLOSUM62[s1[i]][s2[i]] for i in range(len(s1)))
+
 BLOSUM62 = {
     'A': {'A': 4, 'R': -1, 'N': -2, 'D': -2, 'C': 0, 'Q': -1, 'E': -1, 'G': 0, 'H': -2, 'I': -1,
           'L': -1, 'K': -1, 'M': -1, 'F': -2, 'P': -1, 'S': 1, 'T': 0, 'W': -3, 'Y': -2, 'V': 0, 'X': 0},
