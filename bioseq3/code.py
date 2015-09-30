@@ -19,3 +19,19 @@ def consensus(seqs, percent_threshold=25):
         else:
             result += no_consensus
     return result
+
+
+def profile(seqs):
+    length = max(len(seq) for seq in seqs)
+    result = []
+    for i in range(length):
+        frequencies = {}
+        for j in range(len(seqs)):
+            if i < len(seqs[j]):
+                symbol = seqs[j][i]
+                if symbol in frequencies:
+                    frequencies[symbol] += 1
+                else:
+                    frequencies[symbol] = 1
+        result.append(frequencies)
+    return result
