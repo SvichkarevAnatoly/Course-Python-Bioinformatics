@@ -1,6 +1,6 @@
 import unittest
 
-import code as c
+import code1 as c
 
 
 class Test(unittest.TestCase):
