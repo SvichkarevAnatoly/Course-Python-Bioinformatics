@@ -1,7 +1,6 @@
 import unittest
 
 import alingment as a
-import code4 as c
 
 
 class Test(unittest.TestCase):
@@ -30,6 +29,14 @@ class Test(unittest.TestCase):
         self.assertEqual(157, a.alignment_score(v, w))
         expected_alignment = "QPVHPFSRPAPVVIILIILCVMAGVIGTILLISYGIRLLIK\n" \
                              "QLVHRFTVPAPVVIILIILCVMAGIIGTILLISYTIRRLIK"
+        self.assertEqual(expected_alignment, a.alignment(v, w))
+
+    def test_alignment_different_length_seqs(self):
+        v = self.seqs[0]
+        w = self.seqs[2]
+        self.assertEqual(50, a.alignment_score(v, w))
+        expected_alignment = "QPVHPFSRPAPVVIILIILCVMAGVIGTILLISYGIR-LL------IK------\n" \
+                             "QLAHHFSEPE-IT--LIIFGVMAGVIGTILLISYGIRRLIKKSPSDVKPLPSPD"
         self.assertEqual(expected_alignment, a.alignment(v, w))
 
 
