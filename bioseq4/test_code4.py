@@ -1,21 +1,10 @@
 import unittest
 
 import alingment as a
+import code4 as c
 
 
 class Test(unittest.TestCase):
-    seqs = [
-        'QPVHPFSRPAPVVIILIILCVMAGVIGTILLISYGIRLLIK',
-        'QLVHRFTVPAPVVIILIILCVMAGIIGTILLISYTIRRLIK',
-        'QLAHHFSEPEITLIIFGVMAGVIGTILLISYGIRRLIKKSPSDVKPLPSPD',
-        'QLVHEFSELVIALIIFGVMAGVIGTILFISYGSRRLIKKSESDVQPLPPPD',
-        'MLEHEFSAPVAILIILGVMAGIIGIILLISYSIGQIIKKRSVDIQPPEDED',
-        'PIQHDFPALVMILIILGVMAGIIGTILLISYCISRMTKKSSVDIQSPEGGD',
-        'QLVHIFSEPVIIGIIYAVMLGIIITILSIAFCIGQLTKKSSLPAQVASPED',
-        'LAHDFSQPVITVIILGVMAGIIGIILLLAYVSRRLRKRPPADVP',
-        'SYHQDFSHAEITGIIFAVMAGLLLIIFLIAYLIRRMIKKPLPVPKPQDSPD'
-    ]
-
     def test_simple_alignment(self):
         v = "PLEASANTLY"
         w = "MEANLY"
@@ -24,16 +13,16 @@ class Test(unittest.TestCase):
         self.assertEqual(expected_alignment, a.alignment(v, w))
 
     def test_alignment_two_first_from_seqs(self):
-        v = self.seqs[0]
-        w = self.seqs[1]
+        v = c.seqs[0]
+        w = c.seqs[1]
         self.assertEqual(157, a.alignment_score(v, w))
         expected_alignment = "QPVHPFSRPAPVVIILIILCVMAGVIGTILLISYGIRLLIK\n" \
                              "QLVHRFTVPAPVVIILIILCVMAGIIGTILLISYTIRRLIK"
         self.assertEqual(expected_alignment, a.alignment(v, w))
 
     def test_alignment_different_length_seqs(self):
-        v = self.seqs[0]
-        w = self.seqs[2]
+        v = c.seqs[0]
+        w = c.seqs[2]
         self.assertEqual(50, a.alignment_score(v, w))
         expected_alignment = "QPVHPFSRPAPVVIILIILCVMAGVIGTILLISYGIR-LL------IK------\n" \
                              "QLAHHFSEPE-IT--LIIFGVMAGVIGTILLISYGIRRLIKKSPSDVKPLPSPD"
