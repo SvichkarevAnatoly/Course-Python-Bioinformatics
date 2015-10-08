@@ -1,3 +1,5 @@
+import alingment as al
+
 seqs = [
     'QPVHPFSRPAPVVIILIILCVMAGVIGTILLISYGIRLLIK',
     'QLVHRFTVPAPVVIILIILCVMAGIIGTILLISYTIRRLIK',
@@ -9,3 +11,14 @@ seqs = [
     'LAHDFSQPVITVIILGVMAGIIGIILLLAYVSRRLRKRPPADVP',
     'SYHQDFSHAEITGIIFAVMAGLLLIIFLIAYLIRRMIKKPLPVPKPQDSPD'
 ]
+
+
+def distance_matrix(seqs_list):
+    seqs_len = len(seqs_list)
+    dm = [[0] * seqs_len for _ in range(seqs_len)]
+
+    for i in range(seqs_len):
+        for j in range(i + 1, seqs_len):
+            dm[i][j] = dm[j][i] = al.alignment_score(seqs_list[i], seqs_list[j])
+
+    return dm
