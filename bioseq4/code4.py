@@ -42,3 +42,17 @@ def distance_matrix_to_q_matrix(dm):
         for j in range(i + 1, dm_size):
             qm[i][j] = qm[j][i] = q(dm, i, j)
     return qm
+
+
+def delta1(dm, ind1, ind2):
+    n = len(dm)
+    sum1 = sum2 = 0
+    for k in range(n):
+        sum1 += dm[ind1][k]
+        sum2 += dm[ind2][k]
+    delta_result = float(dm[ind1][ind2]) / 2 + float(sum1 - sum2) / (2 * (n - 2))
+    return delta_result
+
+
+def delta2(dm, a_index, b_index, delta1_value):
+    return dm[a_index][b_index] - delta1_value

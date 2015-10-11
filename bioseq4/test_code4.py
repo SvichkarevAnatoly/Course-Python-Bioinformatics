@@ -42,23 +42,35 @@ class Test(unittest.TestCase):
 
         self.assertEqual(expected_dm, c.distance_matrix(c.seqs))
 
+    # https://en.wikipedia.org/wiki/Neighbor_joining
+    example_distance_matrix = \
+        [[0, 5, 9, 9, 8],
+         [5, 0, 10, 10, 9],
+         [9, 10, 0, 8, 7],
+         [9, 10, 8, 0, 3],
+         [8, 9, 7, 3, 0]]
+    example_q_matrix = \
+        [[0, -50, -38, -34, -34],
+         [-50, 0, -38, -34, -34],
+         [-38, -38, 0, -40, -40],
+         [-34, -34, -40, 0, -48],
+         [-34, -34, -40, -48, 0]]
+
     def test_wiki_example_distance_matrix_to_Q(self):
-        # https://en.wikipedia.org/wiki/Neighbor_joining
-        example_distance_matrix = \
-            [[0, 5, 9, 9, 8],
-             [5, 0, 10, 10, 9],
-             [9, 10, 0, 8, 7],
-             [9, 10, 8, 0, 3],
-             [8, 9, 7, 3, 0]]
-        expected_q_matrix = \
-            [[0, -50, -38, -34, -34],
-             [-50, 0, -38, -34, -34],
-             [-38, -38, 0, -40, -40],
-             [-34, -34, -40, 0, -48],
-             [-34, -34, -40, -48, 0]]
+        q_matrix = c.distance_matrix_to_q_matrix(self.example_distance_matrix)
+        self.assertEqual(self.example_q_matrix, q_matrix)
 
-        q_matrix = c.distance_matrix_to_q_matrix(example_distance_matrix)
-        self.assertEqual(expected_q_matrix, q_matrix)
+    def test_delta(self):
+        a_index = 0
+        b_index = 1
 
-    if __name__ == "__main__":
+        delta_a_u = c.delta1(self.example_distance_matrix, a_index, b_index)
+        expected_delta_a_u = 2.0
+        self.assertEqual(expected_delta_a_u, delta_a_u)
+
+        delta_b_u = c.delta2(self.example_distance_matrix, a_index, b_index, delta_a_u)
+        expected_delta_b_u = 3.0
+        self.assertEqual(expected_delta_b_u, delta_b_u)
+
+if __name__ == "__main__":
         unittest.main()
