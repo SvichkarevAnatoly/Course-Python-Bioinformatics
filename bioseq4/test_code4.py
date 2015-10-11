@@ -42,6 +42,23 @@ class Test(unittest.TestCase):
 
         self.assertEqual(expected_dm, c.distance_matrix(c.seqs))
 
+    def test_wiki_example_distance_matrix_to_Q(self):
+        # https://en.wikipedia.org/wiki/Neighbor_joining
+        example_distance_matrix = \
+            [[0, 5, 9, 9, 8],
+             [5, 0, 10, 10, 9],
+             [9, 10, 0, 8, 7],
+             [9, 10, 8, 0, 3],
+             [8, 9, 7, 3, 0]]
+        expected_q_matrix = \
+            [[0, -50, -38, -34, -34],
+             [-50, 0, -38, -34, -34],
+             [-38, -38, 0, -40, -40],
+             [-34, -34, -40, 0, -48],
+             [-34, -34, -40, -48, 0]]
 
-if __name__ == "__main__":
-    unittest.main()
+        q_matrix = c.distance_matrix_to_q_matrix(example_distance_matrix)
+        self.assertEqual(expected_q_matrix, q_matrix)
+
+    if __name__ == "__main__":
+        unittest.main()
