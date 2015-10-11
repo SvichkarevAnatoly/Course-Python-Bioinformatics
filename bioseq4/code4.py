@@ -73,3 +73,25 @@ def delta1(dm, n1, n2):
 
 def delta2(dm, n1, n2, d1):
     return dm[n1][n2] - d1
+
+
+def d_u_k(dm, k, n1, n2):
+    return float(dm[n1][k] + dm[n2][k] - dm[n1][n2]) / 2
+
+
+def new_dm(dm, n1, n2):
+    new_node = n1 + n2
+    remain_nodes = (set(dm.keys()) - {n1, n2})
+    remain_nodes = list(remain_nodes)
+    dm2 = {k: {} for k in remain_nodes}
+
+    for i in remain_nodes:
+        for j in remain_nodes:
+            if i != j:
+                dm2[i][j] = dm2[j][i] = dm[i][j]
+
+    dm2[new_node] = {}
+    for i in remain_nodes:
+        dm2[new_node][i] = dm2[i][new_node] = d_u_k(dm, i, n1, n2)
+
+    return dm2

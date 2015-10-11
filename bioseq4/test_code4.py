@@ -43,41 +43,55 @@ class Test(unittest.TestCase):
         self.assertEqual(expected_dm, c.distance_matrix(c.seqs))
 
     # https://en.wikipedia.org/wiki/Neighbor_joining
-    example_distance_matrix = \
+    example_dm = \
         {'a': {'b': 5, 'c': 9, 'd': 9, 'e': 8},
          'b': {'a': 5, 'c': 10, 'd': 10, 'e': 9},
          'c': {'a': 9, 'b': 10, 'd': 8, 'e': 7},
          'd': {'a': 9, 'b': 10, 'c': 8, 'e': 3},
          'e': {'a': 8, 'b': 9, 'c': 7, 'd': 3}}
-    example_q_matrix = \
+    example_qm = \
         {'a': {'b': -50, 'c': -38, 'd': -34, 'e': -34},
          'b': {'a': -50, 'c': -38, 'd': -34, 'e': -34},
          'c': {'a': -38, 'b': -38, 'd': -40, 'e': -40},
          'd': {'a': -34, 'b': -34, 'c': -40, 'e': -48},
          'e': {'a': -34, 'b': -34, 'c': -40, 'd': -48}}
+    example_dm2 = \
+        {'ab': {'c': 7, 'd': 7, 'e': 6},
+         'c': {'ab': 7, 'd': 8, 'e': 7},
+         'd': {'ab': 7, 'c': 8, 'e': 3},
+         'e': {'ab': 6, 'c': 7, 'd': 3}}
+    example_qm2 = \
+        {'u': {'c': -28, 'd': -24, 'e': -24},
+         'c': {'u': -28, 'd': -24, 'e': -24},
+         'd': {'u': -24, 'c': -24, 'e': -28},
+         'e': {'u': -24, 'c': -24, 'd': -28}}
 
     def test_wiki_example_distance_matrix_to_Q(self):
-        q_matrix = c.distance_matrix_to_q_matrix(self.example_distance_matrix)
-        self.assertEqual(self.example_q_matrix, q_matrix)
+        q_matrix = c.distance_matrix_to_q_matrix(self.example_dm)
+        self.assertEqual(self.example_qm, q_matrix)
 
-    def test_select_min_nodes(self):
-        node1, node2 = c.select_min_nodes(self.example_q_matrix)
+    def test_wiki_select_min_nodes(self):
+        node1, node2 = c.select_min_nodes(self.example_qm)
         self.assertItemsEqual(['a', 'b'], [node1, node2])
 
-    def test_delta(self):
+    def test_wiki_delta(self):
         node1 = 'a'
         node2 = 'b'
 
-        delta_n1_u = c.delta1(self.example_distance_matrix, node1, node2)
+        delta_n1_u = c.delta1(self.example_dm, node1, node2)
         expected_delta_n1_u = 2.0
         self.assertEqual(expected_delta_n1_u, delta_n1_u)
 
-        delta_n2_u = c.delta2(self.example_distance_matrix, node1, node2, delta_n1_u)
+        delta_n2_u = c.delta2(self.example_dm, node1, node2, delta_n1_u)
         expected_delta_n2_u = 3.0
         self.assertEqual(expected_delta_n2_u, delta_n2_u)
 
-    def test_new_distance_matrix(self):
-        pass
+    def test_wiki_new_distance_matrix(self):
+        min_node1 = 'a'
+        min_node2 = 'b'
+
+        new_dm = c.new_dm(self.example_dm, min_node1, min_node2)
+        self.assertEqual(self.example_dm2, new_dm)
 
 
 if __name__ == "__main__":
