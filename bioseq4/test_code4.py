@@ -60,6 +60,11 @@ class Test(unittest.TestCase):
         q_matrix = c.distance_matrix_to_q_matrix(self.example_distance_matrix)
         self.assertEqual(self.example_q_matrix, q_matrix)
 
+    def test_select_min_nodes(self):
+        a_index, b_index = c.select_min_nodes(self.example_q_matrix)
+        self.assertEqual(0, a_index)
+        self.assertEqual(1, b_index)
+
     def test_delta(self):
         a_index = 0
         b_index = 1
@@ -72,5 +77,9 @@ class Test(unittest.TestCase):
         expected_delta_b_u = 3.0
         self.assertEqual(expected_delta_b_u, delta_b_u)
 
+    def test_new_distance_matrix(self):
+        pass
+
+
 if __name__ == "__main__":
-        unittest.main()
+    unittest.main()

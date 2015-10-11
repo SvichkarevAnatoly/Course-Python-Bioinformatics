@@ -44,6 +44,20 @@ def distance_matrix_to_q_matrix(dm):
     return qm
 
 
+def select_min_nodes(qm):
+    qm_size = len(qm)
+    ind1 = 0
+    ind2 = 1
+    min_val = qm[ind1][ind2]
+    for i in range(qm_size):
+        for j in range(i + 1, qm_size):
+            if qm[i][j] < min_val:
+                ind1 = i
+                ind2 = j
+                min_val = qm[i][j]
+    return ind1, ind2
+
+
 def delta1(dm, ind1, ind2):
     n = len(dm)
     sum1 = sum2 = 0
