@@ -61,14 +61,14 @@ class Test(unittest.TestCase):
          'd': {'ab': 7, 'c': 8, 'e': 3},
          'e': {'ab': 6, 'c': 7, 'd': 3}}
     example_qm2 = \
-        {'u': {'c': -28, 'd': -24, 'e': -24},
-         'c': {'u': -28, 'd': -24, 'e': -24},
-         'd': {'u': -24, 'c': -24, 'e': -28},
-         'e': {'u': -24, 'c': -24, 'd': -28}}
+        {'ab': {'c': -28, 'd': -24, 'e': -24},
+         'c': {'ab': -28, 'd': -24, 'e': -24},
+         'd': {'ab': -24, 'c': -24, 'e': -28},
+         'e': {'ab': -24, 'c': -24, 'd': -28}}
 
     def test_wiki_example_distance_matrix_to_Q(self):
-        q_matrix = c.distance_matrix_to_q_matrix(self.example_dm)
-        self.assertEqual(self.example_qm, q_matrix)
+        qm2 = c.distance_matrix_to_q_matrix(self.example_dm)
+        self.assertEqual(self.example_qm, qm2)
 
     def test_wiki_select_min_nodes(self):
         node1, node2 = c.select_min_nodes(self.example_qm)
@@ -92,6 +92,10 @@ class Test(unittest.TestCase):
 
         new_dm = c.new_dm(self.example_dm, min_node1, min_node2)
         self.assertEqual(self.example_dm2, new_dm)
+
+    def test_wiki_example_new_distance_matrix_to_new_Q(self):
+        qm2 = c.distance_matrix_to_q_matrix(self.example_dm2)
+        self.assertEqual(self.example_qm2, qm2)
 
 
 if __name__ == "__main__":
