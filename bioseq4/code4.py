@@ -80,7 +80,7 @@ def d_u_k(dm, k, n1, n2):
 
 
 def new_dm(dm, n1, n2):
-    new_node = n1 + n2
+    new_node = '(' + n1 + '+' + n2 + ')'
     remain_nodes = (set(dm.keys()) - {n1, n2})
     remain_nodes = list(remain_nodes)
     dm2 = {k: {} for k in remain_nodes}
