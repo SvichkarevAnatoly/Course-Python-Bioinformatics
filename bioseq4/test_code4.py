@@ -97,6 +97,11 @@ class Test(unittest.TestCase):
         qm2 = c.distance_matrix_to_q_matrix(self.example_dm2)
         self.assertEqual(self.example_qm2, qm2)
 
+    def test_wiki_tree_construction(self):
+        tree = c.construct_tree(self.example_dm)
+        expected_tree = "((e+d)+(c+(a+b)))"
+        self.assertEqual(expected_tree, tree)
+
 
 if __name__ == "__main__":
     unittest.main()

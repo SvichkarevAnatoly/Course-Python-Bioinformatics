@@ -95,3 +95,11 @@ def new_dm(dm, n1, n2):
         dm2[new_node][i] = dm2[i][new_node] = d_u_k(dm, i, n1, n2)
 
     return dm2
+
+
+def construct_tree(dist_matrix):
+    for i in range(len(dist_matrix) - 1):
+        qm = distance_matrix_to_q_matrix(dist_matrix)
+        n1, n2 = select_min_nodes(qm)
+        dist_matrix = new_dm(dist_matrix, n1, n2)
+    return dist_matrix.keys()[0]
