@@ -28,21 +28,17 @@ class Test(unittest.TestCase):
                              "Q-LAHH-FSE-PE----IT-LIIFG--VMAGVIGTILLISYGIRRLIKKSPSDVKPLPSPD"
         self.assertEqual(expected_alignment, a.alignment(v, w))
 
-    def test_seq_id(self):
-        seq = 'QPVHPFSRPAPVVIILIILCVMAGVIGTILLISYGIRLLIK'
-        self.assertEqual('QPV..LIK', c.seq_id(seq))
-
     def test_distance_matrix(self):
         expected_dm = \
-            [[0, 169, 141, 133, 135, 142, 116, 121, 101],
-             [169, 0, 138, 133, 132, 138, 116, 126, 103],
-             [141, 138, 0, 205, 168, 168, 156, 162, 165],
-             [133, 133, 205, 0, 169, 168, 155, 146, 153],
-             [135, 132, 168, 169, 0, 174, 148, 156, 135],
-             [142, 138, 168, 168, 174, 0, 156, 149, 132],
-             [116, 116, 156, 155, 148, 156, 0, 131, 140],
-             [121, 126, 162, 146, 156, 149, 131, 0, 141],
-             [101, 103, 165, 153, 135, 132, 140, 141, 0]]
+            {'s0': {'s1': 169, 's2': 141, 's3': 133, 's4': 135, 's5': 142, 's6': 116, 's7': 121, 's8': 101},
+             's1': {'s0': 169, 's2': 138, 's3': 133, 's4': 132, 's5': 138, 's6': 116, 's7': 126, 's8': 103},
+             's2': {'s0': 141, 's1': 138, 's3': 205, 's4': 168, 's5': 168, 's6': 156, 's7': 162, 's8': 165},
+             's3': {'s0': 133, 's1': 133, 's2': 205, 's4': 169, 's5': 168, 's6': 155, 's7': 146, 's8': 153},
+             's4': {'s0': 135, 's1': 132, 's2': 168, 's3': 169, 's5': 174, 's6': 148, 's7': 156, 's8': 135},
+             's5': {'s0': 142, 's1': 138, 's2': 168, 's3': 168, 's4': 174, 's6': 156, 's7': 149, 's8': 132},
+             's6': {'s0': 116, 's1': 116, 's2': 156, 's3': 155, 's4': 148, 's5': 156, 's7': 131, 's8': 140},
+             's7': {'s0': 121, 's1': 126, 's2': 162, 's3': 146, 's4': 156, 's5': 149, 's6': 131, 's8': 141},
+             's8': {'s0': 101, 's1': 103, 's2': 165, 's3': 153, 's4': 135, 's5': 132, 's6': 140, 's7': 141}}
 
         self.assertEqual(expected_dm, c.distance_matrix(c.seqs))
 
@@ -106,6 +102,11 @@ class Test(unittest.TestCase):
         expected_tree = "((e+d)+(c+(a+b)))"
         self.assertEqual(expected_tree, tree)
 
+    def test_tree_construction(self):
+        dm = c.distance_matrix(c.seqs)
+        tree = c.construct_tree(dm)
+        expected_tree = "((((((s5+(s8+s0))+(s3+s7))+s6)+s4)+s2)+s1)"
+        self.assertEqual(expected_tree, tree)
 
 if __name__ == "__main__":
     unittest.main()
