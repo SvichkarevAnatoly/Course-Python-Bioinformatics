@@ -28,6 +28,10 @@ class Test(unittest.TestCase):
                              "Q-LAHH-FSE-PE----IT-LIIFG--VMAGVIGTILLISYGIRRLIKKSPSDVKPLPSPD"
         self.assertEqual(expected_alignment, a.alignment(v, w))
 
+    def test_seq_id(self):
+        seq = 'QPVHPFSRPAPVVIILIILCVMAGVIGTILLISYGIRLLIK'
+        self.assertEqual('QPV..LIK', c.seq_id(seq))
+
     def test_distance_matrix(self):
         expected_dm = \
             [[0, 169, 141, 133, 135, 142, 116, 121, 101],

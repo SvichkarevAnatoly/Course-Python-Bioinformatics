@@ -13,6 +13,10 @@ seqs = [
 ]
 
 
+def seq_id(seq):
+    return seq[:3] + '..' + seq[-3:]
+
+
 def distance_matrix(seqs_list):
     seqs_len = len(seqs_list)
     dm = [[0] * seqs_len for _ in range(seqs_len)]
