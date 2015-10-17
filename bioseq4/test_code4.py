@@ -120,6 +120,20 @@ class Test(unittest.TestCase):
         }
         self.assertEqual(expected_prepared_dm, prepared_dm)
 
+    def test_tree_construction2(self):
+        dist_matrix = [
+            [0, 51, 60, 39, 95, 74],
+            [51, 0, 53, 46, 102, 81],
+            [60, 53, 0, 55, 111, 90],
+            [39, 46, 55, 0, 90, 69],
+            [95, 102, 111, 90, 0, 45],
+            [74, 81, 90, 69, 45, 0],
+        ]
+        pdm = c.prepare_distance_matrix(dist_matrix)
+        tree = c.construct_tree(pdm)
+        expected_tree = "(((e+f)+d)+(a+(c+b)))"
+        self.assertEqual(expected_tree, tree)
+
 
 if __name__ == "__main__":
     unittest.main()
