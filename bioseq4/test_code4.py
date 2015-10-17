@@ -108,5 +108,18 @@ class Test(unittest.TestCase):
         expected_tree = "((((((s5+(s8+s0))+(s3+s7))+s6)+s4)+s2)+s1)"
         self.assertEqual(expected_tree, tree)
 
+    def test_prepare_distance_matrix(self):
+        dist_matrix = [
+            [0, 51],
+            [51, 0]
+        ]
+        prepared_dm = c.prepare_distance_matrix(dist_matrix)
+        expected_prepared_dm = {
+            'a': {'b': 51},
+            'b': {'a': 51},
+        }
+        self.assertEqual(expected_prepared_dm, prepared_dm)
+
+
 if __name__ == "__main__":
     unittest.main()

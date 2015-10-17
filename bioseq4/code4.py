@@ -1,14 +1,14 @@
 import alingment as al
 
 seqs = [
-    'QPVHPFSRPAPVVIILIILCVMAGVIGTILLISYGIRLLIK',           # s0
-    'QLVHRFTVPAPVVIILIILCVMAGIIGTILLISYTIRRLIK',           # s1
-    'QLAHHFSEPEITLIIFGVMAGVIGTILLISYGIRRLIKKSPSDVKPLPSPD', # s2
-    'QLVHEFSELVIALIIFGVMAGVIGTILFISYGSRRLIKKSESDVQPLPPPD', # s3
-    'MLEHEFSAPVAILIILGVMAGIIGIILLISYSIGQIIKKRSVDIQPPEDED', # s4
-    'PIQHDFPALVMILIILGVMAGIIGTILLISYCISRMTKKSSVDIQSPEGGD', # s5
-    'QLVHIFSEPVIIGIIYAVMLGIIITILSIAFCIGQLTKKSSLPAQVASPED', # s6
-    'LAHDFSQPVITVIILGVMAGIIGIILLLAYVSRRLRKRPPADVP',        # s7
+    'QPVHPFSRPAPVVIILIILCVMAGVIGTILLISYGIRLLIK',  # s0
+    'QLVHRFTVPAPVVIILIILCVMAGIIGTILLISYTIRRLIK',  # s1
+    'QLAHHFSEPEITLIIFGVMAGVIGTILLISYGIRRLIKKSPSDVKPLPSPD',  # s2
+    'QLVHEFSELVIALIIFGVMAGVIGTILFISYGSRRLIKKSESDVQPLPPPD',  # s3
+    'MLEHEFSAPVAILIILGVMAGIIGIILLISYSIGQIIKKRSVDIQPPEDED',  # s4
+    'PIQHDFPALVMILIILGVMAGIIGTILLISYCISRMTKKSSVDIQSPEGGD',  # s5
+    'QLVHIFSEPVIIGIIYAVMLGIIITILSIAFCIGQLTKKSSLPAQVASPED',  # s6
+    'LAHDFSQPVITVIILGVMAGIIGIILLLAYVSRRLRKRPPADVP',  # s7
     'SYHQDFSHAEITGIIFAVMAGLLLIIFLIAYLIRRMIKKPLPVPKPQDSPD'  # s8
 ]
 
@@ -107,3 +107,17 @@ def construct_tree(dist_matrix):
         n1, n2 = select_min_nodes(qm)
         dist_matrix = new_dm(dist_matrix, n1, n2)
     return dist_matrix.keys()[0]
+
+
+def prepare_distance_matrix(dist_matrix):
+    size_dm = len(dist_matrix)
+    pdm = {}
+    import string
+    alphabet = list(string.ascii_lowercase)
+    for i in range(size_dm):
+        pdm_line = {}
+        for j in range(size_dm):
+            if j != i:
+                pdm_line[alphabet[j]] = dist_matrix[i][j]
+        pdm[alphabet[i]] = pdm_line
+    return pdm
