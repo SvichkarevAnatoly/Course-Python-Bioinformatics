@@ -2,75 +2,76 @@ from matplotlib import pyplot
 from numpy import array, empty, identity, dot, ones, zeros, log
 
 
-def comb(N, k):  # from scipy.comb(), but MODIFIED!
-    if (k > N) or (N < 0) or (k < 0):
+def comb(n, k):
+    if (k > n) or (n < 0) or (k < 0):
         return 0L
-    N, k = map(long, (N, k))
-    top = N
+    nn, kk = map(long, (n, k))
+    top = n
     val = 1L
-    while (top > (N - k)):
+    while top > (nn - kk):
         val *= top
         top -= 1
-    n = 1L
-    while (n < k + 1L):
+    nn = 1L
+    while nn < kk + 1L:
         val /= n
         n += 1
     return val
 
 
-def binomialProbability(n, k, p):
+def binomial_probability(n, k, p):
     return comb(n, k) * p ** k * (1 - p) ** (n - k)
 
 
-def getNextGenPop(currentPop, randVar):
-    progeny = randVar.rvs(size=currentPop)
-    nextPop = progeny.sum()
-    return nextPop
+def get_next_gen_pop(current_pop, rand_var):
+    progeny = rand_var.rvs(size=current_pop)
+    next_pop = progeny.sum()
+    return next_pop
 
 
-def viterbi(obs, pStart, pTrans, pEmit):
-    nStates = len(pStart)
-    states = range(nStates)
-    scores = empty(nStates)
-    scoresPrev = pStart + pEmit[:, obs[0]]
-    pathsPrev = dict([(i, [i]) for i in states])
+def viterbi(obs, p_start, p_trans, p_emit):
+    n_states = len(p_start)
+    states = range(n_states)
+    scores = empty(n_states)
+    scores_prev = p_start + p_emit[:, obs[0]]
+    paths_prev = dict([(i, [i]) for i in states])
 
+    paths = {}
     for val in obs[1:]:
         paths = {}
 
         for i in states:
-            options = scoresPrev + pTrans[:, i] + pEmit[i, val]
-            bestState = options.argmax()
+            options = scores_prev + p_trans[:, i] + p_emit[i, val]
+            best_state = options.argmax()
             scores[i] = options.max()
-            paths[i] = pathsPrev[bestState] + [i]
+            paths[i] = paths_prev[best_state] + [i]
 
-        pathsPrev = paths
-        scoresPrev = array(scores)
+        paths_prev = paths
+        scores_prev = array(scores)
 
-    endState = scores.argmax()
-    logProb = scores.max()
+    end_state = scores.argmax()
+    log_prob = scores.max()
 
-    return logProb, paths[endState]
+    return log_prob, paths[end_state]
 
 
-def forwardBackward(obs, pStart, pTrans, pEmit):
+def forward_backward(obs, p_start, p_trans, p_emit):
     n = len(obs)
-    nStates = len(pStart)
-    I = identity(nStates)
+    n_states = len(p_start)
+    ident = identity(n_states)
 
-    fwd = empty([n + 1, nStates])
-    fwd[0] = pStart
+    fwd = empty([n + 1, n_states])
+    fwd[0] = p_start
 
     for i, val in enumerate(obs):
-        fProb = dot(pEmit[:, val] * I, dot(pTrans, fwd[i]))
-        fwd[i + 1] = fProb / fProb.sum()
+        f_prob = dot(p_emit[:, val] * ident, dot(p_trans, fwd[i]))
+        fwd[i + 1] = f_prob / f_prob.sum()
 
-    bwd = ones(nStates)
-    smooth = empty([n + 1, nStates])
+    bwd = ones(n_states)
+    smooth = empty([n + 1, n_states])
     smooth[-1] = fwd[-1]
 
     for i in range(n - 1, -1, -1):
-        bwd = dot(pTrans, dot(pEmit[:, obs[i]] * I, bwd))
+        bwd = dot(p_trans, dot(p_emit[:, obs[i]] * ident, bwd))
         bwd /= bwd.sum()
         prob = fwd[i] * bwd
         smooth[i] = prob / prob.sum()
@@ -117,6 +118,7 @@ if __name__ == '__main__':
         exposure = line2.strip()
 
         n = len(sequence)
+        index2 = 0
         for i in range(n - 2):
             aa1, aa2 = sequence[i:i + 2]
             exp1, exp2 = exposure[i:i + 2]
@@ -168,7 +170,7 @@ if __name__ == '__main__':
     print(bestExpCodes)
 
     # Positional state probabilitied - Forward-backward
-    smooth = forwardBackward(obs, pStart, pTrans, pEmit)
+    smooth = forward_backward(obs, pStart, pTrans, pEmit)
 
     buriedList = []
     exposeList = []
