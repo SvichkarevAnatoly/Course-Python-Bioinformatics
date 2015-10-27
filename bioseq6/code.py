@@ -2,6 +2,99 @@ from matplotlib import pyplot
 from numpy import array, empty, identity, dot, ones, zeros, log
 
 
+class HMM(object):
+    def __init__(self):
+        self.exposure_types = ['-', '*']
+        self.amino_acid_types = ['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L',
+                                 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'Y']
+        self.exposure_size = len(self.exposure_types)  # Number of exposure categories
+        self.amino_size = len(self.amino_acid_types)  # Number of amino acid types
+        self.state_size = self.exposure_size * self.amino_size  # Number of HMM states
+
+        self.p_emit = zeros((self.state_size, self.amino_size), float)  # Emission probabilities
+        self.p_trans = zeros((self.state_size, self.state_size), float)  # Transition probabilities
+        self.p_start = zeros(self.state_size, float)  # Starting probabilities
+
+        self.state_dict = {}
+        self.index_dict = {}
+
+        self.initialisation()
+
+    def initialisation(self):
+        index = 0
+        for exposure in self.exposure_types:
+            for amino_acid in self.amino_acid_types:
+                state_key = (exposure, amino_acid)
+                self.index_dict[state_key] = index
+                self.state_dict[index] = state_key
+                index += 1
+
+    def read(self, db):
+        sequence = db.readline()
+        exposure = db.readline()
+        while sequence and exposure:
+            index2 = 0
+            for i in range(len(sequence) - 2):
+                aa1, aa2 = sequence[i:i + 2]
+                exp1, exp2 = exposure[i:i + 2]
+                state_key1 = (exp1, aa1)
+                state_key2 = (exp2, aa2)
+                index1 = self.index_dict.get(state_key1)
+                index2 = self.index_dict.get(state_key2)
+
+                if index1 is None or index2 is None:
+                    continue
+                self.p_start[index1] += 1.0
+                self.p_trans[index1, index2] += 1.0
+
+            self.p_start[index2] += 1.0
+            sequence = db.readline().strip()
+            exposure = db.readline().strip()
+
+        self.p_start /= sum(self.p_start)
+        for i in range(self.state_size):
+            self.p_trans[i] /= sum(self.p_trans[i])
+
+        # Setup trivial emission probabilities
+        for exposure in self.exposure_types:
+            for amino_index, amino_acid in enumerate(self.amino_acid_types):
+                state_index = self.index_dict[(exposure, amino_acid)]
+                self.p_emit[state_index, amino_index] = 1.0
+
+    def best_route(self, seq):
+        obs = [self.amino_acid_types.index(aa) for aa in seq]
+        adj = 1e-99
+        log_start = log(self.p_start + adj)
+        log_trans = log(self.p_trans + adj)
+        log_emit = log(self.p_emit + adj)
+
+        # Best route - Viterbi
+        _, path = viterbi(obs, log_start, log_trans, log_emit)
+        best_exp_codes = ''.join([self.state_dict[i][0] for i in path])
+        return best_exp_codes
+
+    def pos_state_prob(self, seq):
+        obs = [self.amino_acid_types.index(aa) for aa in seq]
+        # Positional state probabilities - Forward-backward
+        smooth = forward_backward(obs, self.p_start, self.p_trans, self.p_emit)
+        return smooth
+
+    @staticmethod
+    def show_plot(sm):
+        buried_list = []
+        expose_list = []
+        for values in sm:
+            expose_list.append(sum(values[:20]))
+            buried_list.append(sum(values[20:]))
+
+        # Sequence positions
+        x_axis_values = range(len(expose_list))
+
+        pyplot.plot(x_axis_values, expose_list, c='#A0A0A0')
+        pyplot.plot(x_axis_values, buried_list, c='#000000')
+        pyplot.show()
+
+
 def comb(n, k):
     if (k > n) or (n < 0) or (k < 0):
         return 0L
@@ -78,97 +171,22 @@ def forward_backward(obs, p_start, p_trans, p_emit):
 
     return smooth
 
-
 if __name__ == '__main__':
     # HMM test example - protein burried/exposed states
-    exposure_types = ['-', '*']
-    amino_acid_types = ['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L',
-                        'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'Y']
-
-    # Initialisation
-    exposure_size = len(exposure_types)  # Number of exposure categories
-    amino_size = len(amino_acid_types)  # Number of amino acid types
-    state_size = exposure_size * amino_size  # Number of HMM states
-
-    p_start = zeros(state_size, float)  # Starting probabilities
-    p_trans = zeros((state_size, state_size), float)  # Transition probabilities
-    p_emit = zeros((state_size, amino_size), float)  # Emission probabilities
-
-    index_dict = {}
-    state_dict = {}
-    index = 0
-    for exposure in exposure_types:
-        for amino_acid in amino_acid_types:
-            state_key = (exposure, amino_acid)
-            index_dict[state_key] = index
-            state_dict[index] = state_key
-            index += 1
+    hmm = HMM()
 
     # Estimate transition probabilities from database counts
     database = open('PDBCategories.txt', 'r')
-
-    sequence = database.readline()
-    exposure = database.readline()
-    while sequence and exposure:
-        index2 = 0
-        for i in range(len(sequence) - 2):
-            aa1, aa2 = sequence[i:i + 2]
-            exp1, exp2 = exposure[i:i + 2]
-            state_key1 = (exp1, aa1)
-            state_key2 = (exp2, aa2)
-            index1 = index_dict.get(state_key1)
-            index2 = index_dict.get(state_key2)
-
-            if index1 is None or index2 is None:
-                continue
-
-            p_start[index1] += 1.0
-            p_trans[index1, index2] += 1.0
-
-        p_start[index2] += 1.0
-        sequence = database.readline().strip()
-        exposure = database.readline().strip()
-
-    p_start /= sum(p_start)
-    for i in range(state_size):
-        p_trans[i] /= sum(p_trans[i])
-
-    # Setup trivial emission probabilities
-    for exposure in exposure_types:
-        for amino_index, amino_acid in enumerate(amino_acid_types):
-            state_index = index_dict[(exposure, amino_acid)]
-            p_emit[state_index, amino_index] = 1.0
+    hmm.read(database)
 
     # HMM test data
-    seq = "MYGKIIFVLLLSEIVSISASSTTGVAMHTSTSSSVTKSYISSQTNDTHKRDTYAATPRAH" \
+    sequence = "MYGKIIFVLLLSEIVSISASSTTGVAMHTSTSSSVTKSYISSQTNDTHKRDTYAATPRAH" \
           "EVSEISVRTVYPPEEETGERVQLAHHFSEPEITLIIFGVMAGVIGTILLISYGIRRLIKK" \
           "SPSDVKPLPSPDTDVPLSSVEIENPETSDQ"
+    route = hmm.best_route(sequence)
 
-    obs = [amino_acid_types.index(aa) for aa in seq]
-    adj = 1e-99
-    log_start = log(p_start + adj)
-    log_trans = log(p_trans + adj)
-    log_emit = log(p_emit + adj)
+    print(sequence)
+    print(route)
 
-    # Best route - Viterbi
-    _, path = viterbi(obs, log_start, log_trans, log_emit)
-    best_exp_codes = ''.join([state_dict[i][0] for i in path])
-
-    print(seq)
-    print(best_exp_codes)
-
-    # Positional state probabilities - Forward-backward
-    smooth = forward_backward(obs, p_start, p_trans, p_emit)
-
-    buried_list = []
-    expose_list = []
-    for values in smooth:
-        expose_list.append(sum(values[:20]))
-        buried_list.append(sum(values[20:]))
-
-    # Sequence positions
-    x_axis_values = range(len(expose_list))
-
-    pyplot.plot(x_axis_values, expose_list, c='#A0A0A0')
-    pyplot.plot(x_axis_values, buried_list, c='#000000')
-    pyplot.show()
+    smooth = hmm.pos_state_prob(sequence)
+    hmm.show_plot(smooth)
