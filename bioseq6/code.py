@@ -20,15 +20,22 @@ class HMM(object):
 
     def __init__(self):
         self.exposure_types = ['-', '*']
-        self.amino_acid_types = ['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L',
-                                 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'Y']
-        self.exposure_size = len(self.exposure_types)  # Number of exposure categories
-        self.amino_size = len(self.amino_acid_types)  # Number of amino acid types
-        self.state_size = self.exposure_size * self.amino_size  # Number of HMM states
+        self.amino_acid_types = ['A', 'C', 'D', 'E', 'F', 'G', 'H',
+                                 'I', 'K', 'L', 'M', 'N', 'P', 'Q',
+                                 'R', 'S', 'T', 'V', 'W', 'Y']
+        # Number of exposure categories
+        self.exposure_size = len(self.exposure_types)
+        # Number of amino acid types
+        self.amino_size = len(self.amino_acid_types)
+        # Number of HMM states
+        self.state_size = self.exposure_size * self.amino_size
 
-        self.p_emit = zeros((self.state_size, self.amino_size), float)  # Emission probabilities
-        self.p_trans = zeros((self.state_size, self.state_size), float)  # Transition probabilities
-        self.p_start = zeros(self.state_size, float)  # Starting probabilities
+        # Emission probabilities
+        self.p_emit = zeros((self.state_size, self.amino_size), float)
+        # Transition probabilities
+        self.p_trans = zeros((self.state_size, self.state_size), float)
+        # Starting probabilities
+        self.p_start = zeros(self.state_size, float)
 
         self.state_dict = {}
         self.index_dict = {}
