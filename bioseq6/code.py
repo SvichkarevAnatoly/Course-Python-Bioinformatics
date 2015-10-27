@@ -86,13 +86,13 @@ if __name__ == '__main__':
                         'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'Y']
 
     # Initialisation
-    nExp = len(exposure_types)  # Number of exposure categories
-    nAmino = len(amino_acid_types)  # Number of amino acid types
-    nStates = nExp * nAmino  # Number of HMM states
+    exposure_size = len(exposure_types)  # Number of exposure categories
+    amino_size = len(amino_acid_types)  # Number of amino acid types
+    state_size = exposure_size * amino_size  # Number of HMM states
 
-    pStart = zeros(nStates, float)  # Starting probabilities
-    pTrans = zeros((nStates, nStates), float)  # Transition probabilities
-    pEmit = zeros((nStates, nAmino), float)  # Emission probabilities
+    p_start = zeros(state_size, float)  # Starting probabilities
+    p_trans = zeros((state_size, state_size), float)  # Transition probabilities
+    p_emit = zeros((state_size, amino_size), float)  # Emission probabilities
 
     index_dict = {}
     state_dict = {}
@@ -122,22 +122,22 @@ if __name__ == '__main__':
             if index1 is None or index2 is None:
                 continue
 
-            pStart[index1] += 1.0
-            pTrans[index1, index2] += 1.0
+            p_start[index1] += 1.0
+            p_trans[index1, index2] += 1.0
 
-        pStart[index2] += 1.0
+        p_start[index2] += 1.0
         sequence = database.readline().strip()
         exposure = database.readline().strip()
 
-    pStart /= sum(pStart)
-    for i in range(nStates):
-        pTrans[i] /= sum(pTrans[i])
+    p_start /= sum(p_start)
+    for i in range(state_size):
+        p_trans[i] /= sum(p_trans[i])
 
     # Setup trivial emission probabilities
     for exposure in exposure_types:
         for amino_index, amino_acid in enumerate(amino_acid_types):
             state_index = index_dict[(exposure, amino_acid)]
-            pEmit[state_index, amino_index] = 1.0
+            p_emit[state_index, amino_index] = 1.0
 
     # HMM test data
     seq = "MYGKIIFVLLLSEIVSISASSTTGVAMHTSTSSSVTKSYISSQTNDTHKRDTYAATPRAH" \
@@ -146,30 +146,29 @@ if __name__ == '__main__':
 
     obs = [amino_acid_types.index(aa) for aa in seq]
     adj = 1e-99
-    logStart = log(pStart + adj)
-    logTrans = log(pTrans + adj)
-    logEmit = log(pEmit + adj)
+    log_start = log(p_start + adj)
+    log_trans = log(p_trans + adj)
+    log_emit = log(p_emit + adj)
 
     # Best route - Viterbi
-    logProbScore, path = viterbi(obs, logStart, logTrans, logEmit)
-
-    bestExpCodes = ''.join([state_dict[i][0] for i in path])
+    _, path = viterbi(obs, log_start, log_trans, log_emit)
+    best_exp_codes = ''.join([state_dict[i][0] for i in path])
 
     print(seq)
-    print(bestExpCodes)
+    print(best_exp_codes)
 
-    # Positional state probabilitied - Forward-backward
-    smooth = forward_backward(obs, pStart, pTrans, pEmit)
+    # Positional state probabilities - Forward-backward
+    smooth = forward_backward(obs, p_start, p_trans, p_emit)
 
-    buriedList = []
-    exposeList = []
-
+    buried_list = []
+    expose_list = []
     for values in smooth:
-        exposeList.append(sum(values[:20]))
-        buriedList.append(sum(values[20:]))
+        expose_list.append(sum(values[:20]))
+        buried_list.append(sum(values[20:]))
 
-    xAxisValues = list(range(len(exposeList)))  # Sequence positions
+    # Sequence positions
+    x_axis_values = range(len(expose_list))
 
-    pyplot.plot(xAxisValues, exposeList, c='#A0A0A0')
-    pyplot.plot(xAxisValues, buriedList, c='#000000')
+    pyplot.plot(x_axis_values, expose_list, c='#A0A0A0')
+    pyplot.plot(x_axis_values, buried_list, c='#000000')
     pyplot.show()
