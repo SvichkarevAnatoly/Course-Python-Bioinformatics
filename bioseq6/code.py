@@ -81,51 +81,43 @@ def forward_backward(obs, p_start, p_trans, p_emit):
 
 if __name__ == '__main__':
     # HMM test example - protein burried/exposed states
-    expTypes = ['-', '*', ]
-    aaTypes = ['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L',
-               'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'Y']
+    exposure_types = ['-', '*']
+    amino_acid_types = ['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L',
+                        'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'Y']
 
     # Initialisation
-    nExp = len(expTypes)  # Number of exposure categories
-    nAmino = len(aaTypes)  # Number of amino acid types
+    nExp = len(exposure_types)  # Number of exposure categories
+    nAmino = len(amino_acid_types)  # Number of amino acid types
     nStates = nExp * nAmino  # Number of HMM states
 
     pStart = zeros(nStates, float)  # Starting probabilities
     pTrans = zeros((nStates, nStates), float)  # Transition probabilities
     pEmit = zeros((nStates, nAmino), float)  # Emission probabilities
 
-    indexDict = {}
-    stateDict = {}
+    index_dict = {}
+    state_dict = {}
     index = 0
-    for exposure in expTypes:
-        for aminoAcid in aaTypes:
-            stateKey = (exposure, aminoAcid)
-            indexDict[stateKey] = index
-            stateDict[index] = stateKey
+    for exposure in exposure_types:
+        for amino_acid in amino_acid_types:
+            state_key = (exposure, amino_acid)
+            index_dict[state_key] = index
+            state_dict[index] = state_key
             index += 1
 
     # Estimate transition probabilities from database counts
+    database = open('PDBCategories.txt', 'r')
 
-    # fileName = 'examples/PdbSeqExposureCategories.txt'
-    fileName = 'PDBCategories.txt'
-    fileObj = open(fileName, 'r')
-
-    line1 = fileObj.readline()
-    line2 = fileObj.readline()
-
-    while line1 and line2:
-        sequence = line1.strip()
-        exposure = line2.strip()
-
-        n = len(sequence)
+    sequence = database.readline()
+    exposure = database.readline()
+    while sequence and exposure:
         index2 = 0
-        for i in range(n - 2):
+        for i in range(len(sequence) - 2):
             aa1, aa2 = sequence[i:i + 2]
             exp1, exp2 = exposure[i:i + 2]
-            stateKey1 = (exp1, aa1)
-            stateKey2 = (exp2, aa2)
-            index1 = indexDict.get(stateKey1)
-            index2 = indexDict.get(stateKey2)
+            state_key1 = (exp1, aa1)
+            state_key2 = (exp2, aa2)
+            index1 = index_dict.get(state_key1)
+            index2 = index_dict.get(state_key2)
 
             if index1 is None or index2 is None:
                 continue
@@ -133,29 +125,26 @@ if __name__ == '__main__':
             pStart[index1] += 1.0
             pTrans[index1, index2] += 1.0
 
-        pStart[index2] += 1
-        line1 = fileObj.readline()
-        line2 = fileObj.readline()
+        pStart[index2] += 1.0
+        sequence = database.readline().strip()
+        exposure = database.readline().strip()
 
-    pStart /= pStart.sum()
+    pStart /= sum(pStart)
     for i in range(nStates):
-        pTrans[i] /= pTrans[i].sum()
+        pTrans[i] /= sum(pTrans[i])
 
     # Setup trivial emission probabilities
-
-    for exposure in expTypes:
-        for aminoIndex, aminoAcid in enumerate(aaTypes):
-            stateIndex = indexDict[(exposure, aminoAcid)]
-            pEmit[stateIndex, aminoIndex] = 1.0
-            print ("Emit:", aminoAcid, stateIndex, aminoIndex, pEmit[stateIndex, aminoIndex])
+    for exposure in exposure_types:
+        for amino_index, amino_acid in enumerate(amino_acid_types):
+            state_index = index_dict[(exposure, amino_acid)]
+            pEmit[state_index, amino_index] = 1.0
 
     # HMM test data
     seq = "MYGKIIFVLLLSEIVSISASSTTGVAMHTSTSSSVTKSYISSQTNDTHKRDTYAATPRAH" \
           "EVSEISVRTVYPPEEETGERVQLAHHFSEPEITLIIFGVMAGVIGTILLISYGIRRLIKK" \
           "SPSDVKPLPSPDTDVPLSSVEIENPETSDQ"
 
-    obs = [aaTypes.index(aa) for aa in seq]
-
+    obs = [amino_acid_types.index(aa) for aa in seq]
     adj = 1e-99
     logStart = log(pStart + adj)
     logTrans = log(pTrans + adj)
@@ -164,7 +153,7 @@ if __name__ == '__main__':
     # Best route - Viterbi
     logProbScore, path = viterbi(obs, logStart, logTrans, logEmit)
 
-    bestExpCodes = ''.join([stateDict[i][0] for i in path])
+    bestExpCodes = ''.join([state_dict[i][0] for i in path])
 
     print(seq)
     print(bestExpCodes)
