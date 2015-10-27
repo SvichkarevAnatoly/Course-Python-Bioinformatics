@@ -3,6 +3,21 @@ from numpy import array, empty, identity, dot, ones, zeros, log
 
 
 class HMM(object):
+    @staticmethod
+    def show_plot(sm):
+        buried_list = []
+        expose_list = []
+        for values in sm:
+            expose_list.append(sum(values[:20]))
+            buried_list.append(sum(values[20:]))
+
+        # Sequence positions
+        x_axis_values = range(len(expose_list))
+
+        pyplot.plot(x_axis_values, expose_list, c='#A0A0A0')
+        pyplot.plot(x_axis_values, buried_list, c='#000000')
+        pyplot.show()
+
     def __init__(self):
         self.exposure_types = ['-', '*']
         self.amino_acid_types = ['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L',
@@ -30,12 +45,12 @@ class HMM(object):
                 index += 1
 
     def read(self, db):
-        sequence = db.readline()
+        seq = db.readline()
         exposure = db.readline()
-        while sequence and exposure:
+        while seq and exposure:
             index2 = 0
-            for i in range(len(sequence) - 2):
-                aa1, aa2 = sequence[i:i + 2]
+            for i in range(len(seq) - 2):
+                aa1, aa2 = seq[i:i + 2]
                 exp1, exp2 = exposure[i:i + 2]
                 state_key1 = (exp1, aa1)
                 state_key2 = (exp2, aa2)
@@ -48,7 +63,7 @@ class HMM(object):
                 self.p_trans[index1, index2] += 1.0
 
             self.p_start[index2] += 1.0
-            sequence = db.readline().strip()
+            seq = db.readline().strip()
             exposure = db.readline().strip()
 
         self.p_start /= sum(self.p_start)
@@ -76,49 +91,7 @@ class HMM(object):
     def pos_state_prob(self, seq):
         obs = [self.amino_acid_types.index(aa) for aa in seq]
         # Positional state probabilities - Forward-backward
-        smooth = forward_backward(obs, self.p_start, self.p_trans, self.p_emit)
-        return smooth
-
-    @staticmethod
-    def show_plot(sm):
-        buried_list = []
-        expose_list = []
-        for values in sm:
-            expose_list.append(sum(values[:20]))
-            buried_list.append(sum(values[20:]))
-
-        # Sequence positions
-        x_axis_values = range(len(expose_list))
-
-        pyplot.plot(x_axis_values, expose_list, c='#A0A0A0')
-        pyplot.plot(x_axis_values, buried_list, c='#000000')
-        pyplot.show()
-
-
-def comb(n, k):
-    if (k > n) or (n < 0) or (k < 0):
-        return 0L
-    nn, kk = map(long, (n, k))
-    top = n
-    val = 1L
-    while top > (nn - kk):
-        val *= top
-        top -= 1
-    nn = 1L
-    while nn < kk + 1L:
-        val /= n
-        n += 1
-    return val
-
-
-def binomial_probability(n, k, p):
-    return comb(n, k) * p ** k * (1 - p) ** (n - k)
-
-
-def get_next_gen_pop(current_pop, rand_var):
-    progeny = rand_var.rvs(size=current_pop)
-    next_pop = progeny.sum()
-    return next_pop
+        return forward_backward(obs, self.p_start, self.p_trans, self.p_emit)
 
 
 def viterbi(obs, p_start, p_trans, p_emit):
@@ -160,16 +133,16 @@ def forward_backward(obs, p_start, p_trans, p_emit):
         fwd[i + 1] = f_prob / f_prob.sum()
 
     bwd = ones(n_states)
-    smooth = empty([n + 1, n_states])
-    smooth[-1] = fwd[-1]
+    sm = empty([n + 1, n_states])
+    sm[-1] = fwd[-1]
 
     for i in range(n - 1, -1, -1):
         bwd = dot(p_trans, dot(p_emit[:, obs[i]] * ident, bwd))
         bwd /= bwd.sum()
         prob = fwd[i] * bwd
-        smooth[i] = prob / prob.sum()
+        sm[i] = prob / prob.sum()
+    return sm
 
-    return smooth
 
 if __name__ == '__main__':
     # HMM test example - protein burried/exposed states
@@ -181,8 +154,8 @@ if __name__ == '__main__':
 
     # HMM test data
     sequence = "MYGKIIFVLLLSEIVSISASSTTGVAMHTSTSSSVTKSYISSQTNDTHKRDTYAATPRAH" \
-          "EVSEISVRTVYPPEEETGERVQLAHHFSEPEITLIIFGVMAGVIGTILLISYGIRRLIKK" \
-          "SPSDVKPLPSPDTDVPLSSVEIENPETSDQ"
+               "EVSEISVRTVYPPEEETGERVQLAHHFSEPEITLIIFGVMAGVIGTILLISYGIRRLIKK" \
+               "SPSDVKPLPSPDTDVPLSSVEIENPETSDQ"
     route = hmm.best_route(sequence)
 
     print(sequence)
