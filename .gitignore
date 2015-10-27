@@ -1,3 +1,9 @@
+# Big plain text files
+bioseq6/PDBCategories.txt
+
+# generated pdf
+*.pdf
+
 # PyCharm files
 .idea/
 
