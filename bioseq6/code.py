@@ -44,9 +44,9 @@ class HMM(object):
                 self.state_dict[index] = state_key
                 index += 1
 
-    def read(self, db):
-        seq = db.readline()
-        exposure = db.readline()
+    def read(self, tr_set):
+        seq = tr_set.readline()
+        exposure = tr_set.readline()
         while seq and exposure:
             index2 = 0
             for i in range(len(seq) - 2):
@@ -63,8 +63,8 @@ class HMM(object):
                 self.p_trans[index1, index2] += 1.0
 
             self.p_start[index2] += 1.0
-            seq = db.readline().strip()
-            exposure = db.readline().strip()
+            seq = tr_set.readline().strip()
+            exposure = tr_set.readline().strip()
 
         self.p_start /= sum(self.p_start)
         for i in range(self.state_size):
@@ -149,8 +149,8 @@ if __name__ == '__main__':
     hmm = HMM()
 
     # Estimate transition probabilities from database counts
-    database = open('PDBCategories.txt', 'r')
-    hmm.read(database)
+    training_set = open('PDBCategories.txt', 'r')
+    hmm.read(training_set)
 
     # HMM test data
     sequence = "MYGKIIFVLLLSEIVSISASSTTGVAMHTSTSSSVTKSYISSQTNDTHKRDTYAATPRAH" \
