@@ -1,5 +1,6 @@
 \documentclass{article} % Класс печатного документа
 
+\usepackage{graphicx}
 \usepackage[utf8]{inputenc} % Кодировка исходного текста - utf8
 \usepackage[english,russian]{babel} % Поддержка языка - русского с английским
 \usepackage{indentfirst} % Отступ в первом абзаце
@@ -13,7 +14,20 @@
 \maketitle % Печатает заголовок, список авторов и дату
 
 \section{Задание №1}
+Предсказание статусов (buried, exposed) для последовательности\newlineпротеина:
+
+\begin{verbatim}
+MYGKIIFVLLLSEIVSISASSTTGVAMHTSTSSSVTKSYISSQTNDTHKRDTYAATPRA
+----*******--**------------------------*-------------------
+HEVSEISVRTVYPPEEETGERVQLAHHFSEPEITLIIFGVMAGVIGTILLISYGIRRLI
+-----***--*----------*----------***********************--**
+KKSPSDVKPLPSPDTDVPLSSVEIENPETSDQ
+------*-------------------------
+\end{verbatim}
 
 \section{Задание №2}
+График вероятностей двух состояний аминокислот из заданной последовательности белка: buried (black) и exposed (grey) для каждой позиции марковской цепи:
+
+\includegraphics[width=\textwidth]{figure_1}
 
 \end{document} % Конец документа
