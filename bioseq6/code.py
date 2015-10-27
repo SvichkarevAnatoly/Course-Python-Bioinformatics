@@ -14,8 +14,8 @@ class HMM(object):
         # Sequence positions
         x_axis_values = range(len(expose_list))
 
-        pyplot.plot(x_axis_values, expose_list, c='#A0A0A0')
-        pyplot.plot(x_axis_values, buried_list, c='#000000')
+        pyplot.plot(x_axis_values, expose_list, c='grey')
+        pyplot.plot(x_axis_values, buried_list, c='black')
         pyplot.show()
 
     def __init__(self):
@@ -145,7 +145,7 @@ def forward_backward(obs, p_start, p_trans, p_emit):
 
 
 if __name__ == '__main__':
-    # HMM test example - protein burried/exposed states
+    # HMM test example - protein buried/exposed states
     hmm = HMM()
 
     # Estimate transition probabilities from database counts
