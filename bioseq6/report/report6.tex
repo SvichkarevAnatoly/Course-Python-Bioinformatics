@@ -1,6 +1,7 @@
 \documentclass{article} % Класс печатного документа
 
-\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{graphicx} % Вставка изображений
 \usepackage[utf8]{inputenc} % Кодировка исходного текста - utf8
 \usepackage[english,russian]{babel} % Поддержка языка - русского с английским
 \usepackage{indentfirst} % Отступ в первом абзаце
@@ -29,5 +30,8 @@ KKSPSDVKPLPSPDTDVPLSSVEIENPETSDQ
 График вероятностей двух состояний аминокислот из заданной последовательности белка: buried (black) и exposed (grey) для каждой позиции марковской цепи:
 
 \includegraphics[width=\textwidth]{figure_1}
+
+\section{Исходный код}
+\lstinputlisting[language=Python]{../code.py}
 
 \end{document} % Конец документа
