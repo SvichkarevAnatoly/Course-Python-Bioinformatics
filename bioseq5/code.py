@@ -1,6 +1,7 @@
 from numpy import array, zeros
 from numpy import random, sum
 from numpy import tanh, ones, append
+import sys
 
 
 def neuralNetPredict(inputVec, weightsIn, weightsOut):
@@ -21,11 +22,7 @@ def neuralNetTrain(trainData, numHid, steps=100, rate=0.5, momentum=0.2):
     numInp = len(trainData[0][0])
     numOut = len(trainData[0][1])
     numInp += 1
-    minError = None
-
-    sigInp = ones(numInp)
-    sigHid = ones(numHid)
-    sigOut = ones(numOut)
+    minError = sys.float_info.max
 
     wInp = random.random((numInp, numHid)) - 0.5
     wOut = random.random((numHid, numOut)) - 0.5
@@ -34,10 +31,7 @@ def neuralNetTrain(trainData, numHid, steps=100, rate=0.5, momentum=0.2):
     cInp = zeros((numInp, numHid))
     cOut = zeros((numHid, numOut))
 
-    for x, (inputs, knownOut) in enumerate(trainData):
-        trainData[x] = (array(inputs), array(knownOut))
-
-    for step in range(steps):  # xrange in Python 2
+    for step in range(steps):
         random.shuffle(trainData)  # Important
         error = 0.0
 
@@ -64,10 +58,10 @@ def neuralNetTrain(trainData, numHid, steps=100, rate=0.5, momentum=0.2):
             wInp += (rate * change) + (momentum * cInp)
             cInp = change
 
-        if (minError is None) or (error < minError):
+        if error < minError:
             minError = error
             bestWeightMatrices = (wInp.copy(), wOut.copy())
-            print("Step: %d Error: %f" % (step, error))
+            print("Step: %d Error: %f" % (step, minError))
 
     return bestWeightMatrices
 
@@ -84,6 +78,9 @@ def convertSeqToVector(seq, indexDict):
 
 
 if __name__ == '__main__':
+    # to get same result of several launches
+    random.seed(0)
+
     print("\nFeed-forward neural network sequence training\n")
 
     seqSecStrucData = [
@@ -132,8 +129,8 @@ if __name__ == '__main__':
         print("outputVec", outputVec)
 
     wMatrixIn, wMatrixOut = neuralNetTrain(trainingData, 3, 1000)
-    print("wMatrixIn", wMatrixIn)
-    print("wMatrixOut", wMatrixOut)
+    # print("wMatrixIn", wMatrixIn)
+    # print("wMatrixOut", wMatrixOut)
 
     print("\nFeed-forward neural network sequence prediction\n")
 
@@ -141,8 +138,8 @@ if __name__ == '__main__':
     print("testSeq", testSeq)
     testVec = convertSeqToVector(testSeq, aaIndexDict)
     testArray = array([testVec, ])
-    print("testVec", testVec)
-    print("testArray", testArray)
+    # print("testVec", testVec)
+    # print("testArray", testArray)
     sIn, sHid, sOut = neuralNetPredict(testArray, wMatrixIn, wMatrixOut)
     print("sOut", sOut)
     index = sOut.argmax()
