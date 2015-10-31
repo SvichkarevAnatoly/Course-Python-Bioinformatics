@@ -1,6 +1,7 @@
 from numpy import array, zeros
 from numpy import random, sum
 from numpy import tanh, ones, append
+import sys
 
 
 class NeuralNet(object):
@@ -21,21 +22,22 @@ class NeuralNet(object):
         self.ssCodes = 'HCE'
         self.ssIndexDict = {x: i for i, x in enumerate(self.ssCodes)}
 
-    def train(self, data):
+    def train(self, data, steps=1000):
         self.trainingData = [(self.convertSeqToVector(seq, self.aaIndexDict),
                               self.convertSeqToVector(ss, self.ssIndexDict))
                              for seq, ss in data]
 
-        self.neuralNetTrain(3, 1000)
+        self.neuralNetTrain(3, steps)
 
     def predict(self, seq):
         testVec = self.convertSeqToVector(seq, self.aaIndexDict)
         testArray = array([testVec, ])
         _, _, sOut = self.neuralNetPredict(testArray)
         index = sOut.argmax()
+        print sOut
         return self.ssCodes[index]
 
-    def neuralNetTrain(self, numHid, steps=100, rate=0.5, momentum=0.2):
+    def neuralNetTrain(self, numHid, steps, rate=0.5, momentum=0.2):
         numInp = len(self.trainingData[0][0])
         numOut = len(self.trainingData[0][1])
         numInp += 1
@@ -47,6 +49,8 @@ class NeuralNet(object):
         cOut = zeros((numHid, numOut))
 
         for step in range(steps):
+            sys.stdout.write(str(step) + ' ')
+            sys.stdout.flush()
             random.shuffle(self.trainingData)  # Important
             error = 0.0
 
@@ -72,6 +76,7 @@ class NeuralNet(object):
                 change = hidAdjust * sigIn.reshape(numInp, 1)
                 self.wMatrixIn += (rate * change) + (momentum * cInp)
                 cInp = change
+        sys.stdout.write('\n')
 
     def neuralNetPredict(self, inputVec):
         signalIn = append(inputVec, [1.0])  # input layer
