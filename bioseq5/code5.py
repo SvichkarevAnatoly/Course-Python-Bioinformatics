@@ -1,7 +1,6 @@
 from numpy import array, zeros
 from numpy import random, sum
 from numpy import tanh, ones, append
-import sys
 
 
 class NeuralNet(object):
@@ -33,7 +32,6 @@ class NeuralNet(object):
         testVec = self.convertSeqToVector(seq, self.aaIndexDict)
         testArray = array([testVec, ])
         _, _, sOut = self.neuralNetPredict(testArray)
-        print("sOut", sOut)
         index = sOut.argmax()
         return self.ssCodes[index]
 
@@ -41,7 +39,6 @@ class NeuralNet(object):
         numInp = len(self.trainingData[0][0])
         numOut = len(self.trainingData[0][1])
         numInp += 1
-        minError = sys.float_info.max
 
         self.wMatrixIn = random.random((numInp, numHid)) - 0.5
         self.wMatrixOut = random.random((numHid, numOut)) - 0.5
@@ -76,10 +73,6 @@ class NeuralNet(object):
                 self.wMatrixIn += (rate * change) + (momentum * cInp)
                 cInp = change
 
-            if error < minError:
-                minError = error
-                print("Step: %d Error: %f" % (step, minError))
-
     def neuralNetPredict(self, inputVec):
         signalIn = append(inputVec, [1.0])  # input layer
 
@@ -92,33 +85,3 @@ class NeuralNet(object):
         signalOut = tanh(sums)  # output layer
 
         return signalIn, signalHid, signalOut
-
-
-if __name__ == '__main__':
-    # to get same result of several launches
-    random.seed(0)
-
-    seqSecStrucData = [
-        ('ADTLL', 'E'),
-        ('DTLLI', 'E'),
-        ('TLLIL', 'E'),
-        ('LLILG', 'E'),
-        ('LILGD', 'E'),
-        ('ILGDS', 'E'),
-        ('LGDSL', 'C'),
-        ('GDSLS', 'H'),
-        ('DSLSA', 'H'),
-        ('SLSAG', 'H'),
-        ('LSAGY', 'H'),
-        ('SAGYR', 'C'),
-        ('AGYRM', 'C'),
-        ('GYRMS', 'C'),
-        ('YRMSA', 'C'),
-        ('RMSAS', 'C')
-    ]
-    nn = NeuralNet()
-    nn.train(seqSecStrucData)
-
-    testSeq = 'DLLSA'
-    predictedClass = nn.predict(testSeq)
-    print("Test prediction: %s" % predictedClass)
