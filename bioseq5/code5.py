@@ -4,6 +4,30 @@ from numpy import tanh, ones, append
 import sys
 
 
+class NeuralNet(object):
+    def __init__(self):
+        aminoAcids = 'ACDEFGHIKLMNPQRSTVWY'
+        self.aaIndexDict = {x: i for i, x in enumerate(aminoAcids)}
+        self.ssCodes = 'HCE'
+        self.ssIndexDict = {x: i for i, x in enumerate(self.ssCodes)}
+
+    def train(self, data):
+        trainingData = [(convertSeqToVector(seq, self.aaIndexDict),
+                         convertSeqToVector(ss, self.ssIndexDict))
+                        for seq, ss in data]
+
+        self.wMatrixIn, self.wMatrixOut = neuralNetTrain(trainingData, 3, 1000)
+
+    def predict(self, seq):
+        testVec = convertSeqToVector(seq, self.aaIndexDict)
+        testArray = array([testVec, ])
+        _, _, sOut = neuralNetPredict(testArray, self.wMatrixIn,
+                                      self.wMatrixOut)
+        print("sOut", sOut)
+        index = sOut.argmax()
+        return self.ssCodes[index]
+
+
 def neuralNetPredict(inputVec, weightsIn, weightsOut):
     signalIn = append(inputVec, [1.0])  # input layer
 
@@ -81,8 +105,6 @@ if __name__ == '__main__':
     # to get same result of several launches
     random.seed(0)
 
-    print("\nFeed-forward neural network sequence training\n")
-
     seqSecStrucData = [
         ('ADTLL', 'E'),
         ('DTLLI', 'E'),
@@ -101,46 +123,9 @@ if __name__ == '__main__':
         ('YRMSA', 'C'),
         ('RMSAS', 'C')
     ]
-
-    aminoAcids = 'ACDEFGHIKLMNPQRSTVWY'
-    aaIndexDict = {}
-    for i, aa in enumerate(aminoAcids):
-        aaIndexDict[aa] = i
-    print("aminoAcids", aminoAcids)
-    print("aaIndexDict", aaIndexDict)
-
-    ssIndexDict = {}
-    ssCodes = 'HCE'
-    for i, code in enumerate(ssCodes):
-        ssIndexDict[code] = i
-
-    # Classes
-    print("ssCodes", ssCodes)
-    print("ssIndexDict", ssIndexDict)
-
-    trainingData = []
-    for seq, ss in seqSecStrucData:
-        inputVec = convertSeqToVector(seq, aaIndexDict)
-        outputVec = convertSeqToVector(ss, ssIndexDict)
-
-        trainingData.append((inputVec, outputVec))
-        print("trainingData", seq, ss)
-        print("inputVec", inputVec)
-        print("outputVec", outputVec)
-
-    wMatrixIn, wMatrixOut = neuralNetTrain(trainingData, 3, 1000)
-    # print("wMatrixIn", wMatrixIn)
-    # print("wMatrixOut", wMatrixOut)
-
-    print("\nFeed-forward neural network sequence prediction\n")
+    nn = NeuralNet()
+    nn.train(seqSecStrucData)
 
     testSeq = 'DLLSA'
-    print("testSeq", testSeq)
-    testVec = convertSeqToVector(testSeq, aaIndexDict)
-    testArray = array([testVec, ])
-    # print("testVec", testVec)
-    # print("testArray", testArray)
-    sIn, sHid, sOut = neuralNetPredict(testArray, wMatrixIn, wMatrixOut)
-    print("sOut", sOut)
-    index = sOut.argmax()
-    print("Test prediction: %s" % ssCodes[index])
+    predictedClass = nn.predict(testSeq)
+    print("Test prediction: %s" % predictedClass)
