@@ -7,7 +7,7 @@ import code5 as c
 class Test(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.seqSecStrucData = [
+        cls.small_training_set = [
             ('ADTLL', 'E'),
             ('DTLLI', 'E'),
             ('TLLIL', 'E'),
@@ -26,9 +26,9 @@ class Test(unittest.TestCase):
             ('RMSAS', 'C')
         ]
 
-    def test_simple_alignment(self):
+    def test_predict_on_small_training_set_task1(self):
         nn = c.NeuralNet()
-        nn.train(self.seqSecStrucData)
+        nn.train(self.small_training_set)
 
         testSeq = 'DLLSA'
         predictedClass = nn.predict(testSeq)
