@@ -1,4 +1,4 @@
-import random
+from random import Random
 import unittest
 
 import code5 as c
@@ -27,15 +27,26 @@ class Test(unittest.TestCase):
         ]
 
     def test_predict_on_small_training_set_task1(self):
-        nn = c.NeuralNet()
+        rand = Random(0)
+
+        nn = c.NeuralNet(rand)
         nn.train(self.small_training_set)
 
         testSeq = 'DLLSA'
         predictedClass = nn.predict(testSeq)
         self.assertEqual('H', predictedClass)
 
+    def test_use_logistic_function_task3(self):
+        rand = Random(0)
+
+        nn = c.NeuralNet(rand, "logistic")
+        nn.train(self.small_training_set)
+
+        testSeq = 'DLLSA'
+        predictedClass = nn.predict(testSeq)
+        # not determined
+        self.assertEqual('H', predictedClass)
+
 
 if __name__ == "__main__":
-    # to get same result of several launches
-    random.seed(0)
     unittest.main()

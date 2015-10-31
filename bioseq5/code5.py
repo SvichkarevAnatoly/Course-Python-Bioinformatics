@@ -1,7 +1,7 @@
-from numpy import array, zeros
-from numpy import random, sum
-from numpy import tanh, ones, append
-import sys
+from numpy import sum, array, zeros, tanh, ones, append
+from scipy.special import expit
+from sys import stdout
+from random import Random
 
 
 class NeuralNet(object):
@@ -16,7 +16,17 @@ class NeuralNet(object):
 
         return vector
 
-    def __init__(self):
+    @staticmethod
+    def activation_function(func_name):
+        if func_name == "th":
+            return tanh
+        if func_name == "logistic":
+            return expit
+
+    def __init__(self, rand=Random(), act_func="th"):
+        self.rand = rand
+        self.activation_func = self.activation_function(act_func)
+
         aminoAcids = 'ACDEFGHIKLMNPQRSTVWY'
         self.aaIndexDict = {x: i for i, x in enumerate(aminoAcids)}
         self.ssCodes = 'HCE'
@@ -42,16 +52,16 @@ class NeuralNet(object):
         numOut = len(self.trainingData[0][1])
         numInp += 1
 
-        self.wMatrixIn = random.random((numInp, numHid)) - 0.5
-        self.wMatrixOut = random.random((numHid, numOut)) - 0.5
+        self.wMatrixIn = self.random_matrix(numInp, numHid) - 0.5
+        self.wMatrixOut = self.random_matrix(numHid, numOut) - 0.5
 
         cInp = zeros((numInp, numHid))
         cOut = zeros((numHid, numOut))
 
         for step in range(steps):
-            sys.stdout.write(str(step) + ' ')
-            sys.stdout.flush()
-            random.shuffle(self.trainingData)  # Important
+            stdout.write(str(step) + ' ')
+            stdout.flush()
+            self.rand.shuffle(self.trainingData)  # Important
             error = 0.0
 
             for inputs, knownOut in self.trainingData:
@@ -76,17 +86,21 @@ class NeuralNet(object):
                 change = hidAdjust * sigIn.reshape(numInp, 1)
                 self.wMatrixIn += (rate * change) + (momentum * cInp)
                 cInp = change
-        sys.stdout.write('\n')
+        stdout.write('\n')
 
     def neuralNetPredict(self, inputVec):
         signalIn = append(inputVec, [1.0])  # input layer
 
         prod = signalIn * self.wMatrixIn.T
         sums = sum(prod, axis=1)
-        signalHid = tanh(sums)  # hidden layer
+        signalHid = self.activation_func(sums)  # hidden layer
 
         prod = signalHid * self.wMatrixOut.T
         sums = sum(prod, axis=1)
-        signalOut = tanh(sums)  # output layer
+        signalOut = self.activation_func(sums)  # output layer
 
         return signalIn, signalHid, signalOut
+
+    def random_matrix(self, len1, len2):
+        return array([[self.rand.random() for _ in range(len2)]
+                      for _ in range(len1)])
