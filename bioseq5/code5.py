@@ -5,6 +5,17 @@ import sys
 
 
 class NeuralNet(object):
+    @staticmethod
+    def convertSeqToVector(seq, indexDict):
+        numLetters = len(indexDict)
+        vector = [0.0] * len(seq) * numLetters
+
+        for pos, letter in enumerate(seq):
+            index = pos * numLetters + indexDict[letter]
+            vector[index] = 1.0
+
+        return vector
+
     def __init__(self):
         aminoAcids = 'ACDEFGHIKLMNPQRSTVWY'
         self.aaIndexDict = {x: i for i, x in enumerate(aminoAcids)}
@@ -12,93 +23,75 @@ class NeuralNet(object):
         self.ssIndexDict = {x: i for i, x in enumerate(self.ssCodes)}
 
     def train(self, data):
-        trainingData = [(convertSeqToVector(seq, self.aaIndexDict),
-                         convertSeqToVector(ss, self.ssIndexDict))
-                        for seq, ss in data]
+        self.trainingData = [(self.convertSeqToVector(seq, self.aaIndexDict),
+                              self.convertSeqToVector(ss, self.ssIndexDict))
+                             for seq, ss in data]
 
-        self.wMatrixIn, self.wMatrixOut = neuralNetTrain(trainingData, 3, 1000)
+        self.neuralNetTrain(3, 1000)
 
     def predict(self, seq):
-        testVec = convertSeqToVector(seq, self.aaIndexDict)
+        testVec = self.convertSeqToVector(seq, self.aaIndexDict)
         testArray = array([testVec, ])
-        _, _, sOut = neuralNetPredict(testArray, self.wMatrixIn,
-                                      self.wMatrixOut)
+        _, _, sOut = self.neuralNetPredict(testArray)
         print("sOut", sOut)
         index = sOut.argmax()
         return self.ssCodes[index]
 
+    def neuralNetTrain(self, numHid, steps=100, rate=0.5, momentum=0.2):
+        numInp = len(self.trainingData[0][0])
+        numOut = len(self.trainingData[0][1])
+        numInp += 1
+        minError = sys.float_info.max
 
-def neuralNetPredict(inputVec, weightsIn, weightsOut):
-    signalIn = append(inputVec, [1.0])  # input layer
+        self.wMatrixIn = random.random((numInp, numHid)) - 0.5
+        self.wMatrixOut = random.random((numHid, numOut)) - 0.5
 
-    prod = signalIn * weightsIn.T
-    sums = sum(prod, axis=1)
-    signalHid = tanh(sums)  # hidden layer
+        cInp = zeros((numInp, numHid))
+        cOut = zeros((numHid, numOut))
 
-    prod = signalHid * weightsOut.T
-    sums = sum(prod, axis=1)
-    signalOut = tanh(sums)  # output layer
+        for step in range(steps):
+            random.shuffle(self.trainingData)  # Important
+            error = 0.0
 
-    return signalIn, signalHid, signalOut
+            for inputs, knownOut in self.trainingData:
+                sigIn, sigHid, sigOut = self.neuralNetPredict(inputs)
 
+                diff = knownOut - sigOut
+                error += sum(diff * diff)
 
-def neuralNetTrain(trainData, numHid, steps=100, rate=0.5, momentum=0.2):
-    numInp = len(trainData[0][0])
-    numOut = len(trainData[0][1])
-    numInp += 1
-    minError = sys.float_info.max
+                gradient = ones(numOut) - (sigOut * sigOut)
+                outAdjust = gradient * diff
 
-    wInp = random.random((numInp, numHid)) - 0.5
-    wOut = random.random((numHid, numOut)) - 0.5
-    bestWeightMatrices = (wInp, wOut)
+                diff = sum(outAdjust * self.wMatrixOut, axis=1)
+                gradient = ones(numHid) - (sigHid * sigHid)
+                hidAdjust = gradient * diff
 
-    cInp = zeros((numInp, numHid))
-    cOut = zeros((numHid, numOut))
+                # update output
+                change = outAdjust * sigHid.reshape(numHid, 1)
+                self.wMatrixOut += (rate * change) + (momentum * cOut)
+                cOut = change
 
-    for step in range(steps):
-        random.shuffle(trainData)  # Important
-        error = 0.0
+                # update input
+                change = hidAdjust * sigIn.reshape(numInp, 1)
+                self.wMatrixIn += (rate * change) + (momentum * cInp)
+                cInp = change
 
-        for inputs, knownOut in trainData:
-            sigIn, sigHid, sigOut = neuralNetPredict(inputs, wInp, wOut)
+            if error < minError:
+                minError = error
+                print("Step: %d Error: %f" % (step, minError))
 
-            diff = knownOut - sigOut
-            error += sum(diff * diff)
+    def neuralNetPredict(self, inputVec):
+        signalIn = append(inputVec, [1.0])  # input layer
 
-            gradient = ones(numOut) - (sigOut * sigOut)
-            outAdjust = gradient * diff
+        prod = signalIn * self.wMatrixIn.T
+        sums = sum(prod, axis=1)
+        signalHid = tanh(sums)  # hidden layer
 
-            diff = sum(outAdjust * wOut, axis=1)
-            gradient = ones(numHid) - (sigHid * sigHid)
-            hidAdjust = gradient * diff
+        prod = signalHid * self.wMatrixOut.T
+        sums = sum(prod, axis=1)
+        signalOut = tanh(sums)  # output layer
 
-            # update output
-            change = outAdjust * sigHid.reshape(numHid, 1)
-            wOut += (rate * change) + (momentum * cOut)
-            cOut = change
-
-            # update input
-            change = hidAdjust * sigIn.reshape(numInp, 1)
-            wInp += (rate * change) + (momentum * cInp)
-            cInp = change
-
-        if error < minError:
-            minError = error
-            bestWeightMatrices = (wInp.copy(), wOut.copy())
-            print("Step: %d Error: %f" % (step, minError))
-
-    return bestWeightMatrices
-
-
-def convertSeqToVector(seq, indexDict):
-    numLetters = len(indexDict)
-    vector = [0.0] * len(seq) * numLetters
-
-    for pos, letter in enumerate(seq):
-        index = pos * numLetters + indexDict[letter]
-        vector[index] = 1.0
-
-    return vector
+        return signalIn, signalHid, signalOut
 
 
 if __name__ == '__main__':
