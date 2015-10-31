@@ -5,7 +5,7 @@ import sys
 
 
 def neuralNetPredict(inputVec, weightsIn, weightsOut):
-    signalIn = append(inputVec, 1.0)  # input layer
+    signalIn = append(inputVec, [1.0])  # input layer
 
     prod = signalIn * weightsIn.T
     sums = sum(prod, axis=1)
