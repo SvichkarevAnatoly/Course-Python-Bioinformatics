@@ -5,7 +5,8 @@ from random import Random
 
 def read_training_set(file_name):
     with open(file_name, 'r') as ts_file:
-        return map(lambda l: tuple(l.strip().split()), ts_file.readlines())
+        parse_line = lambda l: tuple(l.strip().split())
+        return map(parse_line, ts_file.readlines())
 
 
 def train_and_predict(activation_func="th"):
