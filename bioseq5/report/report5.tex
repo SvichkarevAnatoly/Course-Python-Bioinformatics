@@ -1,0 +1,54 @@
+\documentclass{article} % Класс печатного документа
+
+\usepackage{hyperref} % Для вставки гиперссылок
+\usepackage{listings} % Для вставки кусков кода
+\usepackage{graphicx} % Вставка изображений
+\usepackage[utf8]{inputenc} % Кодировка исходного текста - utf8
+\usepackage[english,russian]{babel} % Поддержка языка - русского с английским
+\usepackage{indentfirst} % Отступ в первом абзаце
+
+\title{Отчёт 5\protect\\Нейронные сети} % Заголовок документа
+\author{Свичкарев А.\,В.} % Автор документа
+\date{\today} % Текущая дата
+
+\begin{document} % Конец преамбулы, начало текста
+
+\maketitle % Печатает заголовок, список авторов и дату
+
+\section{Задание №1}
+Функция активации:
+
+TODO
+
+\section{Задание №2}
+
+\section{Задание №3}
+
+\section{Пояснение}
+За основу был взят и разобран код программы из Приложения:
+\begin{itemize}
+	\item Удалены лишние переменные:
+		\begin{lstlisting}[language=Python]
+sigInp = ones(numInp)
+sigHid = ones(numHid)
+sigOut = ones(numOut)
+		\end{lstlisting}
+	\item Удалил излишнее преобразование к array:
+		\begin{lstlisting}[language=Python]
+trainData[x] = (array(inputs), array(knownOut))
+		\end{lstlisting}
+	\item Изменил инициализацию поиска минимальной ошибки:
+		\begin{lstlisting}[language=Python]
+minError = sys.float_info.max
+		\end{lstlisting}
+вместо None
+	\item Привел к более лаконичному варианту (вместо цикла for):
+		\begin{lstlisting}[language=Python]
+ssIndexDict = {x: i for i, x in enumerate(ssCodes)}
+		\end{lstlisting}
+\end{itemize}
+
+\section{Исходный код}
+% \lstinputlisting[language=Python]{../code5.py}
+
+\end{document} % Конец документа
