@@ -1,5 +1,6 @@
 # Big plain text files
 bioseq6/PDBCategories.txt
+bioseq5/SecondStructureTrainData.txt
 
 # generated pdf
 *.pdf
