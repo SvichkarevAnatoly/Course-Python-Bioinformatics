@@ -31,6 +31,34 @@ class Test(unittest.TestCase):
         self.assertAlmostEqual(1.734, mean, 3)
         self.assertAlmostEqual(0.0615, interval, 4)
 
+    def test_task3(self):
+        import numpy
+
+        numpy.random.seed(0)
+        xVals = numpy.random.normal(0.0, 1.0, 100)
+        yVals = 2.0 + -0.7 * xVals + numpy.random.normal(0.0, 0.2, 100)
+
+        grad, yInt = c.line_regression_numpy(xVals, yVals)
+
+        self.assertAlmostEqual(-0.677, grad, 3)
+        self.assertAlmostEqual(2.015, yInt, 3)
+
+    def test_task4(self):
+        import numpy
+
+        numpy.random.seed(0)
+        xVals = numpy.random.normal(0.0, 1.0, 100)
+        yVals = 2.0 + -0.7 * xVals + numpy.random.normal(0.0, 0.2, 100)
+
+        grad, yInt, corrCoeff, pValue, stdErr = c.line_regression_linregress(
+            xVals, yVals)
+
+        self.assertAlmostEqual(-0.677, grad, 3)
+        self.assertAlmostEqual(2.015, yInt, 3)
+        self.assertAlmostEqual(-0.957, corrCoeff, 3)
+        self.assertAlmostEqual(0, pValue, 3)
+        self.assertAlmostEqual(0.0206, stdErr, 3)
+
 
 if __name__ == "__main__":
     unittest.main()

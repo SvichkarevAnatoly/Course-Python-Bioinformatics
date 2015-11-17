@@ -36,3 +36,15 @@ def confidence_interval(data, confidence, is_one_sided=True):
     interval = scipy.stats.t(n - 1).ppf(confidence) * date_std_dev / \
                math.sqrt(n)
     return mean(data), interval
+
+
+def line_regression_numpy(x, y):
+    import numpy
+    grad = numpy.cov(x, y) / numpy.var(x, ddof=1)
+    yInt = numpy.mean(y) - grad * numpy.mean(x)
+    return grad[0][1], yInt[0][1]
+
+
+def line_regression_linregress(x, y):
+    from scipy.stats import linregress
+    return linregress(x, y)
