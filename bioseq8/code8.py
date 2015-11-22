@@ -1,7 +1,13 @@
 import rpy2.robjects as r
 from rpy2.robjects.packages import SignatureTranslatedAnonymousPackage
 
-STAP = SignatureTranslatedAnonymousPackage
+stap = SignatureTranslatedAnonymousPackage
+
+
+def simple_call(r_func_name, x):
+    func = r.r[r_func_name]
+    result = func(x=r.FloatVector(x))
+    return result[0]
 
 
 def t_test(x, y, same_variance=False):
@@ -13,9 +19,7 @@ def t_test(x, y, same_variance=False):
 
 
 def mean(x):
-    func = r.r['mean']
-    result = func(x=r.FloatVector(x))
-    return result[0]
+    return simple_call("mean", x)
 
 
 def mode(x):
@@ -25,24 +29,18 @@ def mode(x):
         ux[which.max(tabulate(match(x, ux)))]
     }'''
     # get moda function
-    rf = STAP(func_str, "mode")
+    rf = stap(func_str, "mode")
     result = rf.mode(x=r.FloatVector(x))
     return result[0]
 
 
 def median(x):
-    func = r.r['median']
-    result = func(x=r.FloatVector(x))
-    return result[0]
+    return simple_call("median", x)
 
 
 def dispersion(x):
-    func = r.r['var']
-    result = func(x=r.FloatVector(x))
-    return result[0]
+    return simple_call("var", x)
 
 
 def standard_deviation(x):
-    func = r.r['sd']
-    result = func(x=r.FloatVector(x))
-    return result[0]
+    return simple_call("sd", x)
