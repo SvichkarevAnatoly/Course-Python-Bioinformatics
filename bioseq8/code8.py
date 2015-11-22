@@ -44,3 +44,9 @@ def dispersion(x):
 
 def standard_deviation(x):
     return simple_call("sd", x)
+
+
+def confidence_interval(x):
+    func = r.r['t.test']
+    result = func(x=r.FloatVector(x))
+    return result[4][0], result[3][1] - result[4][0]

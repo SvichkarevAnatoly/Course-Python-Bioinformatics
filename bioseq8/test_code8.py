@@ -33,6 +33,14 @@ class Test(unittest.TestCase):
     def test_task2_standard_deviation(self):
         self.assertAlmostEqual(1.1361818, c.standard_deviation(sample), 6)
 
+    def test_task3_confidence_interval(self):
+        sample3 = [1.752, 1.818, 1.597, 1.697,
+                   1.644, 1.593, 1.878, 1.648,
+                   1.819, 1.794, 1.745, 1.827]
+        mean, interval = c.confidence_interval(sample3)
+        self.assertAlmostEqual(1.734, mean, 3)
+        self.assertAlmostEqual(0.0615, interval, 4)
+
 
 if __name__ == "__main__":
     unittest.main()
