@@ -41,6 +41,15 @@ class Test(unittest.TestCase):
         self.assertAlmostEqual(1.734, mean, 3)
         self.assertAlmostEqual(0.0615, interval, 4)
 
+    def test_task4_line_regression(self):
+        # reproduce the results
+        import rpy2.robjects as r
+        r.r('''set.seed(0)''')
+
+        slope, intercept = c.line_regression()
+        self.assertAlmostEqual(-0.672, slope, 3)
+        self.assertAlmostEqual(1.990, intercept, 3)
+
 
 if __name__ == "__main__":
     unittest.main()

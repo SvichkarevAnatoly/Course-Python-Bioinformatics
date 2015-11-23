@@ -1,7 +1,5 @@
 import rpy2.robjects as r
-from rpy2.robjects.packages import SignatureTranslatedAnonymousPackage
-
-stap = SignatureTranslatedAnonymousPackage
+from rpy2.robjects.packages import SignatureTranslatedAnonymousPackage as stap
 
 
 def simple_call(r_func_name, x):
@@ -50,3 +48,15 @@ def confidence_interval(x):
     func = r.r['t.test']
     result = func(x=r.FloatVector(x))
     return result[4][0], result[3][1] - result[4][0]
+
+
+def line_regression():
+    code = '''
+        xVal <- rnorm(100)
+        yVal <- 2.0 + -0.7 * xVal + rnorm(100, 0, 0.2)
+        lm(yVal ~ xVal)
+    '''
+    result = r.r(code)
+    intercept = result[0][0]
+    slope = result[0][1]
+    return slope, intercept
