@@ -20,18 +20,6 @@ def mean(x):
     return simple_call("mean", x)
 
 
-def mode(x):
-    # define mode function in R
-    func_str = '''mode <- function(x) {
-        ux <- unique(x)
-        ux[which.max(tabulate(match(x, ux)))]
-    }'''
-    # get moda function
-    rf = stap(func_str, "mode")
-    result = rf.mode(x=r.FloatVector(x))
-    return result[0]
-
-
 def median(x):
     return simple_call("median", x)
 
@@ -42,6 +30,18 @@ def dispersion(x):
 
 def standard_deviation(x):
     return simple_call("sd", x)
+
+
+def mode(x):
+    # define mode function in R
+    func_str = '''mode <- function(x) {
+        ux <- unique(x)
+        ux[which.max(tabulate(match(x, ux)))]
+    }'''
+    # get moda function
+    rf = stap(func_str, "mode")
+    result = rf.mode(x=r.FloatVector(x))
+    return result[0]
 
 
 def confidence_interval(x):
@@ -60,3 +60,13 @@ def line_regression():
     intercept = result[0][0]
     slope = result[0][1]
     return slope, intercept
+
+
+def line_regression_plot():
+    f = file("r_lr_plot.R")
+    code = ''.join(f.readlines())
+    r.r(code)
+
+
+if __name__ == "__main__":
+    line_regression_plot()
