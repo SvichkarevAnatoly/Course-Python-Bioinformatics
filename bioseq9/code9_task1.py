@@ -28,12 +28,12 @@ if __name__ == '__main__':
         job = pool.apply_async(t_test, inputArgs)
         jobs.append(job)
 
-    results = [job.get() for job in jobs]
-
     pool.close()
     pool.join()
 
+    results = [job.get() for job in jobs]
+
     for i, res in enumerate(results):
-        print "t_test " + str(i) + ":" \
-              " t=" + str(res[0]) + \
-              " p-value=" + str(res[1])
+        print "t_test " + str(i) + ":\t" \
+              "t=" + str(res[0]) + "\t" \
+              "p-value=" + str(res[1])
