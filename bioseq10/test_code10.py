@@ -15,6 +15,39 @@ class Test(unittest.TestCase):
         self.assertAlmostEqual(-0.000359, coeff_x1, 5)
         self.assertAlmostEqual(-0.089194, coeff_x2, 5)
 
+    def test_task2_generate_norm(self):
+        # reproduce the results
+        import rpy2.robjects as r
+        r.r('''set.seed(0)''')
+
+        observation_number = 2
+        norm_array = c.norm(observation_number)
+        self.assertEqual(2, len(norm_array))
+        self.assertAlmostEqual(1.26295428, norm_array[0])
+        self.assertAlmostEqual(-0.32623336, norm_array[1])
+
+    def test_task2_generate_gamma(self):
+        # reproduce the results
+        import rpy2.robjects as r
+        r.r('''set.seed(0)''')
+
+        observation_number = 2
+        gamma_array = c.gamma(observation_number)
+        self.assertEqual(2, len(gamma_array))
+        self.assertAlmostEqual(8.86065372, gamma_array[0])
+        self.assertAlmostEqual(4.76152200, gamma_array[1])
+
+    def test_task2_generate_lnorm(self):
+        # reproduce the results
+        import rpy2.robjects as r
+        r.r('''set.seed(0)''')
+
+        observation_number = 2
+        lnorm_array = c.lnorm(observation_number)
+        self.assertEqual(2, len(lnorm_array))
+        self.assertAlmostEqual(3.53585198, lnorm_array[0])
+        self.assertAlmostEqual(0.72163676, lnorm_array[1])
+
 
 if __name__ == "__main__":
     unittest.main()
