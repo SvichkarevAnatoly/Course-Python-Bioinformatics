@@ -34,8 +34,8 @@ class Test(unittest.TestCase):
         observation_number = 2
         gamma_array = c.gamma(observation_number)
         self.assertEqual(2, len(gamma_array))
-        self.assertAlmostEqual(8.86065372, gamma_array[0])
-        self.assertAlmostEqual(4.76152200, gamma_array[1])
+        self.assertAlmostEqual(1.79180692, gamma_array[0])
+        self.assertAlmostEqual(0.29592522, gamma_array[1])
 
     def test_task2_generate_lnorm(self):
         # reproduce the results
@@ -47,6 +47,39 @@ class Test(unittest.TestCase):
         self.assertEqual(2, len(lnorm_array))
         self.assertAlmostEqual(3.53585198, lnorm_array[0])
         self.assertAlmostEqual(0.72163676, lnorm_array[1])
+
+    def test_task3_param_norm(self):
+        # reproduce the results
+        import rpy2.robjects as r
+        r.r('''set.seed(0)''')
+
+        observation_number = 100
+        norm_array = c.norm(observation_number)
+        mean, sd = c.param_norm(norm_array)
+        self.assertAlmostEqual(0.02266844, mean)
+        self.assertAlmostEqual(0.88265019, sd)
+
+    def test_task3_param_gamma(self):
+        # reproduce the results
+        import rpy2.robjects as r
+        r.r('''set.seed(0)''')
+
+        observation_number = 100
+        gamma_array = c.gamma(observation_number)
+        shape, scale = c.param_gamma(gamma_array)
+        self.assertAlmostEqual(0.87414224, shape)
+        self.assertAlmostEqual(0.87710012, scale)
+
+    def test_task3_param_lnorm(self):
+        # reproduce the results
+        import rpy2.robjects as r
+        r.r('''set.seed(0)''')
+
+        observation_number = 100
+        lnorm_array = c.lnorm(observation_number)
+        meanlog, sdlog = c.param_lnorm(lnorm_array)
+        self.assertAlmostEqual(-0.12957849, meanlog)
+        self.assertAlmostEqual(0.74877788, sdlog)
 
 
 if __name__ == "__main__":
