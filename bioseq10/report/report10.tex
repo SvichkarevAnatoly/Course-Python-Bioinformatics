@@ -1,0 +1,49 @@
+\documentclass{article} % Класс печатного документа
+
+\usepackage{hyperref} % Для вставки гиперссылок
+\usepackage{listings} % Для вставки кусков кода
+\usepackage[utf8]{inputenc} % Кодировка исходного текста - utf8
+\usepackage[english,russian]{babel} % Поддержка языка - русского с английским
+\usepackage{indentfirst} % Отступ в первом абзаце
+
+\title{Отчёт 10\protect\\Интерфейс с <<R>> для решения статистических задач} % Заголовок документа
+\author{Свичкарев А.\,В.} % Автор документа
+\date{\today} % Текущая дата
+
+\begin{document} % Конец преамбулы, начало текста
+
+\maketitle % Печатает заголовок, список авторов и дату
+
+\section{Задание №1}
+Для решения этой задачи использовался класс \textbf{robjects.Formula} для представления формулы в качестве первого аргумента функции R линейной регрессии \textbf{lm}. Перед передачей списков данных \textbf{y, x1, x2}, они были преобразованы к векторным типам языка R.
+
+Функция построения линейной модели множественной регрессии:
+\lstinputlisting[language=Python, lastline=23]{../code10.py}
+
+Код теста функции mlr на указанной в задание выборке:
+\lstinputlisting[language=Python, firstline=7, lastline=16]{../test_code10.py}
+
+\newpage
+\section{Задание №2}
+Для решения данной задачи использовались соответствующие функции языка R. Доступ к ним через python был получен с помощью библиотеки \textbf{rpy2}. В качестве входных параметров указывается размер генерируемой выборки и параметры распределения - индивидуальные для каждой из распределений:
+\lstinputlisting[language=Python, firstline=26, lastline=38]{../code10.py}
+
+Для тестирования генератора чисел в каждом тесте через интерфейс к R устанавливался \textbf{seed} для детерминированности результатов каждого запуска теста:
+\lstinputlisting[language=Python, firstline=18, lastline=49]{../test_code10.py}
+
+\newpage
+\section{Задание №3}
+На сколько я понял, в R нет единого метода определения параметров указанного распределения по выборкам. Поэтому были найдены оценки параметров для указанных распределений и реализованы в виде функций для конкретных распределений:
+\lstinputlisting[language=Python, firstline=41, lastline=58]{../code10.py}
+
+Выборочное среднее и выборочная дисперсия были реализованы в предыдущих лабораторных с помощью вызова соответствующих методов языка R.
+
+Для каждого теста определения параметров распределения была сгенерирована выборка в 100 элементов из соответствующего распределения (при указанном \textbf{seed}):
+\lstinputlisting[language=Python, firstline=51, lastline=82]{../test_code10.py}
+
+\section{Пояснение}
+Исходный код доступен по ссылке:
+
+\href{https://github.com/SvichkarevAnatoly/Course-Python-Bioinformatics/tree/master/bioseq10}{https://github.com/SvichkarevAnatoly/Course-Python-Bioinformatics/tree/master/bioseq10}
+
+\end{document} % Конец документа
