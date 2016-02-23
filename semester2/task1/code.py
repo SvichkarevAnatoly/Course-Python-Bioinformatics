@@ -1,38 +1,37 @@
+from numpy import dot, random, sqrt, vstack
 from matplotlib import pyplot
-from random import randint, sample
-from numpy import array, cov, diag, dot, linalg, ones
-from numpy import outer, random, sqrt, vstack, zeros
 
 
-def euclideanDist(vectorA, vectorB):
-    diff = vectorA - vectorB
+def euclidean_dist(vector_a, vector_b):
+    diff = vector_a - vector_b
     return sqrt(dot(diff, diff))
 
 
-def findNeighbours(data, distFunc, threshold):
-    neighbourDict = {}
-    n = len(data)
-    for i in range(n):
-        neighbourDict[i] = []
+def find_neighbours(data_fn, dist_func, threshold):
+    neighbour_dict = {}
+    n = len(data_fn)
+    for i_l1 in range(n):
+        neighbour_dict[i_l1] = []
 
-    for i in range(0, n - 1):
-        for j in range(i + 1, n):
-            dist = distFunc(data[i], data[j])
+    for i_l2 in range(0, n - 1):
+        for j in range(i_l2 + 1, n):
+            dist = dist_func(data_fn[i_l2], data_fn[j])
             if dist < threshold:
-                neighbourDict[i].append(j)
-                neighbourDict[j].append(i)
-    return neighbourDict
+                neighbour_dict[i_l2].append(j)
+                neighbour_dict[j].append(i_l2)
+    return neighbour_dict
 
 
-def simpleCluster(data, threshold, distFunc=euclideanDist):
-    neighbourDict = findNeighbours(data, distFunc, threshold)
-    clusters = []
-    pool = set(range(len(data)))
+def simple_cluster(data_sc, threshold, dist_func=euclidean_dist):
+    neighbour_dict = find_neighbours(data_sc, dist_func, threshold)
+    clusters_sc = []
+    pool = set(range(len(data_sc)))
+    cluster_data = []
     while pool:
-        i = pool.pop()
-        neighbours = neighbourDict[i]
-        cluster = set()
-        cluster.add(i)
+        i_sc = pool.pop()
+        neighbours = neighbour_dict[i_sc]
+        cluster_sc = set()
+        cluster_sc.add(i_sc)
 
         pool2 = set(neighbours)
         while pool2:
@@ -40,53 +39,52 @@ def simpleCluster(data, threshold, distFunc=euclideanDist):
 
             if j in pool:
                 pool.remove(j)
-                cluster.add(j)
-                neighbours2 = neighbourDict[j]
+                cluster_sc.add(j)
+                neighbours2 = neighbour_dict[j]
                 pool2.update(neighbours2)
 
-        clusters.append(cluster)
+        clusters_sc.append(cluster_sc)
 
-        clusterData = []
-        for cluster in clusters:
-            clusterData.append([data[i] for i in cluster])
-    return clusterData
+        for cluster_sc in clusters_sc:
+            cluster_data.append([data_sc[i_sc] for i_sc in cluster_sc])
+    return cluster_data
 
 
-def dbScanCluster(data, threshold, minNeighbour, distFunc=euclideanDist):
-    neighbourDict = findNeighbours(data, distFunc, threshold)
-    clusters = []
+def db_scan_cluster(data_dbsc, threshold, min_neighbour, dist_func=euclidean_dist):
+    neighbour_dict = find_neighbours(data_dbsc, dist_func, threshold)
+    clusters_dbsc = []
     noise = set()
-    pool = set(range(len(data)))
+    pool = set(range(len(data_dbsc)))
 
     while pool:
-        i = pool.pop()
-        neighbours = neighbourDict[i]
+        i_dbsc = pool.pop()
+        neighbours = neighbour_dict[i_dbsc]
 
-        if len(neighbours) < minNeighbour:
-            noise.add(i)
+        if len(neighbours) < min_neighbour:
+            noise.add(i_dbsc)
         else:
-            cluster = set()
-            cluster.add(i)
+            cluster_dbsc = set()
+            cluster_dbsc.add(i_dbsc)
             pool2 = set(neighbours)
             while pool2:
                 j = pool2.pop()
                 if j in pool:
                     pool.remove(j)
-                    neighbours2 = neighbourDict.get(j, [])
+                    neighbours2 = neighbour_dict.get(j, [])
 
-                if len(neighbours2) < minNeighbour:
+                if len(neighbours2) < min_neighbour:
                     noise.add(j)
                 else:
                     pool2.update(neighbours2)
-                    cluster.add(j)
-            clusters.append(cluster)
-    noiseData = [data[i] for i in noise]
+                    cluster_dbsc.add(j)
+            clusters_dbsc.append(cluster_dbsc)
+    noise_data = [data_dbsc[i_l1] for i_l1 in noise]
 
-    clusterData = []
-    for cluster in clusters:
-        clusterData.append([data[i] for i in cluster])
+    cluster_data = []
+    for cluster_dbsc in clusters_dbsc:
+        cluster_data.append([data_dbsc[i_l2] for i_l2 in cluster_dbsc])
 
-    return clusterData, noiseData
+    return cluster_data, noise_data
 
 
 if __name__ == '__main__':
@@ -99,7 +97,7 @@ if __name__ == '__main__':
     data = vstack(data)
     random.shuffle(data)  # Randomise order
 
-    clusters = simpleCluster(data, 0.10)
+    clusters = simple_cluster(data, 0.10)
     colors = ['#F0F0F0', '#A0A0A0', '#505050',
               '#D0D0D0', '#808080', '#202020']
 
