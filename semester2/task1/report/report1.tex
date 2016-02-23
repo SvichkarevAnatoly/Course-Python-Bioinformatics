@@ -1,0 +1,68 @@
+\documentclass{article} % Класс печатного документа
+
+\usepackage{hyperref} % Для вставки гиперссылок
+\usepackage{listings} % Для вставки кусков кода
+\usepackage{graphicx} % Вставка изображений
+\usepackage[utf8]{inputenc} % Кодировка исходного текста - utf8
+\usepackage[english,russian]{babel} % Поддержка языка - русского с английским
+\usepackage{indentfirst} % Отступ в первом абзаце
+
+\title{Отчёт 8\protect\\Интерфейс с <<R>> для решения статистических задач} % Заголовок документа
+\author{Свичкарев А.\,В.} % Автор документа
+\date{\today} % Текущая дата
+
+\begin{document} % Конец преамбулы, начало текста
+
+\maketitle % Печатает заголовок, список авторов и дату
+
+\section{Задание №1}
+Реализация взята из Приложения, разобрана и протестирована:
+%\lstinputlisting[language=Python, firstline=11, lastline=16]{../code8.py}
+
+В секции Исходный код представлены тесты и ожидаемые результаты на указанной в задание выборке.
+
+\section{Задание №2}
+Для простых функций, имеющих реализацию в языке R была реализована функция вызова:
+%\lstinputlisting[language=Python, firstline=5, lastline=8]{../code8.py}
+
+С помощью функции вызова функции вычисления характеристик дескриптивной статистики реализуются в одну строчку:
+%\lstinputlisting[language=Python, firstline=19, lastline=32]{../code8.py}
+
+Для нахождения моды не получилось найти простого аналога в языке R, поэтому пришлось объявить и вызвать свою реализацию:
+%\lstinputlisting[language=Python, firstline=35, lastline=44]{../code8.py}
+
+В секции Исходный код представлены тесты и ожидаемые результаты на указанной в задание выборке.
+
+\section{Задание №3}
+Для аналога доверительного интервала в R не нашёл способа получить половину длины интервала, поэтому в Python взял правую границу и вычел среднее выборочное.
+
+%\lstinputlisting[language=Python, firstline=47, lastline=50]{../code8.py}
+
+В секции Исходный код представлен тест линейной регрессии с фиксированными значениями псевдо-генеротора чисел.
+
+\section{Задание №4}
+Выборки были сгенерированы внутри R, там же была вызвана функция lm, из вывода которой были получены коэффициенты.
+\newpage
+%\lstinputlisting[language=Python, firstline=53, lastline=62]{../code8.py}
+
+\section{Задание №5}
+Код R считывается из файла в Python и затем запускается:
+%\lstinputlisting[language=Python, firstline=65, lastline=72]{../code8.py}
+\newpage
+Выборки были сгенерированы внутри R, там же была вызвана функция lm, построен график выборок и линейной регрессии и затем сохранён в виде png файла:
+
+%\noindent\makebox[\textwidth]{\includegraphics[width=0.7\paperwidth]{figure_1}}
+
+\section{Пояснение}
+Исходный код доступен по ссылке:
+
+\href{https://github.com/SvichkarevAnatoly/Course-Python-Bioinformatics/tree/master/bioseq7}{https://github.com/SvichkarevAnatoly/Course-Python-Bioinformatics/tree/master/bioseq8}
+
+\section{Исходный код}
+Файл \verb$test_code8.py$:
+%\lstinputlisting[language=Python]{../test_code8.py}
+
+Файл \verb$r_lr_plot.R$:
+%\lstinputlisting[language=Python]{../r_lr_plot.R}
+
+\end{document} % Конец документа
