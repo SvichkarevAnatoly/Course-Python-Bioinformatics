@@ -1,5 +1,6 @@
 from numpy import random, vstack
 from scipy.cluster.hierarchy import dendrogram, linkage
+from scipy.cluster.hierarchy import fcluster
 from matplotlib import pyplot as plt
 import numpy as np
 
@@ -14,17 +15,22 @@ data = [random.normal(means[0], spread, sizeDims),
         random.normal(means[1], spread, sizeDims),
         random.normal(means[2], spread, sizeDims)]
 data = vstack(data)
-plt.scatter(data[:, 0], data[:, 1])
-plt.show()
 
 # generate the linkage matrix
 Z = linkage(data)
-
 print Z[:20]
+
+# plot clusters
+k = 3
+clusters = fcluster(Z, k, criterion='maxclust')
+plt.scatter(data[:, 0], data[:, 1], c=clusters, cmap='prism')
+plt.savefig("Figure_2")
+plt.show()
 
 # calculate full dendrogram
 plt.title('Hierarchical Clustering Dendrogram')
 plt.xlabel('sample index')
 plt.ylabel('distance')
 dendrogram(Z)
+plt.savefig("Figure_3")
 plt.show()
