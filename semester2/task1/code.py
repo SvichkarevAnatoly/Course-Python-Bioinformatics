@@ -40,7 +40,7 @@ def simple_cluster(data_sc, threshold, dist_func=euclidean_dist):
             if j in pool:
                 pool.remove(j)
                 cluster_sc.add(j)
-                neighbours2 = neighbour_dict[j]
+                neighbours2 = neighbour_dict.get(j, [])
                 pool2.update(neighbours2)
 
         clusters_sc.append(cluster_sc)
@@ -68,15 +68,16 @@ def db_scan_cluster(data_dbsc, threshold, min_neighbour, dist_func=euclidean_dis
             pool2 = set(neighbours)
             while pool2:
                 j = pool2.pop()
+
                 if j in pool:
                     pool.remove(j)
                     neighbours2 = neighbour_dict.get(j, [])
 
-                if len(neighbours2) < min_neighbour:
-                    noise.add(j)
-                else:
-                    pool2.update(neighbours2)
-                    cluster_dbsc.add(j)
+                    if len(neighbours2) < min_neighbour:
+                        noise.add(j)
+                    else:
+                        pool2.update(neighbours2)
+                        cluster_dbsc.add(j)
             clusters_dbsc.append(cluster_dbsc)
     noise_data = [data_dbsc[i_l1] for i_l1 in noise]
 
@@ -89,6 +90,8 @@ def db_scan_cluster(data_dbsc, threshold, min_neighbour, dist_func=euclidean_dis
 
 if __name__ == '__main__':
     print("Simple associative clustering\n")
+
+    random.seed(0)
     spread = 0.12
     means = [(0.0, 0.0), (1.0, 1.0), (1.0, 0.0)]
     sizeDims = (100, 2)
@@ -96,12 +99,12 @@ if __name__ == '__main__':
             random.normal(means[1], spread, sizeDims),
             random.normal(means[2], spread, sizeDims)]
     data = vstack(data)
-    random.shuffle(data)  # Randomise order
 
     clusters = simple_cluster(data, 0.10)
+    clusters2, noise = db_scan_cluster(data, 0.10, 5)
+
     colors = ['#FF0000', '#00FF00', '#0000FF',
               '#FF00FF', '#FFFF00', '#00FFFF']
-
     markers = ['d', 'o', 's', '>', '^']
 
     i = 0
