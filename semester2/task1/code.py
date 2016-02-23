@@ -45,8 +45,8 @@ def simple_cluster(data_sc, threshold, dist_func=euclidean_dist):
 
         clusters_sc.append(cluster_sc)
 
-        for cluster_sc in clusters_sc:
-            cluster_data.append([data_sc[i_sc] for i_sc in cluster_sc])
+    for cluster_sc in clusters_sc:
+        cluster_data.append([data_sc[i_sc] for i_sc in cluster_sc])
     return cluster_data
 
 
