@@ -56,47 +56,46 @@
 В секции Исходный код представлена реализация.
 
 \section{Задание №2}
-Для простых функций, имеющих реализацию в языке R была реализована функция вызова:
-%\lstinputlisting[language=Python, firstline=5, lastline=8]{../code8.py}
 
-С помощью функции вызова функции вычисления характеристик дескриптивной статистики реализуются в одну строчку:
-%\lstinputlisting[language=Python, firstline=19, lastline=32]{../code8.py}
+Написать программу визуализации кластеров в виде «дендрограммы» и сохранить
+дендограмму в виде файла изображения.
 
-Для нахождения моды не получилось найти простого аналога в языке R, поэтому пришлось объявить и вызвать свою реализацию:
-%\lstinputlisting[language=Python, firstline=35, lastline=44]{../code8.py}
+Была найдена статья по данной тематике в Интернете
+\href{https://joernhees.de/blog/2015/08/26/scipy-hierarchical-clustering-and-dendrogram-tutorial/}
+{SciPy Hierarchical Clustering and Dendrogram Tutorial}
+В данной статье была разобрана кластеризация с использованием библиотеки scipy.
 
-В секции Исходный код представлены тесты и ожидаемые результаты на указанной в задание выборке.
+Для проведения кластеризации использовалась функция \textit{linkage()}.
+В отличие от реализации из Приложения,
+здесь использовался другой подход,
+где объединение в кластер происходило всегда самых ближайших кластеров.
+Это можно проследить, проанализировав вывод первых 20 объединений в кластера.
+Видно, что расстояния постепенно увеличиваются.
 
-\section{Задание №3}
-Для аналога доверительного интервала в R не нашёл способа получить половину длины интервала, поэтому в Python взял правую границу и вычел среднее выборочное.
+На следующем изображение представлена кластеризация на той же выборке, что и для Задания 1:
 
-%\lstinputlisting[language=Python, firstline=47, lastline=50]{../code8.py}
+\noindent\makebox[\textwidth]{\includegraphics[width=0.7\paperwidth]{Figure_2}}
 
-В секции Исходный код представлен тест линейной регрессии с фиксированными значениями псевдо-генеротора чисел.
+\clearpage
 
-\section{Задание №4}
-Выборки были сгенерированы внутри R, там же была вызвана функция lm, из вывода которой были получены коэффициенты.
-\newpage
-%\lstinputlisting[language=Python, firstline=53, lastline=62]{../code8.py}
+Удобство использования функции \textit{linkage()} заключается в информативном выходном значение,
+которое содержит массив исходных вершин и итеративное построение новых кластеров с указанием расстояния.
+Чтобы построить дендрограмму, достаточно вызвать функцию \textit{dendrogram()}:
 
-\section{Задание №5}
-Код R считывается из файла в Python и затем запускается:
-%\lstinputlisting[language=Python, firstline=65, lastline=72]{../code8.py}
-\newpage
-Выборки были сгенерированы внутри R, там же была вызвана функция lm, построен график выборок и линейной регрессии и затем сохранён в виде png файла:
-
-%\noindent\makebox[\textwidth]{\includegraphics[width=0.7\paperwidth]{figure_1}}
+\noindent\makebox[\textwidth]{\includegraphics[width=0.7\paperwidth]{Figure_3}}
 
 \section{Пояснение}
 Исходный код доступен по ссылке:
+\href{https://github.com/SvichkarevAnatoly/Course-Python-Bioinformatics/tree/master/bioseq7}
+{github.com}
 
-\href{https://github.com/SvichkarevAnatoly/Course-Python-Bioinformatics/tree/master/bioseq7}{https://github.com/SvichkarevAnatoly/Course-Python-Bioinformatics/tree/master/bioseq8}
+\clearpage
 
 \section{Исходный код}
-Файл \verb$test_code8.py$:
-%\lstinputlisting[language=Python]{../test_code8.py}
+Файл \verb$example.py$:
+\lstinputlisting[language=Python]{../example.py}
 
-Файл \verb$r_lr_plot.R$:
-%\lstinputlisting[language=Python]{../r_lr_plot.R}
+Файл \verb$dendrogram.py$:
+\lstinputlisting[language=Python]{../dendrogram.py}
 
 \end{document} % Конец документа
