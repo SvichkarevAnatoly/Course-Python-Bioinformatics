@@ -101,7 +101,7 @@ if __name__ == '__main__':
     data = vstack(data)
 
     clusters = simple_cluster(data, 0.10)
-    clusters2, noise = db_scan_cluster(data, 0.10, 5)
+    clusters_without_noise, noise = db_scan_cluster(data, 0.10, 5)
 
     colors = ['#FF0000', '#00FF00', '#0000FF',
               '#FF00FF', '#FFFF00', '#00FFFF']
@@ -123,4 +123,22 @@ if __name__ == '__main__':
     pyplot.ylabel("Y")
     pyplot.title("Figure 1. Simple associative clustering")
     pyplot.savefig("Figure_1")
+    pyplot.show()
+
+    i = 0
+    for cluster in clusters_without_noise:
+        allX, allY = zip(*cluster)
+
+        if len(cluster) > 3:
+            color = colors[i % len(colors)]
+            marker = markers[i % len(markers)]
+            pyplot.scatter(allX, allY, s=30, c=color, marker=marker)
+            i += 1
+        else:
+            pyplot.scatter(allX, allY, s=5, c='black', marker='o')
+
+    pyplot.xlabel("X")
+    pyplot.ylabel("Y")
+    pyplot.title("Simple associative clustering without noise")
+    pyplot.savefig("Figure_4")
     pyplot.show()
