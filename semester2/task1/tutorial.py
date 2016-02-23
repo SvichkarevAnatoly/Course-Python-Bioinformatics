@@ -16,7 +16,7 @@ plt.scatter(data[:, 0], data[:, 1])
 plt.show()
 
 # generate the linkage matrix
-Z = linkage(data, 'ward')
+Z = linkage(data)
 
 print Z[:20]
 
