@@ -1,7 +1,9 @@
 from numpy import random, vstack
 from scipy.cluster.hierarchy import dendrogram, linkage
-
 from matplotlib import pyplot as plt
+import numpy as np
+
+np.set_printoptions(precision=5, suppress=True)  # suppress scientific float notation
 
 random.seed(0)
 
