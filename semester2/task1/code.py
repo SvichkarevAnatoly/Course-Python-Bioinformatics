@@ -88,18 +88,19 @@ def db_scan_cluster(data_dbsc, threshold, min_neighbour, dist_func=euclidean_dis
 
 
 if __name__ == '__main__':
-    print("\nSimple associative clustering\n")
+    print("Simple associative clustering\n")
     spread = 0.12
+    means = [(0.0, 0.0), (1.0, 1.0), (1.0, 0.0)]
     sizeDims = (100, 2)
-    data = [random.normal((0.0, 0.0), spread, sizeDims),
-            random.normal((1.0, 1.0), spread, sizeDims),
-            random.normal((1.0, 0.0), spread, sizeDims)]
+    data = [random.normal(means[0], spread, sizeDims),
+            random.normal(means[1], spread, sizeDims),
+            random.normal(means[2], spread, sizeDims)]
     data = vstack(data)
     random.shuffle(data)  # Randomise order
 
     clusters = simple_cluster(data, 0.10)
-    colors = ['#F0F0F0', '#A0A0A0', '#505050',
-              '#D0D0D0', '#808080', '#202020']
+    colors = ['#FF0000', '#00FF00', '#0000FF',
+              '#FF00FF', '#FFFF00', '#00FFFF']
 
     markers = ['d', 'o', 's', '>', '^']
 
