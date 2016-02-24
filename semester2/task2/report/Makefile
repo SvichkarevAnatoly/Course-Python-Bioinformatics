@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-report=report1
+report=report2
 
 read:	pdf clean_tmp
 	evince ${report}.pdf &
