@@ -11,11 +11,9 @@ def euclideanDist(vectorA, vectorB):
 
 def kMeans(data, k, centers=None):
     if centers is None:
-        centers = array(sample(list(data), k))  # list() not needed in Python 2
+        centers = array(sample(data, k))
 
-    change = 1.0
-    prev = []
-
+    change = 1
     while change > 1e-8:
         clusters = [[] for x in range(k)]
         for vector in data:
@@ -24,13 +22,13 @@ def kMeans(data, k, centers=None):
             closest = dists.argmin()
             clusters[closest].append(vector)
 
-    change = 0
-    for i, cluster in enumerate(clusters):
-        cluster = array(cluster)
-        center = cluster.sum(axis=0) / len(cluster)
-        diff = center - centers[i]
-        change += (diff * diff).sum()
-        centers[i] = center
+        change = 0
+        for i, cluster in enumerate(clusters):
+            cluster = array(cluster)
+            center = cluster.sum(axis=0) / len(cluster)
+            diff = center - centers[i]
+            change += (diff * diff).sum()
+            centers[i] = center
     return centers, clusters
 
 
@@ -95,15 +93,16 @@ def jumpMethodCluster(data, kRange=None, cycles=10):
 
 
 if __name__ == '__main__':
+    random.seed(0)
     spread = 0.12
     sizeDims = (100, 2)
     print("K-means clustering\n")
-    testDataA = random.random((1000, 2))  # No clumps
-    centers, clusters = kMeans(testDataA, 3)
+    #testDataA = random.random((1000, 2))
+    #centers, clusters = kMeans(testDataA, 3)
 
     testDataB1 = random.normal(0.0, 2.0, (100, 2))
     testDataB2 = random.normal(7.0, 2.0, (100, 2))
-    testDataB = vstack([testDataB1, testDataB2])  # Two clumps
+    testDataB = vstack([testDataB1, testDataB2])
 
     centers, clusters = kMeans(testDataB, 2)
     colors = ['#FF0000', '#00FF00', '#0000FF',
@@ -115,7 +114,7 @@ if __name__ == '__main__':
         pyplot.scatter(x, y, c=color, marker='o')
 
     x, y = zip(*centers)
-    pyplot.scatter(x, y, s=40, c='black', marker='o')
+    pyplot.scatter(x, y, s=100, c='black', marker='o')
     pyplot.xlabel("X")
     pyplot.ylabel("Y")
     pyplot.title("Figure 3. K-means clustering")
