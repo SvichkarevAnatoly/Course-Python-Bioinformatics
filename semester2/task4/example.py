@@ -1,6 +1,3 @@
-from numpy import array
-
-
 def getFeatureDistance(vector1, vector2):
     distance = 0.0
     for a, b in zip(vector1, vector2):
@@ -32,30 +29,6 @@ def kNearestNeighbour(knowns, query, k=7):
         if cat in bestCats:
             return cat
 
-
-# def kNearestNeighbour(knowns, query, k=7):
-#     # Numpy version
-#     if k >= len(knowns):
-#         raise Exception('Length of training data must be larger than k')
-#
-#     vectors, cats = zip(*knowns)
-#     deltas = array(vectors) - array(query)
-#     dists = (deltas * deltas).sum(axis=1)
-#     sortedIndices = dists.argsort()
-#     closeCats = [cats[i] for i in sortedIndices[:k]]
-#
-#     counts = {}
-#     for cat in closeCats:
-#         counts[cat] = counts.get(cat, 0) + 1
-#
-#     bestCount = max(counts.values())
-#     bestCats = [cat for cat in counts if counts[cat] == bestCount]
-#
-#     for cat in closeCats:
-#         if cat in bestCats:
-#             return cat
-
-
 if __name__ == '__main__':
     print("\nK-nearest neghbour\n")
     knownClasses = [((1.0, 0.0, 0.0), 'warm'),  # red
@@ -72,5 +45,6 @@ if __name__ == '__main__':
                     ((0.5, 0.0, 0.0), 'warm'),  # maroon
                     ((1.0, 0.5, 0.5), 'warm'),  # pink
                     ]
+
     result = kNearestNeighbour(knownClasses, (0.7, 0.7, 0.2), k=3)
     print('Colour class:', result)
