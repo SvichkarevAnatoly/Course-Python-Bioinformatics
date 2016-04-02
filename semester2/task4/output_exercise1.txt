@@ -1,0 +1,12 @@
+for 95% with k=1: 5/10 = 50%
+for 85% with k=1: 9/20 = 45%
+for 75% with k=1: 18/30 = 60%
+for 50% with k=1: 30/60 = 50%
+for 95% with k=2: 7/10 = 70%
+for 85% with k=2: 14/20 = 70%
+for 75% with k=2: 19/30 = 63%
+for 50% with k=2: 29/60 = 48%
+for 95% with k=3: 5/10 = 50%
+for 85% with k=3: 10/20 = 50%
+for 75% with k=3: 16/30 = 53%
+for 50% with k=3: 26/60 = 43%

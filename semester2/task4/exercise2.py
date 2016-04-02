@@ -17,8 +17,9 @@ trainSet = [((1.0, 0.0, 0.0), 'warm'),  # red
 testSet = [(0.7, 0.7, 0.2),
            (0.1, 0.0, 0.0),
            (0.5, 0.5, 0.5)]
+kRange = range(1, 4)
 
-for k in range(1, 4):
+for k in kRange:
     for testCase in testSet:
         predictedClass = kNearestNeighbour(trainSet, testCase, k)
         print("for " + str(testCase) +
