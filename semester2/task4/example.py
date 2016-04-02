@@ -28,23 +28,3 @@ def kNearestNeighbour(knowns, query, k=7):
     for dist, cat in closest:
         if cat in bestCats:
             return cat
-
-if __name__ == '__main__':
-    print("\nK-nearest neghbour\n")
-    knownClasses = [((1.0, 0.0, 0.0), 'warm'),  # red
-                    ((0.0, 1.0, 0.0), 'cool'),  # green
-                    ((0.0, 0.0, 1.0), 'cool'),  # blue
-                    ((0.0, 1.0, 1.0), 'cool'),  # cyan
-                    ((1.0, 1.0, 0.0), 'warm'),  # yellow
-                    ((1.0, 0.0, 1.0), 'warm'),  # magenta
-
-                    ((0.0, 0.0, 0.0), 'cool'),  # black
-                    ((0.5, 0.5, 0.5), 'cool'),  # grey
-                    ((1.0, 1.0, 1.0), 'cool'),  # white
-                    ((1.0, 1.0, 0.5), 'warm'),  # light yellow
-                    ((0.5, 0.0, 0.0), 'warm'),  # maroon
-                    ((1.0, 0.5, 0.5), 'warm'),  # pink
-                    ]
-
-    result = kNearestNeighbour(knownClasses, (0.7, 0.7, 0.2), k=3)
-    print('Colour class:', result)
