@@ -11,7 +11,7 @@ def kNearestNeighbour(knowns, query, k=7):
         raise Exception('Length of training data must be larger than k')
 
     dists = []
-    for vector, cat in knowns[:k]:
+    for vector, cat in knowns:
         dist = getFeatureDistance(vector, query)
         dists.append((dist, cat))  # Vector could be included
 
