@@ -1,10 +1,11 @@
 import random
 
-from example import kNearestNeighbour
+from kneighbour import kNearestNeighbour
 
 
 def isSameClass(predictedClass, x, cvTestSetWithClasses):
-    return predictedClass == [xx[1] for xx in cvTestSetWithClasses if xx[0] == x][0]
+    return predictedClass == \
+           [xx[1] for xx in cvTestSetWithClasses if xx[0] == x][0]
 
 
 def crossValidation(trainSet, crossValidationFactors, kRange, testTimes):
@@ -24,6 +25,8 @@ def crossValidation(trainSet, crossValidationFactors, kRange, testTimes):
                     if isSameClass(predictedClass, x, cvTestSetWithClasses):
                         counter += 1
             checkFactor = trainSize - cvSize
-            print("for " + str(int(cvFactor * 100)) + "% with k=" + str(k) + ": " +
+            print("for " + str(int(cvFactor * 100)) + "% " +
+                  "with k=" + str(k) + ": " +
                   str(counter) + "/" + str(testTimes * checkFactor) +
-                  " = " + str(int((counter * 100) / (checkFactor * testTimes)))) + "%"
+                  " = " + str(int((counter * 100) /
+                                  (checkFactor * testTimes)))) + "%"

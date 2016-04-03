@@ -1,6 +1,6 @@
 from numpy import random
 
-from support import crossValidation
+from crossvalidation import crossValidation
 
 crossValidationFactors = [0.95, 0.85, 0.75, 0.5]
 kRange = range(1, 4)

@@ -1,4 +1,4 @@
-from example import kNearestNeighbour
+from kneighbour import kNearestNeighbour
 
 trainSet = [((1.0, 0.0, 0.0), 'warm'),  # red
             ((0.0, 1.0, 0.0), 'cool'),  # green
