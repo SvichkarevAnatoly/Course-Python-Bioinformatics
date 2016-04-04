@@ -1,0 +1,36 @@
+===Entropy===
+===ex1===
+0:0.5?
+ T-> 0:1?
+  T-> {'warm': 5, 'cool': 1}
+  F-> {'warm': 1, 'cool': 1}
+ F-> {'cool': 4}
+===prune===
+0:0.5?
+ T-> {'warm': 6, 'cool': 2}
+ F-> {'cool': 4}
+===ex2===
+for [1, 1, 0] predicted branch with {'warm': 5, 'cool': 1}
+for [0.5, 0.5, 0.5] predicted branch with {'warm': 1, 'cool': 1}
+for [0.5, 0.5, None] predicted branch with {'warm': 1, 'cool': 1}
+===ex3 - ex4===
+[0.46681818181818224, 0.4277534722222223, 0.30110853909465024, 0.38788966049382756]
+
+=======================================================================
+===Gini Impurity===
+===ex1===
+0:0.5?
+ T-> 0:1?
+  T-> {'warm': 5, 'cool': 1}
+  F-> {'warm': 1, 'cool': 1}
+ F-> {'cool': 4}
+===prune===
+0:0.5?
+ T-> {'warm': 6, 'cool': 2}
+ F-> {'cool': 4}
+===ex2===
+for [1, 1, 0] predicted branch with {'warm': 5, 'cool': 1}
+for [0.5, 0.5, 0.5] predicted branch with {'warm': 1, 'cool': 1}
+for [0.5, 0.5, None] predicted branch with {'warm': 1, 'cool': 1}
+===ex3 - ex4===
+[0.46681818181818224, 0.4277534722222223, 0.30110853909465024, 0.38788966049382756]
