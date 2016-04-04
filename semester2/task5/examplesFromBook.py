@@ -28,4 +28,7 @@ print e.classify(['(direct)', 'USA', 'yes', 5], tree)
 print e.mdclassify(['google', None, 'yes', None], tree)
 print e.mdclassify(['google', 'France', None, None], tree)
 
+tree = e.buildtree(my_data, scoref=e.giniimpurity)
+e.printtree(tree)
+
 pass
