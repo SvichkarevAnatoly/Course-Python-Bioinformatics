@@ -1,4 +1,4 @@
-import example as e
+import treeclassification as e
 import exercise1 as ex1
 
 test_colors = [

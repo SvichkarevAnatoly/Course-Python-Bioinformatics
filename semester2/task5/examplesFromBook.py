@@ -1,4 +1,4 @@
-import example as e
+import treeclassification as e
 
 my_data = [
     ['slashdot', 'USA', 'yes', 18, 'None'],

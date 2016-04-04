@@ -1,5 +1,5 @@
 import random
-import example as e
+import treeclassification as e
 
 
 def crossvalidate(algf, comparator, data, cvfactors, trials=100, scoref=e.entropy):

@@ -1,4 +1,4 @@
-import example as e
+import treeclassification as e
 
 train_colors = [
     [1, 0, 0, 'warm'],

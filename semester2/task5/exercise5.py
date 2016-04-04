@@ -1,6 +1,6 @@
 import random
 
-import example as e
+import treeclassification as e
 import exercise1 as ex1
 import exercise2 as ex2
 import crossvalidation as cv
