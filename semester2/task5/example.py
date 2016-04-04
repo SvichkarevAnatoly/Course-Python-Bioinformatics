@@ -120,9 +120,9 @@ def printtree(tree, indent=''):
 
         # Print the branches
         print indent, 'T->',
-        printtree(tree.tb, indent + ' ')
+        printtree(tree.tb, indent=' ')
         print indent, 'F->',
-        printtree(tree.fb, indent + ' ')
+        printtree(tree.fb, indent=' ')
 
 
 # === Graphic tree ===================================
