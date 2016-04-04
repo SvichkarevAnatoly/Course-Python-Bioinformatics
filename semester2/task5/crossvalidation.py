@@ -36,12 +36,12 @@ def algf_tree(trainset, observation, scoref):
 
 
 # metric for prediction
-def tree_comparator(test_class, tree_branch):
-    if test_class not in tree_branch:
-        return sum(tree_branch.values())
+def tree_comparator(test_class, tree_leaf):
+    if test_class not in tree_leaf:
+        return sum(tree_leaf.values())
     else:
-        if len(tree_branch) == 1:  # only test_class in branch
+        if len(tree_leaf) == 1:  # only test_class in branch
             return 0
         else:
-            others = sum([value for key, value in tree_branch.iteritems() if key != test_class])
-            return float(others) / tree_branch[test_class]
+            others = sum([value for key, value in tree_leaf.iteritems() if key != test_class])
+            return float(others) / tree_leaf[test_class]

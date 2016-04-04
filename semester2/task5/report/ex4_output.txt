@@ -1,1 +1,11 @@
-[0.3045781893004116]
+[0.46681818181818224, 0.4277534722222223, 0.30110853909465024, 0.38788966049382756]
+0:1?
+ T-> {'warm': 4}
+ F-> {'cool': 5}
+0:1?
+ T-> {'warm': 4}
+ F-> {'cool': 5}
+for [1, 1, 0] predicted branch with {'warm': 4}
+for [0.5, 0.5, 0.5] predicted branch with {'cool': 5}
+for [0.5, 0.5, None] predicted branch with {'cool': 5}
+[0.0, 0.0, 0.0, 0.16]
