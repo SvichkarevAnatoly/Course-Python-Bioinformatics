@@ -12,11 +12,11 @@ trainset, testset = cv.dividedata(ex1.train_colors, cvMainFactor)
 
 tree = tc.buildtree(trainset)
 tc.printtree(tree)
-tc.drawtree(tree, "ex1_original_tree_0.75.jpg")
+tc.drawtree(tree, "ex4_original_tree_0_75.jpg")
 
 tc.prune(tree, 0.1)
 tc.printtree(tree)
-tc.drawtree(tree, "ex1_prune_tree_0.75.jpg")
+tc.drawtree(tree, "ex4_prune_tree_0_75.jpg")
 
 tree = tc.buildtree(trainset)
 print "for " + str(ex2.test_colors[0]) + " predicted branch with " + str(tc.classify(ex2.test_colors[0], tree))

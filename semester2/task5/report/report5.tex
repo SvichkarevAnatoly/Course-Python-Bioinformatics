@@ -107,6 +107,50 @@
 Поэтому с увеличением коэффициента валидации,
 итоговые значения уменьшаются в среднем.
 
+\clearpage
+\section{Задание №4}
+Повторить решение задач №1-№3 при использовании в качестве обучающей
+выборки части данных (75\%) из таблицы №1, а в качестве тестовой выборки –
+оставшейся части данных (25\%).
+\bigskip
+
+Запускающий модуль (файл \verb$exercise4.py$):
+\pythonexternal{../exercise4.py}
+\bigskip
+
+Вывод программы:
+\lstinputlisting{./ex4_output.txt}
+
+\begin{figure}[H]
+	\centering
+	\subfloat[Оригинальное дерево]{\includegraphics[width=0.5\textwidth]{./ex4_original_tree_0_75.jpg}}
+	\hfill
+	\subfloat[После сокращения]{\includegraphics[width=0.5\textwidth]{./ex4_prune_tree_0_75.jpg}}
+    \caption{Графические построения дерева}
+\end{figure}
+
+В данном случае дерево получилось идеально разделённое
+и не сокращается.
+Поэтому значения качества классификатора очень близки к 0.
+
+\clearpage
+\section{Задание №5}
+Изменить программу классификации данных методом CART
+с использованием метрики GINO вместо Энтропии.
+Повторить решение задач №1-№4.
+Сравнить полученные результаты.
+\bigskip
+
+Запускающий модуль (файл \verb$exercise5.py$):
+\pythonexternal{../exercise5.py}
+\bigskip
+
+Вывод программы:
+\lstinputlisting{./ex5_output.txt}
+
+Все этапы и качество классификатора одинаковые,
+так как деревья построены одинаковые.
+
 \section{Пояснение}
 Исходный код доступен по ссылке:
 \href{https://github.com/SvichkarevAnatoly/Course-Python-Bioinformatics/tree/master/semester2/task5}
