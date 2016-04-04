@@ -1,0 +1,9 @@
+0:0.5?
+ T-> 0:1?
+  T-> {'warm': 5, 'cool': 1}
+  F-> {'warm': 1, 'cool': 1}
+ F-> {'cool': 4}
+
+for [1, 1, 0] predicted branch with {'warm': 5, 'cool': 1}
+for [0.5, 0.5, 0.5] predicted branch with {'warm': 1, 'cool': 1}
+for [0.5, 0.5, None] predicted branch with {'warm': 1, 'cool': 1}
