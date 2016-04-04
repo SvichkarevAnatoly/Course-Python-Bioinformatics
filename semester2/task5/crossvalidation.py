@@ -2,21 +2,21 @@ import random
 import example as e
 
 
-def crossvalidate(algf, comparator, data, cvfactors, trials=100):
+def crossvalidate(algf, comparator, data, cvfactors, trials=100, scoref=e.entropy):
     errors = []
     for factor in cvfactors:
         error = 0.0
         for i in range(trials):
             trainset, testset = dividedata(data, factor)
-            error += testalgorithm(algf, comparator, trainset, testset)
+            error += testalgorithm(algf, scoref, comparator, trainset, testset)
         errors.append(error / trials)
     return errors
 
 
-def testalgorithm(algf, comparator, trainset, testset):
+def testalgorithm(algf, scoref, comparator, trainset, testset):
     error = 0.0
     for row in testset:
-        guess = algf(trainset, row[:-1])  # row without last item
+        guess = algf(trainset, row[:-1], scoref)  # row without last item
         error += comparator(row[-1], guess) ** 2  # row's last item
     return error / (len(testset) * len(trainset))
 
@@ -30,8 +30,8 @@ def dividedata(data, factor=0.95):
     return trainset, testset
 
 
-def algf_tree(trainset, observation):
-    tree = e.buildtree(trainset)
+def algf_tree(trainset, observation, scoref):
+    tree = e.buildtree(trainset, scoref)
     return e.classify(observation, tree)
 
 
