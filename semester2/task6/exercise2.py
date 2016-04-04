@@ -2,6 +2,10 @@ import numpy
 
 from sklearn.tree import DecisionTreeRegressor
 from sklearn import tree
+import matplotlib.pyplot as plot
+
+a = 1
+b = 2
 
 # set seed
 numpy.random.seed(1)
@@ -16,7 +20,7 @@ for nPoints in nPointsList:
 
     # y (labels) has random noise added to x-value
     # Build a simple data set with y = x + random
-    y = [s + numpy.random.normal(scale=0.1) for s in xPlot]
+    y = [a + b * s * s + numpy.random.normal(scale=0.1) for s in xPlot]
 
     nrow = len(x)
 
@@ -43,8 +47,18 @@ for nPoints in nPointsList:
 
         # save last tree
         if iDepth == depthList[2] and nPoints == nPointsList[-1]:
+            yHat = treeModel.predict(xTrain)
+            plot.figure()
+            plot.plot(xTrain, yTrain, label='True y')
+            plot.plot(xTrain, yHat, label='Tree Prediction ', linestyle='--')
+            plot.legend(bbox_to_anchor=(1, 0.2))
+            plot.axis('tight')
+            plot.xlabel('x')
+            plot.ylabel('y')
+            plot.savefig('trainsetEx2.png')
+
             # draw the tree
-            with open("treeEx1.dot", 'w') as f:
+            with open("treeEx2.dot", 'w') as f:
                 f = tree.export_graphviz(treeModel, out_file=f)
 
         treePrediction = treeModel.predict(xTest)
