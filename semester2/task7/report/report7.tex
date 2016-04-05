@@ -1,0 +1,102 @@
+\documentclass{article} % Класс печатного документа
+
+% для поддержки русского языка
+\usepackage[T2A]{fontenc} % поддержка специальных русских символов
+\usepackage[utf8]{inputenc} % Кодировка исходного текста - utf8
+\usepackage[english,russian]{babel} % Поддержка языка - русского с английским
+\usepackage{indentfirst} % Отступ в первом абзаце
+
+\usepackage{hyperref} % Для вставки гиперссылок
+% \usepackage{listings} % Для вставки кусков кода
+\usepackage{graphicx} % Вставка изображений
+\usepackage{subfig} % Изображения друг напротив друга
+\usepackage{float} % Для точного позиционирования картинок
+
+\include{pythonstyle} % для красивого оформаления python кода
+
+\title{Отчёт 7\protect\\
+    Классификация.\\
+    Метод баггинга бинарных деревьев решений\\
+    (bootstrap aggregation - bagging)} % Заголовок документа
+\author{Свичкарев А.\,В.} % Автор документа
+\date{\today} % Текущая дата
+
+\begin{document} % Конец преамбулы, начало текста
+
+\maketitle % Печатает заголовок, список авторов и дату
+
+\section{Цель}
+Изучить способы решения задач классификации данных с
+применением метода баггинга бинарных деревьев решений
+(Bootstrap Aggregation - Bagging).
+
+\section{Задание №1}
+Написать программу построения модели классификации синтетических данных
+методом баггинга
+бинарных деревьев и визуализации деревьев решений. Для
+формирования синтетических данных применить зависимость вида: $y = x + random$.
+Построить и визуализировать частные модели деревьев, на основе которых методом
+баггинга построить модель предсказания значений синтетических данных. Привести
+график зависимости среднего квадрата ошибок (mean squared error - MSE) от числа
+деревьев в ансамбле и график предсказания значений синтетических данных.
+\bigskip
+
+Реализация на основе кода программы из Приложения (файл \verb$exercise1.py$):
+\pythonexternal{../exercise1.py}
+\bigskip
+
+\clearpage
+Примеры частных моделей деревьев глубины 5 не помещаются в отчёт,
+поэтому прилагаются с отчётом.
+
+\begin{figure}[H]
+    \centering
+    \noindent\makebox[\textwidth]{\includegraphics[width=0.6\paperwidth]{./mseEx1.png}}
+    \caption{График зависимости среднего квадрата ошибок от числа деревьев в ансамбле}
+\end{figure}
+\bigskip
+
+\begin{figure}[H]
+    \centering
+    \noindent\makebox[\textwidth]{\includegraphics[width=0.6\paperwidth]{./predictionsEx1.png}}
+    \caption{График предсказания значений синтетических данных в зависимости от числа деревьев в ансамбле, синим цветом для одного дерева, зелёным для 10 и красным для 20}
+\end{figure}
+\bigskip
+
+По графику MSE можно заметить, что уже при 5 деревьях в ансамбле достигается хороший результат.
+
+\clearpage
+\section{Задание №2}
+Выполнить классификацию синтетических данных методом баггинга бинарных
+деревьев и визуализировать деревья решений. Для формирования синтетических данных
+применить зависимость вида: $y = a+b x^2 + random$. Привести результаты предсказания
+значений синтетических данных.
+\bigskip
+
+% Исходный код аналогичен коду из предыдущего задания (файл \verb$exercise2.py$):
+% \pythonexternal{../exercise2.py}
+%
+% \clearpage
+% Вывод программы:
+% \lstinputlisting{./ex2_output.txt}
+%
+% \begin{figure}[H]
+%     \centering
+%     \noindent\makebox[\textwidth]{\includegraphics[width=0.6\paperwidth]{./treeEx2.png}}
+%     \caption{Пример дерева для квадратичной зависимости данных с глубиной 3}
+% \end{figure}
+% \bigskip
+%
+% \begin{figure}[H]
+%     \centering
+%     \noindent\makebox[\textwidth]{\includegraphics[width=0.6\paperwidth]{./trainsetEx2.png}}
+%     \caption{Пороги бинарного дерева при квадратической зависимости данных}
+% \end{figure}
+% \bigskip
+
+\section{Пояснение}
+Исходный код доступен по ссылке:
+\href{https://github.com/SvichkarevAnatoly/Course-Python-Bioinformatics/tree/master/semester2/task6}
+{github.com}
+
+\end{document} % Конец документа
