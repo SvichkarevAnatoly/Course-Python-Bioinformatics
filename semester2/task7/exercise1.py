@@ -3,6 +3,7 @@ import random
 
 import matplotlib.pyplot as plot
 from sklearn.tree import DecisionTreeRegressor
+from sklearn import tree
 
 # Build a simple data set with y = x + random
 nPoints = 1000
@@ -15,7 +16,9 @@ x = [[s] for s in xPlot]
 
 # y (labels) has random noise added to x-value
 # set seed
+numpy.random.seed(1)
 random.seed(1)
+
 y = [s + numpy.random.normal(scale=0.1) for s in xPlot]
 
 # take fixed test set 30% of sample
@@ -36,7 +39,7 @@ yTest = [y[r] for r in idxTest]
 numTreesMax = 20
 
 # tree depth - typically at the high end
-treeDepth = 1
+treeDepth = 5
 
 # initialize a list to hold models
 modelList = []
@@ -73,18 +76,31 @@ for iModels in range(len(modelList)):
 
 nModels = [i + 1 for i in range(len(modelList))]
 
+# MSE versus number of trees in Bagging ensemble
 plot.plot(nModels, mse)
 plot.axis('tight')
 plot.xlabel('Number of Models in Ensemble')
 plot.ylabel('Mean Squared Error')
 plot.ylim((0.0, max(mse)))
-plot.show()
+# plot.show()
+plot.savefig("mseEx1.png")
+plot.close()
 
-plotList = [0, 9, 19]
-for iPlot in plotList:
-    plot.plot(xTest, allPredictions[iPlot])
-    plot.plot(xTest, yTest, linestyle="--")
-    plot.axis('tight')
-    plot.xlabel('x value')
-    plot.ylabel('Predictions')
-    plot.show()
+# Comparison of prediction and actual label as functions of attribute
+plot.plot(xTest, allPredictions[0])
+plot.plot(xTest, allPredictions[9])
+plot.plot(xTest, allPredictions[19])
+plot.plot(xTest, yTest, linestyle="--")
+plot.axis('tight')
+plot.xlabel('x value')
+plot.ylabel('Predictions')
+# plot.show()
+plot.savefig("predictionsEx1.png")
+plot.close()
+
+# save first 2 tree
+with open("tree1Ex1.dot", 'w') as f1:
+    f1 = tree.export_graphviz(modelList[0], out_file=f1)
+
+with open("tree2Ex1.dot", 'w') as f2:
+    f2 = tree.export_graphviz(modelList[1], out_file=f2)
