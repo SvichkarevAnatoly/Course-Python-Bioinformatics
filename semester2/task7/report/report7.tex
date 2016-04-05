@@ -73,30 +73,34 @@
 значений синтетических данных.
 \bigskip
 
-% Исходный код аналогичен коду из предыдущего задания (файл \verb$exercise2.py$):
-% \pythonexternal{../exercise2.py}
-%
-% \clearpage
-% Вывод программы:
-% \lstinputlisting{./ex2_output.txt}
-%
-% \begin{figure}[H]
-%     \centering
-%     \noindent\makebox[\textwidth]{\includegraphics[width=0.6\paperwidth]{./treeEx2.png}}
-%     \caption{Пример дерева для квадратичной зависимости данных с глубиной 3}
-% \end{figure}
-% \bigskip
-%
-% \begin{figure}[H]
-%     \centering
-%     \noindent\makebox[\textwidth]{\includegraphics[width=0.6\paperwidth]{./trainsetEx2.png}}
-%     \caption{Пороги бинарного дерева при квадратической зависимости данных}
-% \end{figure}
-% \bigskip
+Реализация на основе кода программы из Приложения (файл \verb$exercise2.py$):
+\pythonexternal{../exercise2.py}
+\bigskip
+
+Примеры частных моделей деревьев глубины 5 не помещаются в отчёт,
+поэтому прилагаются с отчётом.
+
+\begin{figure}[H]
+    \centering
+    \noindent\makebox[\textwidth]{\includegraphics[width=0.6\paperwidth]{./mseEx2.png}}
+    \caption{График зависимости среднего квадрата ошибок от числа деревьев в ансамбле}
+\end{figure}
+\bigskip
+
+\begin{figure}[H]
+    \centering
+    \noindent\makebox[\textwidth]{\includegraphics[width=0.6\paperwidth]{./predictionsEx2.png}}
+    \caption{График предсказания значений синтетических данных в зависимости от числа деревьев в ансамбле, синим цветом для одного дерева, зелёным для 10 и красным для 20}
+\end{figure}
+\bigskip
+
+При одиночном дереве в ансамбле могут быть достаточно сильные ошибки из-за шума в данных, как видно по синему графику.
+Однако, когда таких деревьев много, результат усредняется и
+предсказания очищаются от таких выбросов.
 
 \section{Пояснение}
 Исходный код доступен по ссылке:
-\href{https://github.com/SvichkarevAnatoly/Course-Python-Bioinformatics/tree/master/semester2/task6}
+\href{https://github.com/SvichkarevAnatoly/Course-Python-Bioinformatics/tree/master/semester2/task7}
 {github.com}
 
 \end{document} % Конец документа
