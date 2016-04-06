@@ -3,6 +3,7 @@ import random
 
 import matplotlib.pyplot as plot
 from sklearn.tree import DecisionTreeRegressor
+from sklearn import tree
 
 a = 1
 b = 2
@@ -110,3 +111,10 @@ plot.ylabel('Predictions')
 # plot.show()
 plot.savefig("predictionsEx2.png")
 plot.close()
+
+# save first 2 tree
+with open("tree1Ex2.dot", 'w') as f1:
+    f1 = tree.export_graphviz(modelList[0], out_file=f1)
+
+with open("tree2Ex2.dot", 'w') as f2:
+    f2 = tree.export_graphviz(modelList[1], out_file=f2)
