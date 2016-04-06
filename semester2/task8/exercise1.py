@@ -1,9 +1,8 @@
 import numpy
-import matplotlib.pyplot as plot
-from sklearn import tree
-from sklearn.tree import DecisionTreeRegressor
-from math import floor
 import random
+
+import matplotlib.pyplot as plot
+from sklearn.tree import DecisionTreeRegressor
 
 # Build a simple data set with y = x + random
 nPoints = 1000
@@ -16,6 +15,7 @@ x = [[s] for s in xPlot]
 
 # y (labels) has random noise added to x-value
 # set seed
+random.seed(1)
 numpy.random.seed(1)
 y = [s + numpy.random.normal(scale=0.1) for s in xPlot]
 
@@ -77,13 +77,19 @@ for iModels in range(len(modelList)):
 
 nModels = [i + 1 for i in range(len(modelList))]
 
+# mse plot
 plot.plot(nModels, mse)
 plot.axis('tight')
 plot.xlabel('Number of Models in Ensemble')
 plot.ylabel('Mean Squared Error')
 plot.ylim((0.0, max(mse)))
-plot.show()
+# plot.show()
+plot.savefig("mseEx1.png")
+plot.close()
 
+print min(mse)
+
+# predictions plot
 plotList = [0, 14, 29]
 lineType = [':', '-.', '--']
 plot.figure()
@@ -98,4 +104,6 @@ plot.legend(bbox_to_anchor=(1, 0.3))
 plot.axis('tight')
 plot.xlabel('x value')
 plot.ylabel('Predictions')
-plot.show()
+# plot.show()
+plot.savefig("predictionsEx1.png")
+plot.close()
