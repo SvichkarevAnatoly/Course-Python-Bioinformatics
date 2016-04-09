@@ -106,34 +106,62 @@ numTreesMax, treeDepth, nAtt.
 Реализация на основе кода программы из Приложения (файл \verb$exercise2.py$):
 \pythonexternal{../exercise2.py}
 \bigskip
-%
-% Примеры частных моделей деревьев глубины 5 не помещаются в отчёт,
-% поэтому прилагаются с отчётом.
-%
-% \begin{figure}[H]
-%     \centering
-%     \noindent\makebox[\textwidth]{\includegraphics[width=0.6\paperwidth]{./mseEx2.png}}
-%     \caption{График зависимости среднего квадрата ошибок от числа деревьев в ансамбле}
-% \end{figure}
-% \bigskip
-%
-% Значение минимального среднего квадрата ошибки Minimum MSE:
-% \lstinputlisting{./ex2_output.txt}
-%
-% \begin{figure}[H]
-%     \centering
-%     \noindent\makebox[\textwidth]{\includegraphics[width=0.6\paperwidth]{./predictionsEx2.png}}
-%     \caption{График предсказания значений синтетических данных в зависимости от числа деревьев в ансамбле}
-% \end{figure}
-% \bigskip
-%
-% Метод бустинга схож с методом баггинга.
-% Данный метод показывает хорошие результаты для меньшей глубины деревьев,
-% так как в обучение следующих деревьев учитываются ошибки предыдущих,
-% таким образом результат уточняется. Однако у данного алгоритма есть
-% дополнительный параметр eps, от значения которого зависит скорость
-% достижения минимальной ошибки, если его не правильно подобрать,
-% то даже увеличение числа деревьев в ансамбле может не компенсировать возникающую ошибку.
+
+\clearpage
+Примеры частных моделей деревьев:
+\begin{figure}[H]
+	\centering
+	\subfloat[Первое дерево]{\includegraphics[width=0.5\textwidth]{tree1Ex2.png}}
+	\hfill
+	\subfloat[Второе дерево]{\includegraphics[width=0.5\textwidth]{tree2Ex2.png}}
+    \caption{Графические построения деревьев}
+\end{figure}
+\bigskip
+
+Значение минимального среднего квадрата ошибки Minimum MSE
+при различных параметрах (закодированы в названиях файлов):
+\lstinputlisting{./ex2_output.txt}
+
+\begin{figure}[H]
+	\centering
+	\subfloat[mseEx2\_ntm30td2na3]{\includegraphics[width=0.5\textwidth]{mseEx2_ntm30td2na3}}
+	\hfill
+	\subfloat[mseEx2\_ntm30td5na3]{\includegraphics[width=0.5\textwidth]{mseEx2_ntm30td5na3}}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\subfloat[mseEx2\_ntm90td5na3]{\includegraphics[width=0.5\textwidth]{mseEx2_ntm90td5na3}}
+	\hfill
+	\subfloat[mseEx2\_ntm90td5na4]{\includegraphics[width=0.5\textwidth]{mseEx2_ntm90td5na4}}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\subfloat[mseEx2\_ntm90td5na5]{\includegraphics[width=0.5\textwidth]{mseEx2_ntm90td5na5}}
+	\hfill
+	\subfloat[mseEx2\_ntm90td12na4]{\includegraphics[width=0.5\textwidth]{mseEx2_ntm90td12na4}}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\subfloat[mseEx2\_ntm90td20na4]{\includegraphics[width=0.5\textwidth]{mseEx2_ntm90td20na4}}
+	\hfill
+	\subfloat[mseEx2\_ntm90td2na3]{\includegraphics[width=0.5\textwidth]{mseEx2_ntm90td2na3}}
+\end{figure}
+\bigskip
+
+Среди протестированных комбинаций минимум ошибки достигается
+при размере ансамбля в 90 деревьев,
+глубине дерева 12 и выборки в 4 признака для каждого дерева.
+
+На самом деле данная реализация
+не является в чистом виде random forest,
+потому что в оригинальном алгоритме
+в постоение для каждого узла выбираются
+своя выборка атрибутов.
+Этот алгоритм правильнее было бы назвать
+баггинг с случайным выбором признаков.
+Данное несоответствие вызвано
+невозможностью реализовать данную функциональность
+через DecisionTreeRegressor.
 
 \section{Пояснение}
 Исходный код доступен по ссылке:
