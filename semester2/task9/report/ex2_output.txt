@@ -1,0 +1,16 @@
+Minimum MSE for mseEx2_ntm30td2na3.png
+0.138023451963
+Minimum MSE for mseEx2_ntm30td5na3.png
+0.132296492261
+Minimum MSE for mseEx2_ntm90td5na3.png
+0.119192552982
+Minimum MSE for mseEx2_ntm90td5na4.png
+0.113976424828
+Minimum MSE for mseEx2_ntm90td5na5.png
+0.122471574319
+Minimum MSE for mseEx2_ntm90td12na4.png
+0.112737741157
+Minimum MSE for mseEx2_ntm90td20na4.png
+0.117905011892
+Minimum MSE for mseEx2_ntm90td2na3.png
+0.130537337641
