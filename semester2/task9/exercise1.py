@@ -2,6 +2,7 @@ import random
 
 import matplotlib.pyplot as plot
 from sklearn.tree import DecisionTreeRegressor
+from sklearn import tree
 
 # read data into iterable
 data = open("winequality-red.csv")
@@ -47,7 +48,7 @@ yTest = [labels[r] for r in idxTest]
 numTreesMax = 30
 
 # tree depth - typically at the high end
-treeDepth = 12
+treeDepth = 1
 
 # pick how many attributes will be used in each model.
 # authors recommend 1/3 for regression problem
@@ -114,7 +115,15 @@ plot.axis('tight')
 plot.xlabel('Number of Trees in Ensemble')
 plot.ylabel('Mean Squared Error')
 plot.ylim((0.0, max(mse)))
-plot.show()
+# plot.show()
+plot.savefig("mseEx1.png")
 
 print('Minimum MSE')
 print(min(mse))
+
+# save first 2 tree
+with open("tree1Ex1.dot", 'w') as f1:
+    f1 = tree.export_graphviz(modelList[0], out_file=f1)
+
+with open("tree2Ex1.dot", 'w') as f2:
+    f2 = tree.export_graphviz(modelList[1], out_file=f2)
