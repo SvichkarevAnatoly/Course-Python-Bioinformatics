@@ -14,9 +14,13 @@
 
 \include{pythonstyle} % для красивого оформаления python кода
 
-\title{Отчёт 8\protect\\
+% путь к папке с изображениями
+\graphicspath{{./figs/}}
+
+\title{Отчёт 9\protect\\
     Классификация.\\
-    Метод бустинга бинарных деревьев решений (boosting)} % Заголовок документа
+    Метод метод случайного леса деревьев решений\\
+    (random forest)} % заголовок документа
 \author{Свичкарев А.\,В.} % Автор документа
 \date{\today} % Текущая дата
 
@@ -26,91 +30,114 @@
 
 \section{Цель}
 Изучить способы решения задач классификации данных с
-применением метода бустинга бинарных деревьев решений (Boosting).
+применением метода случайного леса деревьев решений (Random Forest).
 
 \section{Задание №1}
-Написать программу построения модели классификации синтетических данных
-методом градиентного бустинга бинарных деревьев и визуализации деревьев решений.
-Для формирования синтетических данных применить зависимость вида: $y = x + random$.
-Построить и визуализировать частные модели деревьев, на основе которых методом
-градиентного бустинга построить модель предсказания значений синтетических данных.
-Привести значение минимального среднего квадрата ошибки Minimum MSE и график
-зависимости среднего квадрата ошибок (mean squared error - MSE) от числа деревьев в
-ансамбле и график предсказания значений синтетических данных.
+Написать программу построения модели классификации
+данных из файла
+\verb$winequality-red.csv$ методом случайного леса деревьев решений
+(Random Forest) и визуализации деревьев решений.
+Построить и визуализировать частные модели деревьев,
+на основе которых построить модель предсказания значений данных.
+Привести значение минимального среднего квадрата ошибки
+Minimum MSE и график зависимости среднего квадрата ошибок (mean squared error - MSE) от числа деревьев в ансамбле.
+Оценить точность предсказания при различных значениях параметров
+numTreesMax, treeDepth, nAtt.
 \bigskip
 
 Реализация на основе кода программы из Приложения (файл \verb$exercise1.py$):
 \pythonexternal{../exercise1.py}
 \bigskip
 
-\clearpage
-Примеры частных моделей деревьев глубины 5 не помещаются в отчёт,
-поэтому прилагаются с отчётом.
-
+Примеры частных моделей деревьев:
 \begin{figure}[H]
-    \centering
-    \noindent\makebox[\textwidth]{\includegraphics[width=0.6\paperwidth]{./mseEx1.png}}
-    \caption{График зависимости среднего квадрата ошибок от числа деревьев в ансамбле}
+	\centering
+	\subfloat[Первое дерево]{\includegraphics[width=0.5\textwidth]{tree1Ex1.png}}
+	\hfill
+	\subfloat[Второе дерево]{\includegraphics[width=0.5\textwidth]{tree2Ex1.png}}
+    \caption{Графические построения деревьев}
 \end{figure}
 \bigskip
 
-Значение минимального среднего квадрата ошибки Minimum MSE:
+\clearpage
+Значение минимального среднего квадрата ошибки Minimum MSE
+при различных параметрах (закодированы в названиях файлов):
 \lstinputlisting{./ex1_output.txt}
 
 \begin{figure}[H]
-    \centering
-    \noindent\makebox[\textwidth]{\includegraphics[width=0.6\paperwidth]{./predictionsEx1.png}}
-    \caption{График предсказания значений синтетических данных в зависимости от числа деревьев в ансамбле}
+	\centering
+	\subfloat[mseEx1\_ntm30td1na4]{\includegraphics[width=0.5\textwidth]{mseEx1_ntm30td1na4}}
+	\hfill
+	\subfloat[mseEx1\_ntm30td1na3]{\includegraphics[width=0.5\textwidth]{mseEx1_ntm30td1na3}}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\subfloat[mseEx1\_ntm30td1na1]{\includegraphics[width=0.5\textwidth]{mseEx1_ntm30td1na1}}
+	\hfill
+	\subfloat[mseEx1\_ntm60td1na4]{\includegraphics[width=0.5\textwidth]{mseEx1_ntm60td1na4}}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\subfloat[mseEx1\_ntm90td1na4]{\includegraphics[width=0.5\textwidth]{mseEx1_ntm90td1na4}}
+	\hfill
+	\subfloat[mseEx1\_ntm30td3na4]{\includegraphics[width=0.5\textwidth]{mseEx1_ntm30td3na4}}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\subfloat[mseEx1\_ntm30td13na4]{\includegraphics[width=0.5\textwidth]{mseEx1_ntm30td13na4}}
+	\hfill
+	\subfloat[mseEx1\_ntm30td20na4]{\includegraphics[width=0.5\textwidth]{mseEx1_ntm30td20na4}}
 \end{figure}
 \bigskip
 
-По графику MSE можно заметить, что уже при 7-8 деревьях в ансамбле достигается
-минимальный для данной задачи результат. Впоследствие ошибка становится больше.
+Среди протестированных комбинаций минимум ошибки достигается
+при размере ансамбля в 30 деревьев,
+глубине дерева 20 и выборки в 4 признака для каждого дерева.
 
 \clearpage
 \section{Задание №2}
-Выполнить классификацию синтетических данных методом градиентного бустинга бинарных
-деревьев и визуализировать деревья решений.
-Для формирования
-синтетических данных применить зависимость вида: $y = a+b x^2 + random$. Привести
-результаты предсказания значений синтетических данных.
+Выполнить классификацию данных из файла
+\verb$breast-cancer-wisconsin.data.csv$ методом
+методом случайного леса деревьев решений (Random Forest) и визуализировать деревья
+решений. Привести результаты предсказания значений данных. Оценить точность
+предсказания при различных значениях параметров numTreesMax, treeDepth, nAtt.
 \bigskip
 
 Реализация на основе кода программы из Приложения (файл \verb$exercise2.py$):
 \pythonexternal{../exercise2.py}
 \bigskip
-
-Примеры частных моделей деревьев глубины 5 не помещаются в отчёт,
-поэтому прилагаются с отчётом.
-
-\begin{figure}[H]
-    \centering
-    \noindent\makebox[\textwidth]{\includegraphics[width=0.6\paperwidth]{./mseEx2.png}}
-    \caption{График зависимости среднего квадрата ошибок от числа деревьев в ансамбле}
-\end{figure}
-\bigskip
-
-Значение минимального среднего квадрата ошибки Minimum MSE:
-\lstinputlisting{./ex2_output.txt}
-
-\begin{figure}[H]
-    \centering
-    \noindent\makebox[\textwidth]{\includegraphics[width=0.6\paperwidth]{./predictionsEx2.png}}
-    \caption{График предсказания значений синтетических данных в зависимости от числа деревьев в ансамбле}
-\end{figure}
-\bigskip
-
-Метод бустинга схож с методом баггинга.
-Данный метод показывает хорошие результаты для меньшей глубины деревьев,
-так как в обучение следующих деревьев учитываются ошибки предыдущих,
-таким образом результат уточняется. Однако у данного алгоритма есть
-дополнительный параметр eps, от значения которого зависит скорость
-достижения минимальной ошибки, если его не правильно подобрать,
-то даже увеличение числа деревьев в ансамбле может не компенсировать возникающую ошибку.
+%
+% Примеры частных моделей деревьев глубины 5 не помещаются в отчёт,
+% поэтому прилагаются с отчётом.
+%
+% \begin{figure}[H]
+%     \centering
+%     \noindent\makebox[\textwidth]{\includegraphics[width=0.6\paperwidth]{./mseEx2.png}}
+%     \caption{График зависимости среднего квадрата ошибок от числа деревьев в ансамбле}
+% \end{figure}
+% \bigskip
+%
+% Значение минимального среднего квадрата ошибки Minimum MSE:
+% \lstinputlisting{./ex2_output.txt}
+%
+% \begin{figure}[H]
+%     \centering
+%     \noindent\makebox[\textwidth]{\includegraphics[width=0.6\paperwidth]{./predictionsEx2.png}}
+%     \caption{График предсказания значений синтетических данных в зависимости от числа деревьев в ансамбле}
+% \end{figure}
+% \bigskip
+%
+% Метод бустинга схож с методом баггинга.
+% Данный метод показывает хорошие результаты для меньшей глубины деревьев,
+% так как в обучение следующих деревьев учитываются ошибки предыдущих,
+% таким образом результат уточняется. Однако у данного алгоритма есть
+% дополнительный параметр eps, от значения которого зависит скорость
+% достижения минимальной ошибки, если его не правильно подобрать,
+% то даже увеличение числа деревьев в ансамбле может не компенсировать возникающую ошибку.
 
 \section{Пояснение}
 Исходный код доступен по ссылке:
-\href{https://github.com/SvichkarevAnatoly/Course-Python-Bioinformatics/tree/master/semester2/task8}
+\href{https://github.com/SvichkarevAnatoly/Course-Python-Bioinformatics/tree/master/semester2/task9}
 {github.com}
 
 \end{document} % Конец документа
