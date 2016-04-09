@@ -52,6 +52,7 @@ treeDepth = 1
 
 # pick how many attributes will be used in each model.
 # authors recommend 1/3 for regression problem
+# nAttr = ncols / 3
 nAttr = 4
 
 # initialize a list to hold models
@@ -116,14 +117,16 @@ plot.xlabel('Number of Trees in Ensemble')
 plot.ylabel('Mean Squared Error')
 plot.ylim((0.0, max(mse)))
 # plot.show()
-plot.savefig("mseEx1.png")
+fig_name = "mseEx1_ntm" + str(numTreesMax) + "td" + str(treeDepth) + \
+           "na" + str(nAttr) + ".png"
+plot.savefig(fig_name)
 
-print('Minimum MSE')
+print('Minimum MSE for ' + fig_name)
 print(min(mse))
 
-# save first 2 tree
-with open("tree1Ex1.dot", 'w') as f1:
-    f1 = tree.export_graphviz(modelList[0], out_file=f1)
-
-with open("tree2Ex1.dot", 'w') as f2:
-    f2 = tree.export_graphviz(modelList[1], out_file=f2)
+# # save first 2 tree
+# with open("tree1Ex1.dot", 'w') as f1:
+#     f1 = tree.export_graphviz(modelList[0], out_file=f1)
+#
+# with open("tree2Ex1.dot", 'w') as f2:
+#     f2 = tree.export_graphviz(modelList[1], out_file=f2)
