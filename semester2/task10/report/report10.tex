@@ -67,15 +67,51 @@ glass.data.csv методом случайного из файла
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{mer1depth}
-    \caption{График зависимости ошибок от числа деревьев в ансамбле (Missclassification Error Rate}
+    \includegraphics[width=0.8\textwidth]{mer1depth}
+    \caption{График зависимости ошибок от числа деревьев в ансамбле
+    (Missclassification Error Rate) при глубине дерева 1}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{varImp1depth.png}
-    \caption{Относительная важность различных атрибутов (Variable Importance)}
+    \includegraphics[width=0.8\textwidth]{varImp1depth}
+    \caption{Относительная важность различных атрибутов
+    (Variable Importance) при глубине дерева 1}
 \end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{mer3depth}
+    \caption{График зависимости ошибок от числа деревьев в ансамбле
+    (Missclassification Error Rate) при глубине дерева 3}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{varImp3depth}
+    \caption{Относительная важность различных атрибутов
+    (Variable Importance) при глубине дерева 3}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{mer5depth}
+    \caption{График зависимости ошибок от числа деревьев в ансамбле
+    (Missclassification Error Rate) при глубине дерева 5}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{varImp5depth}
+    \caption{Относительная важность различных атрибутов
+    (Variable Importance) при глубине дерева 5}
+\end{figure}
+
+При увеличение глубины деревьев ---
+ошибка уменьшается.
+При увеличение числа деревьев в ансамбле ---
+ошибка уменьшается, но больше 500 деревьев
+не улучшает результата.
 
 \clearpage
 \section{Задание №2}
@@ -89,10 +125,9 @@ max\_depth (1,3,5).
 \bigskip
 
 Реализация на основе кода программы из Приложения.
+\bigskip
 
-\clearpage
 Примеры частных моделей деревьев:
-
 \begin{figure}[H]
 	\centering
 	\subfloat[Первое дерево]{\includegraphics[width=0.5\textwidth]{tree1Ex2.png}}
@@ -102,31 +137,65 @@ max\_depth (1,3,5).
 \end{figure}
 \bigskip
 
-Значение минимального среднего квадрата ошибки Minimum MSE
-при различных параметрах (закодированы в названиях файлов):
+Значения минимальной ошибки (Missclassification Error Rate)
+от числа деревьев в ансамбле и матрица ошибок (Confusion Matrix).
+при различных величинах глубины деревьев:
+\lstinputlisting{./ex1_out.txt}
 
-% \begin{figure}[H]
-% 	\centering
-% 	\subfloat[mseEx2\_ntm30td2na3]{\includegraphics[width=0.5\textwidth]{mseEx2_ntm30td2na3}}
-% 	\hfill
-% 	\subfloat[mseEx2\_ntm30td5na3]{\includegraphics[width=0.5\textwidth]{mseEx2_ntm30td5na3}}
-% \end{figure}
-% \bigskip
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{perfGB1depth.png}
+    \caption{График зависимости ошибок от числа деревьев в ансамбле
+    (Missclassification Error Rate) при глубине дерева 1}
+\end{figure}
 
-Среди протестированных комбинаций минимум ошибки достигается
-при размере ансамбля в 90 деревьев,
-глубине дерева 12 и выборки в 4 признака для каждого дерева.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{varImpBG1depth}
+    \caption{Относительная важность различных атрибутов
+    (Variable Importance) при глубине дерева 1}
+\end{figure}
 
-На самом деле данная реализация
-не является в чистом виде random forest,
-потому что в оригинальном алгоритме
-в построение для каждого узла выбираются
-своя выборка атрибутов.
-Этот алгоритм правильнее было бы назвать
-баггинг с случайным выбором признаков.
-Данное несоответствие вызвано
-невозможностью реализовать данную функциональность
-через DecisionTreeRegressor.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{perfGB3depth.png}
+    \caption{График зависимости ошибок от числа деревьев в ансамбле
+    (Missclassification Error Rate) при глубине дерева 3}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{varImpBG3depth}
+    \caption{Относительная важность различных атрибутов
+    (Variable Importance) при глубине дерева 3}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{perfGB5depth.png}
+    \caption{График зависимости ошибок от числа деревьев в ансамбле
+    (Missclassification Error Rate) при глубине дерева 5}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{varImpBG5depth}
+    \caption{Относительная важность различных атрибутов
+    (Variable Importance) при глубине дерева 5}
+\end{figure}
+
+При увеличение глубины деревьев ---
+ошибка уменьшается, но не значительно.
+При увеличение числа деревьев в ансамбле ---
+ошибка уменьшается, но больше 100 деревьев
+улучшает результат не так существенно.
+
+Random Forest работает значительно дольше,
+так как использует большие ансамбли.
+Gradient Boosting и Random Forest в общем показывают
+схожую эффективность, хотя иногда для одного метода
+нужно больше деревьев построить, чем для другого.
+Это зависит в большей степени от исходных данных.
 
 \section{Пояснение}
 Исходный код доступен по ссылке:
