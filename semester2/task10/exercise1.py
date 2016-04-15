@@ -1,7 +1,7 @@
 import numpy
 
 import matplotlib.pyplot as plot
-from sklearn import ensemble
+from sklearn import ensemble, tree
 from sklearn.cross_validation import train_test_split
 from sklearn.metrics import accuracy_score, confusion_matrix
 
@@ -65,7 +65,7 @@ for iLabel in range(1, len(labelList)):
 
 missCLassError = []
 nTreeList = range(50, 2000, 50)
-depth = 5
+depth = 1
 for iTrees in nTreeList:
     maxFeat = 4  # try tweaking
     glassRFModel = ensemble.RandomForestClassifier(n_estimators=iTrees,
@@ -111,3 +111,10 @@ plot.yticks(barPos, glassNames[idxSorted])
 plot.xlabel('Variable Importance')
 # plot.show()
 plot.savefig("varImp" + str(depth) + "depth.png")
+
+# save first 2 tree
+with open("tree1Ex1.dot", 'w') as f1:
+    f1 = tree.export_graphviz(glassRFModel.estimators_[0], out_file=f1)
+
+with open("tree2Ex1.dot", 'w') as f2:
+    f2 = tree.export_graphviz(glassRFModel.estimators_[1], out_file=f2)

@@ -1,7 +1,7 @@
 import numpy
 
 import matplotlib.pyplot as plot
-from sklearn import ensemble
+from sklearn import ensemble, tree
 from sklearn.cross_validation import train_test_split
 from sklearn.metrics import confusion_matrix
 
@@ -64,7 +64,7 @@ for iLabel in range(1, len(labelList)):
 
 # instantiate model
 nEst = 500
-depth = 5
+depth = 1
 learnRate = 0.003
 maxFeatures = 3
 subSamp = 0.5
@@ -138,3 +138,10 @@ confusionMat = confusion_matrix(yTest, bestPrediction)
 print('')
 print("Confusion Matrix")
 print(confusionMat)
+
+# save first 2 tree
+with open("tree1Ex2.dot", 'w') as f1:
+    f1 = tree.export_graphviz(glassGBMModel.estimators_[0][0], out_file=f1)
+
+with open("tree2Ex2.dot", 'w') as f2:
+    f2 = tree.export_graphviz(glassGBMModel.estimators_[1][0], out_file=f2)
