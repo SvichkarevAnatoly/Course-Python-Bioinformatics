@@ -11,16 +11,17 @@
 \usepackage{graphicx} % Вставка изображений
 \usepackage{subfig} % Изображения друг напротив друга
 \usepackage{float} % Для точного позиционирования картинок
+\usepackage[justification=centering]{caption} % Для центрирования подписей
 
 \include{pythonstyle} % для красивого оформления python кода
 
 % путь к папке с изображениями
 \graphicspath{{./figs/}}
 
-\title{Отчёт 9\protect\\
-    Классификация.\\
-    Метод метод случайного леса деревьев решений\\
-    (random forest)} % заголовок документа
+\title{Отчёт 10\\
+Мультиклассовая классификация\\
+с помощью методов Random Forest (RF)\\
+и Gradient Boosting (GB)} % заголовок документа
 \author{Свичкарев А.\,В.} % Автор документа
 \date{\today} % Текущая дата
 
@@ -29,124 +30,88 @@
 \maketitle % Печатает заголовок, список авторов и дату
 
 \section{Цель}
-Изучить способы решения задач классификации данных с
-применением метода случайного леса деревьев решений (Random Forest).
+Изучить способы решения задач мультиклассовой классификации
+данных с применением методов Random Forest (RF) и Gradient Boosting (GB).
 
 \section{Задание №1}
-Написать программу построения модели классификации
-данных из файла
-\verb$winequality-red.csv$ методом случайного леса деревьев решений
-(Random Forest) и визуализации деревьев решений.
+Написать программу построения модели классификации данных
+glass.data.csv методом случайного из файла
+леса деревьев решений (Random Forest) и
+визуализации деревьев решений.
 Построить и визуализировать частные модели деревьев,
-на основе которых построить модель предсказания значений данных.
-Привести значение минимального среднего квадрата ошибки
-Minimum MSE и график зависимости среднего квадрата ошибок (mean squared error - MSE) от числа деревьев в ансамбле.
-Оценить точность предсказания при различных значениях параметров
-numTreesMax, treeDepth, nAtt.
+на основе которых построить модель предсказания классов данных.
+Привести значение минимальной ошибки (Missclassification Error),
+график зависимости ошибок (Missclassification Error Rate)
+от числа деревьев в ансамбле и матрицу ошибок (Confusion Matrix).
+Оценить точность классификации при различных значениях
+параметра max\_depth (1,3,5).
 \bigskip
 
-Реализация на основе кода программы из Приложения (файл \verb$exercise1.py$):
-\pythonexternal{../exercise1.py}
-\bigskip
+Реализация на основе кода программы из Приложения.
 
+\clearpage
 Примеры частных моделей деревьев:
 \begin{figure}[H]
 	\centering
 	\subfloat[Первое дерево]{\includegraphics[width=0.5\textwidth]{tree1Ex1.png}}
 	\hfill
 	\subfloat[Второе дерево]{\includegraphics[width=0.5\textwidth]{tree2Ex1.png}}
-    \caption{Графические построения деревьев}
+    \caption{Графические построения деревьев глубины 1}
 \end{figure}
 \bigskip
 
-\clearpage
-Значение минимального среднего квадрата ошибки Minimum MSE
-при различных параметрах (закодированы в названиях файлов):
-\lstinputlisting{./ex1_output.txt}
+Значения минимальной ошибки (Missclassification Error Rate)
+от числа деревьев в ансамбле и матрица ошибок (Confusion Matrix).
+при различных величинах глубины деревьев:
+\lstinputlisting{./ex1_out.txt}
 
 \begin{figure}[H]
-	\centering
-	\subfloat[mseEx1\_ntm30td1na4]{\includegraphics[width=0.5\textwidth]{mseEx1_ntm30td1na4}}
-	\hfill
-	\subfloat[mseEx1\_ntm30td1na3]{\includegraphics[width=0.5\textwidth]{mseEx1_ntm30td1na3}}
+    \centering
+    \includegraphics[width=\textwidth]{mer1depth}
+    \caption{График зависимости ошибок от числа деревьев в ансамбле (Missclassification Error Rate}
 \end{figure}
-\begin{figure}[H]
-	\centering
-	\subfloat[mseEx1\_ntm30td1na1]{\includegraphics[width=0.5\textwidth]{mseEx1_ntm30td1na1}}
-	\hfill
-	\subfloat[mseEx1\_ntm60td1na4]{\includegraphics[width=0.5\textwidth]{mseEx1_ntm60td1na4}}
-\end{figure}
-\begin{figure}[H]
-	\centering
-	\subfloat[mseEx1\_ntm90td1na4]{\includegraphics[width=0.5\textwidth]{mseEx1_ntm90td1na4}}
-	\hfill
-	\subfloat[mseEx1\_ntm30td3na4]{\includegraphics[width=0.5\textwidth]{mseEx1_ntm30td3na4}}
-\end{figure}
-\begin{figure}[H]
-	\centering
-	\subfloat[mseEx1\_ntm30td13na4]{\includegraphics[width=0.5\textwidth]{mseEx1_ntm30td13na4}}
-	\hfill
-	\subfloat[mseEx1\_ntm30td20na4]{\includegraphics[width=0.5\textwidth]{mseEx1_ntm30td20na4}}
-\end{figure}
-\bigskip
 
-Среди протестированных комбинаций минимум ошибки достигается
-при размере ансамбля в 30 деревьев,
-глубине дерева 20 и выборки в 4 признака для каждого дерева.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{varImp1depth.png}
+    \caption{Относительная важность различных атрибутов (Variable Importance)}
+\end{figure}
 
 \clearpage
 \section{Задание №2}
-Выполнить классификацию данных из файла
-\verb$breast-cancer-wisconsin.data.csv$ методом
-методом случайного леса деревьев решений (Random Forest) и визуализировать деревья
-решений. Привести результаты предсказания значений данных. Оценить точность
-предсказания при различных значениях параметров numTreesMax, treeDepth, nAtt.
+Выполнить классификацию данных из файла glass.data.csv
+методом методом Gradient Boosting и визуализировать деревья решений.
+Привести результаты классификации данных.
+Оценить точность классификации при различных значениях параметра
+max\_depth (1,3,5).
+
+Сравнить эффективность двух методов (RF и GB).
 \bigskip
 
-Реализация на основе кода программы из Приложения (файл \verb$exercise2.py$):
-\pythonexternal{../exercise2.py}
-\bigskip
+Реализация на основе кода программы из Приложения.
 
 \clearpage
 Примеры частных моделей деревьев:
+
 \begin{figure}[H]
 	\centering
 	\subfloat[Первое дерево]{\includegraphics[width=0.5\textwidth]{tree1Ex2.png}}
 	\hfill
 	\subfloat[Второе дерево]{\includegraphics[width=0.5\textwidth]{tree2Ex2.png}}
-    \caption{Графические построения деревьев}
+    \caption{Графические построения деревьев глубины 1}
 \end{figure}
 \bigskip
 
 Значение минимального среднего квадрата ошибки Minimum MSE
 при различных параметрах (закодированы в названиях файлов):
-\lstinputlisting{./ex2_output.txt}
 
-\begin{figure}[H]
-	\centering
-	\subfloat[mseEx2\_ntm30td2na3]{\includegraphics[width=0.5\textwidth]{mseEx2_ntm30td2na3}}
-	\hfill
-	\subfloat[mseEx2\_ntm30td5na3]{\includegraphics[width=0.5\textwidth]{mseEx2_ntm30td5na3}}
-\end{figure}
-\begin{figure}[H]
-	\centering
-	\subfloat[mseEx2\_ntm90td5na3]{\includegraphics[width=0.5\textwidth]{mseEx2_ntm90td5na3}}
-	\hfill
-	\subfloat[mseEx2\_ntm90td5na4]{\includegraphics[width=0.5\textwidth]{mseEx2_ntm90td5na4}}
-\end{figure}
-\begin{figure}[H]
-	\centering
-	\subfloat[mseEx2\_ntm90td5na5]{\includegraphics[width=0.5\textwidth]{mseEx2_ntm90td5na5}}
-	\hfill
-	\subfloat[mseEx2\_ntm90td12na4]{\includegraphics[width=0.5\textwidth]{mseEx2_ntm90td12na4}}
-\end{figure}
-\begin{figure}[H]
-	\centering
-	\subfloat[mseEx2\_ntm90td20na4]{\includegraphics[width=0.5\textwidth]{mseEx2_ntm90td20na4}}
-	\hfill
-	\subfloat[mseEx2\_ntm90td2na3]{\includegraphics[width=0.5\textwidth]{mseEx2_ntm90td2na3}}
-\end{figure}
-\bigskip
+% \begin{figure}[H]
+% 	\centering
+% 	\subfloat[mseEx2\_ntm30td2na3]{\includegraphics[width=0.5\textwidth]{mseEx2_ntm30td2na3}}
+% 	\hfill
+% 	\subfloat[mseEx2\_ntm30td5na3]{\includegraphics[width=0.5\textwidth]{mseEx2_ntm30td5na3}}
+% \end{figure}
+% \bigskip
 
 Среди протестированных комбинаций минимум ошибки достигается
 при размере ансамбля в 90 деревьев,
@@ -165,7 +130,7 @@ numTreesMax, treeDepth, nAtt.
 
 \section{Пояснение}
 Исходный код доступен по ссылке:
-\href{https://github.com/SvichkarevAnatoly/Course-Python-Bioinformatics/tree/master/semester2/task9}
+\href{https://github.com/SvichkarevAnatoly/Course-Python-Bioinformatics/tree/master/semester2/task10}
 {github.com}
 
 \end{document} % Конец документа
