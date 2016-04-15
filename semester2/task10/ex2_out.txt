@@ -1,0 +1,38 @@
+Best Missclassification Error for max_depth = 1
+0.272727272727
+Number of Trees for Best Missclassification Error
+370
+
+Confusion Matrix
+[[21  0  0  0  0  0]
+ [ 4 19  0  0  0  0]
+ [ 6  0  0  0  0  0]
+ [ 0  4  0  0  0  0]
+ [ 0  2  0  0  0  1]
+ [ 0  1  0  0  0  8]]
+
+Best Missclassification Error for max_depth = 3
+0.227272727273
+Number of Trees for Best Missclassification Error
+241
+
+Confusion Matrix
+[[20  1  0  0  0  0]
+ [ 2 21  0  0  0  0]
+ [ 4  2  0  0  0  0]
+ [ 0  4  0  0  0  0]
+ [ 0  0  0  0  3  0]
+ [ 0  2  0  0  0  7]]
+
+Best Missclassification Error for max_depth = 5
+0.242424242424
+Number of Trees for Best Missclassification Error
+77
+
+Confusion Matrix
+[[20  1  0  0  0  0]
+ [ 2 21  0  0  0  0]
+ [ 4  2  0  0  0  0]
+ [ 0  4  0  0  0  0]
+ [ 0  0  0  0  2  1]
+ [ 0  2  0  0  0  7]]
