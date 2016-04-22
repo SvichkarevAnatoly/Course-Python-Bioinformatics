@@ -44,21 +44,22 @@ if __name__ == '__main__':
                           [0.1, 0.35, 0.5, 0.35, 0.1],
                           [0.0, 0.10, 0.2, 0.10, 0.0]])
 
-    n = 20
-    rows, cols = size = (n, n)
-    testInput = numpy.random.rand(rows * cols, 3)
+    n_sizes = [20, 100]
+    nsteps = [0, 1, 10, 100]
+    with open("ex12_out.txt", mode='w') as out:
+        for n_size in n_sizes:
+            rows, cols = size = (n_size, n_size)
+            testInput = numpy.random.rand(rows * cols, 3)
+            for i_nsteps in nsteps:
+                t0 = time.time()
+                somap = selfOrganisingMap(testInput, spread, size, i_nsteps)
+                t1 = time.time()
+                out.write("for " + str(n_size) + " size " +
+                          str(i_nsteps) + " size " +
+                          "time taken = %.3f" % (t1 - t0) + '\n')
 
-    with open("ex1_out.txt", mode='w') as out:
-        nsteps = [0, 1, 10, 100]
-        for i_nsteps in nsteps:
-            t0 = time.time()
-            somap = selfOrganisingMap(testInput, spread, size, i_nsteps)
-            t1 = time.time()
-            out.write("for " + str(i_nsteps) +
-                      " iters time taken = %.3f" % (t1 - t0) + '\n')
-
-            colors = somap * 255
-            colors = colors.astype(numpy.uint8)
-            img = Image.fromarray(colors, 'RGB')
-            img.save("somap" + str(n) + "-" + str(i_nsteps) + ".png", 'PNG')
-            # img.show()
+                colors = somap * 255
+                colors = colors.astype(numpy.uint8)
+                img = Image.fromarray(colors, 'RGB')
+                img.save("somap" + str(n_size) + "-" + str(i_nsteps) + ".png", 'PNG')
+                # img.show()
