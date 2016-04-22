@@ -44,20 +44,21 @@ if __name__ == '__main__':
                           [0.1, 0.35, 0.5, 0.35, 0.1],
                           [0.0, 0.10, 0.2, 0.10, 0.0]])
 
-    rows, cols = size = (50, 50)
+    n = 20
+    rows, cols = size = (n, n)
     testInput = numpy.random.rand(rows * cols, 3)
 
-    nsteps = 10
+    with open("ex1_out.txt", mode='w') as out:
+        nsteps = [0, 1, 10, 100]
+        for i_nsteps in nsteps:
+            t0 = time.time()
+            somap = selfOrganisingMap(testInput, spread, size, i_nsteps)
+            t1 = time.time()
+            out.write("for " + str(i_nsteps) +
+                      " iters time taken = %.3f" % (t1 - t0) + '\n')
 
-    t0 = time.time()
-
-    somap = selfOrganisingMap(testInput, spread, size, nsteps)
-
-    t1 = time.time()
-    print('time taken = %.3f' % (t1 - t0))
-
-    colors = somap*255
-    colors = colors.astype(numpy.uint8)
-    img = Image.fromarray(colors, 'RGB')
-    img.save('somap.png', 'PNG')
-    img.show()
+            colors = somap * 255
+            colors = colors.astype(numpy.uint8)
+            img = Image.fromarray(colors, 'RGB')
+            img.save("somap" + str(n) + "-" + str(i_nsteps) + ".png", 'PNG')
+            # img.show()
