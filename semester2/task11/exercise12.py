@@ -55,7 +55,7 @@ if __name__ == '__main__':
                 somap = selfOrganisingMap(testInput, spread, size, i_nsteps)
                 t1 = time.time()
                 out.write("for " + str(n_size) + " size " +
-                          str(i_nsteps) + " size " +
+                          str(i_nsteps) + " iter " +
                           "time taken = %.3f" % (t1 - t0) + '\n')
 
                 colors = somap * 255
