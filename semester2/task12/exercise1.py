@@ -47,8 +47,8 @@ def svmTrain(knowns, data, kernelFunc, kernelParams, limit=1.0, maxSteps=500, re
     change = 1.0  # arbitrary but big start
 
     kernelArray = zeros((m, m), float)
-    for i in range(m):  # xrange in Python 2
-        for j in range(i + 1):  # xrange in Python 2
+    for i in xrange(m):  # xrange in Python 2
+        for j in xrange(i + 1):  # xrange in Python 2
             coincidence = kernelFunc(data[i], data[j], *kernelParams)
             kernelArray[i, j] = kernelArray[j, i] = coincidence
     kernelArray += 1
@@ -78,7 +78,7 @@ def svmTrain(knowns, data, kernelFunc, kernelParams, limit=1.0, maxSteps=500, re
         inds = [x[1] for x in nonZeroSup]
         niter = 1 + int(sqrt(len(inds)))
 
-        for i in range(niter):  # xrange in Python 2
+        for i in xrange(niter):  # xrange in Python 2
             for j in inds:
                 pull = sum(kernelArray[j, inds] * knowns[inds] * supports[inds])
                 adjust = knowns[j] * pull - 1.0
@@ -96,9 +96,9 @@ def svmPredict(query, data, knowns, supports, kernelFunc, kernelParams):
     for j, vector in enumerate(data):
         support = supports[j]
 
-    if support > 0:
-        coincidence = kernelFunc(vector, query, *kernelParams) + 1.0
-        prediction += coincidence * support * knowns[j]
+        if support > 0:
+            coincidence = kernelFunc(vector, query, *kernelParams) + 1.0
+            prediction += coincidence * support * knowns[j]
     return prediction
 
 
