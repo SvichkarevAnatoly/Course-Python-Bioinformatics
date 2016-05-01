@@ -109,9 +109,10 @@ def svmSeparation(knowns, supports, kernelArray):
 
 
 if __name__ == '__main__':
-    print("\nSupport vector machine training\n")
+    # print("\nSupport vector machine training\n")
     random.seed(int(time()))
-    numPoints = 20
+    numPoints = 16
+    kernelFunc = kernelGauss
     catData = []
 
     for x in range(1, 6):
@@ -138,13 +139,23 @@ if __name__ == '__main__':
     knowns = catData[:, -1]
     data = catData[:, :-1]
 
-    params = (0.1,)
-    supports, steps, kernelArray = svmTrain(knowns, data, kernelGauss, params)
+    # plot training data
+    colors = ["black" if label == -1.0 else "grey" for label in knowns]
+    pyplot.scatter(data[:, 0], data[:, 1], color=colors)
+    pyplot.savefig("ex1-train-" + str(numPoints) + "-" + kernelFunc.__name__)
+    # pyplot.show()
+    pyplot.close()
 
+    t0 = time()
+    params = (0.1,)
+    supports, steps, kernelArray = svmTrain(knowns, data, kernelFunc, params)
     score = svmSeparation(knowns, supports, kernelArray)
+    t1 = time()
+    print(str(numPoints) + "-" + kernelFunc.__name__)
+    print('time taken = %.3f' % (t1 - t0))
     print('Known data: %5.2f%% correct' % (score))
 
-    print("\nSupport vector machine prediction boundaries\n")
+    # print("\nSupport vector machine prediction boundaries\n")
     ds1x = []
     ds1y = []
     ds2x = []
@@ -154,7 +165,7 @@ if __name__ == '__main__':
         y = 0.0
         while y < 1.0:
             query = array((x, y))
-            prediction = svmPredict(query, data, knowns, supports, kernelGauss, params)
+            prediction = svmPredict(query, data, knowns, supports, kernelFunc, params)
 
             if prediction > 0:
                 ds1x.append(x)
@@ -168,5 +179,5 @@ if __name__ == '__main__':
 
     pyplot.scatter(ds1x, ds1y, color='grey')
     pyplot.scatter(ds2x, ds2y, color='black')
-    pyplot.savefig("12-Figure_1")
-    pyplot.show()
+    pyplot.savefig("ex1-class-" + str(numPoints) + "-" + kernelFunc.__name__)
+    # pyplot.show()
