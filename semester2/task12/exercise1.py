@@ -1,14 +1,8 @@
+from numpy import exp, array, zeros, sqrt
+from numpy import random, sum, dot
 from time import time
+
 from matplotlib import pyplot
-from PIL import Image
-import numpy
-from numpy import exp, power, array, zeros, sqrt
-from numpy import nonzero, random, abs, sum, dot
-from numpy import tanh, ones, append
-
-from time import time
-
-random.seed(int(time()))
 
 
 def getFeatureDistance(vector1, vector2):
@@ -109,8 +103,8 @@ def svmSeparation(knowns, supports, kernelArray):
     for i, known in enumerate(knowns):
         prediction = sum(supports[nz] * knowns[nz] * kernelArray[nz, i])
 
-    if known * prediction > 0.0:  # same sign
-        score += 1.0
+        if known * prediction > 0.0:  # same sign
+            score += 1.0
     return 100.0 * score / len(knowns)
 
 
@@ -135,16 +129,16 @@ if __name__ == '__main__':
             xvals = random.normal(xNorm, 0.05, numPoints)
             yvals = random.normal(yNorm, 0.05, numPoints)
 
-            for i in range(numPoints):  # xrange in Python 2
+            for i in xrange(numPoints):  # xrange in Python 2
                 catData.append((xvals[i], yvals[i], category))
 
     catData = array(catData)
     random.shuffle(catData)
+
     knowns = catData[:, -1]
     data = catData[:, :-1]
 
     params = (0.1,)
-
     supports, steps, kernelArray = svmTrain(knowns, data, kernelGauss, params)
 
     score = svmSeparation(knowns, supports, kernelArray)
