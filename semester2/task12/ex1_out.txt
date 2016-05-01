@@ -1,0 +1,15 @@
+16-kernelGauss
+time taken = 30.619
+Known data: 87.00% correct
+
+16-kernelLinear
+time taken = 6.443
+Known data: 52.00% correct
+
+40-kernelLinear
+time taken = 68.037
+Known data: 52.00% correct
+
+40-kernelGauss
+time taken = 109.634
+Known data: 88.90% correct
