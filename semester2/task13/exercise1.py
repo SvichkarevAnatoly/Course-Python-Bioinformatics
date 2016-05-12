@@ -122,8 +122,17 @@ def train_snake_language(cl):
     cl.train('Open source project', 'Language')
 
 
+def print_classify(cl, text):
+    class1 = "Language"
+    class2 = "Snake"
+    print text + " -> " + cl.classify(text, default="unknown")
+    print class1 + " with probability " + str(cl.prob(text, class1))
+    print class2 + " with probability " + str(cl.prob(text, class2))
+    print
+
+
 if __name__ == '__main__':
     cl = naivebayes(getwords)
     train_snake_language(cl)
-    print 'dynamic programming -> ' + cl.classify('dynamic programming', default='unknown')
-    print 'boa constrictors -> ' + cl.classify('boa constrictors', default='unknown')
+    print_classify(cl, "dynamic programming")
+    print_classify(cl, "boa constrictors")

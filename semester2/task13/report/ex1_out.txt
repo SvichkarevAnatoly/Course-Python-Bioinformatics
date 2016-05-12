@@ -1,2 +1,7 @@
 dynamic programming -> Language
+Language with probability 0.104166666667
+Snake with probability 0.0625
+
 boa constrictors -> Snake
+Language with probability 0.0625
+Snake with probability 0.104166666667
